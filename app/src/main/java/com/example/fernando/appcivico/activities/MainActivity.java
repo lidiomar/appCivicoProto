@@ -1,6 +1,7 @@
 package com.example.fernando.appcivico.activities;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -13,12 +14,24 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
+import com.android.volley.Response;
 import com.example.fernando.appcivico.R;
+import com.example.fernando.appcivico.estrutura.Estabelecimento;
+import com.example.fernando.appcivico.fragments.CadastroFragment;
+import com.example.fernando.appcivico.fragments.MainFragment;
+import com.example.fernando.appcivico.servicos.ServicosCadastro;
+import com.google.gson.Gson;
+
+import org.json.JSONArray;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
+    private ArrayList<Estabelecimento> arrayListEstabelecimento2 = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +47,9 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_container,new MainFragment()).commit();
+
     }
 
     @Override
