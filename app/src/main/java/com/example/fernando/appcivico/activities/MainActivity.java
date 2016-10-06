@@ -95,6 +95,11 @@ public class MainActivity extends AppCompatActivity
             startActivity(i);
         }
 
+        if (id == R.id.nav_avaliar) {
+            Intent i = new Intent(this,AvaliarActivity.class);
+            startActivity(i);
+        }
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;

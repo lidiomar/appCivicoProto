@@ -25,4 +25,11 @@
     <string name="algo_deu_errado">Ops... algo deu errado</string>
     <string name="usuario_nao_cadastrado">Usuário não cadastrado</string>
 
+    <string name="cadastro_concluido_com_sucesso">Cadastro concluído com sucesso!</string>
+    <string name="usuario_autenticado_com_sucesso">Usuário autenticado com sucesso!</string>
+    <string name="cadastro">Cadastro</string>
+    <string name="confirmar">Confirmar</string>
+
+    <string name="avaliar">Avaliar</string>
+
 </resources>

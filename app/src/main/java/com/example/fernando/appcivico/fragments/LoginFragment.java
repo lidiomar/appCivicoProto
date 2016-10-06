@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.fernando.appcivico.R;
+import com.example.fernando.appcivico.servicos.Servicos;
 import com.example.fernando.appcivico.servicos.ServicosCadastro;
 
 
@@ -20,14 +21,14 @@ public class LoginFragment extends Fragment {
     private EditText edtEmailUsuarioLogin;
     private EditText edtSenhaLogin;
     private Button buttonEnviarLogin;
-    private ServicosCadastro servicos;
+    private Servicos servicos;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_login,container,false);
 
-        servicos = new ServicosCadastro(getActivity());
+        servicos = new Servicos(getActivity());
         edtEmailUsuarioLogin = (EditText)view.findViewById(R.id.edt_email_usuario_login);
         edtSenhaLogin = (EditText)view.findViewById(R.id.edt_senha_login);
         buttonEnviarLogin = (Button)view.findViewById(R.id.button_enviar_login);
