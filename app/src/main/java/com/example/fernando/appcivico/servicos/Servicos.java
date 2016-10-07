@@ -2,6 +2,7 @@ package com.example.fernando.appcivico.servicos;
 
 import android.content.Context;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -68,6 +69,7 @@ public class Servicos {
             protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
                 Map<String, String> headers = response.headers;
                 ((ApplicationAppCivico)fragmentActivity.getApplication()).setApptoken(headers.get("apptoken"));
+                Log.i("token",headers.get("apptoken"));
                 return super.parseNetworkResponse(response);
             }
         };

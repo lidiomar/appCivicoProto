@@ -15,6 +15,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.fernando.appcivico.R;
 import com.example.fernando.appcivico.application.ApplicationAppCivico;
+import com.example.fernando.appcivico.estrutura.ConteudoPostagem;
 import com.example.fernando.appcivico.estrutura.Postagem;
 import com.example.fernando.appcivico.utils.Constants;
 import com.example.fernando.appcivico.utils.StaticFunctions;
@@ -39,7 +40,7 @@ public class Avaliar {
         this.requestQueue = Volley.newRequestQueue(context);
     }
 
-    public void criarPostagem(Postagem postagem) {
+    public void criarPostagem(Postagem postagem, final ConteudoPostagem conteudoPostagem) {
 
         String url = "http://mobile-aceite.tcu.gov.br:80/appCivicoRS/rest/postagens";
         Gson gson = new Gson();
@@ -48,7 +49,7 @@ public class Avaliar {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url , new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                atribuirConteudoPostagem();
+                atribuirConteudoPostagem(conteudoPostagem);
             }
         }, new Response.ErrorListener() {
             @Override
@@ -90,15 +91,11 @@ public class Avaliar {
         this.requestQueue.add(stringRequest);
     }
 
-    public void atribuirConteudoPostagem() {
+    public void atribuirConteudoPostagem(ConteudoPostagem conteudoPostagem) {
 
         String url = getUrlResponse()+"/conteudos";
-
-        final String mRequestBody = "{\n" +
-                "  \"JSON\": \"string\",\n" +
-                "  \"texto\": \"string\",\n" +
-                "  \"valor\": 0\n" +
-                "}";
+        Gson gson = new Gson();
+        final String mRequestBody = gson.toJson(conteudoPostagem);
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url , new Response.Listener<String>() {
             @Override

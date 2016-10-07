@@ -32,6 +32,8 @@
 
     <string name="avaliar">Avaliar</string>
 
-    <string name="avaliacao_enviada_com_sucesso">Avaliação enviado com sucesso</string>
+
+    <string name="avaliacao_enviada_com_sucesso">Avaliação enviado com sucesso!</string>
+    <string name="avalie_o_estabelecimento">Avalie o estabelecimento:</string>
 
 </resources>
