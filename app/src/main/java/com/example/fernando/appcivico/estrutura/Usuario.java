@@ -7,14 +7,39 @@ public class Usuario {
 
     private String CEP;
     private String biografia;
-    private String cod;
+    private int cod;
     private String dataNascimento;
     private String email;
     private String emailVerificado;
-    private String latitude;
+    private Double latitude;
     private Links[] links;
-    private String longitude;
+    private Double longitude;
     private String nomeCompleto;
+
+    public int getCod() {
+        return cod;
+    }
+
+    public void setCod(int cod) {
+        this.cod = cod;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }
+
     private String nomeUsuario;
     private String senha;
     private String sexo;
@@ -56,21 +81,6 @@ public class Usuario {
         this.email = email;
     }
 
-    public String getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(String latitude) {
-        this.latitude = latitude;
-    }
-
-    public String getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(String longitude) {
-        this.longitude = longitude;
-    }
 
     public String getNomeCompleto() {
         return nomeCompleto;
@@ -144,13 +154,6 @@ public class Usuario {
         this.CEP = CEP;
     }
 
-    public String getCod() {
-        return cod;
-    }
-
-    public void setCod(String cod) {
-        this.cod = cod;
-    }
 
     public String getEmailVerificado() {
         return emailVerificado;

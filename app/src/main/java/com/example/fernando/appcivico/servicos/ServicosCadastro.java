@@ -1,10 +1,7 @@
 package com.example.fernando.appcivico.servicos;
 
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -20,7 +17,6 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.fernando.appcivico.R;
-import com.example.fernando.appcivico.activities.MainActivity;
 import com.example.fernando.appcivico.application.ApplicationAppCivico;
 import com.example.fernando.appcivico.estrutura.Usuario;
 import com.example.fernando.appcivico.utils.Constants;
@@ -116,7 +112,7 @@ public class ServicosCadastro {
     public void cadastrarPerfil(){
 
         try {
-            String codUsuario = ((ApplicationAppCivico)fragmentActivity.getApplication()).getUsuarioAutenticado().getCod();
+            int codUsuario = ((ApplicationAppCivico)fragmentActivity.getApplication()).getUsuarioAutenticado().getCod();
             String url = "http://mobile-aceite.tcu.gov.br:80/appCivicoRS/rest/pessoas/" + codUsuario + "/perfil";
 
             JSONObject jsonBody = new JSONObject();
@@ -173,7 +169,7 @@ public class ServicosCadastro {
     }
 
     public void getPerfil() {
-        String codUsuario = ((ApplicationAppCivico)fragmentActivity.getApplication()).getUsuarioAutenticado().getCod();
+        int codUsuario = ((ApplicationAppCivico)fragmentActivity.getApplication()).getUsuarioAutenticado().getCod();
         String url = "http://mobile-aceite.tcu.gov.br:80/appCivicoRS/rest/pessoas/"+codUsuario+"/perfil";
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null , new Response.Listener<JSONObject>() {
