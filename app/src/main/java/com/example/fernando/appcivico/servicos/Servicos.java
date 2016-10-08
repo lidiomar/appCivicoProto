@@ -45,9 +45,7 @@ public class Servicos {
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null , new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                Gson gson = new Gson();
-                Usuario usuarioAutenticado = gson.fromJson(response.toString(), Usuario.class);
-                ((ApplicationAppCivico)fragmentActivity.getApplication()).setUsuarioAutenticado(usuarioAutenticado);
+                ((ApplicationAppCivico)fragmentActivity.getApplication()).setUsuarioAutenticado(response.toString());
 
                 StaticFunctions.exibeMensagemEFecha(fragmentActivity.getString(R.string.usuario_autenticado_com_sucesso),fragmentActivity);
             }

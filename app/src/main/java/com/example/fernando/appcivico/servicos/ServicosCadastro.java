@@ -195,7 +195,6 @@ public class ServicosCadastro {
             @Override
             protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
                 Map<String, String> headers = response.headers;
-                ((ApplicationAppCivico)fragmentActivity.getApplication()).setApptoken(headers.get("apptoken"));
                 return super.parseNetworkResponse(response);
             }
         };
@@ -211,8 +210,7 @@ public class ServicosCadastro {
             @Override
             public void onResponse(JSONObject response) {
                 Gson gson = new Gson();
-                Usuario usuarioAutenticado = gson.fromJson(response.toString(), Usuario.class);
-                ((ApplicationAppCivico)fragmentActivity.getApplication()).setUsuarioAutenticado(usuarioAutenticado);
+                ((ApplicationAppCivico)fragmentActivity.getApplication()).setUsuarioAutenticado(response.toString());
                 getPerfil();
             }
         }, new Response.ErrorListener() {
