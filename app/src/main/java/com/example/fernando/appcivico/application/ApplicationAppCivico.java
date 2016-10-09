@@ -2,7 +2,6 @@ package com.example.fernando.appcivico.application;
 
 import android.app.Application;
 
-import com.android.volley.Cache;
 import com.example.fernando.appcivico.estrutura.Usuario;
 import com.example.fernando.appcivico.utils.CacheDadosDeUsuario;
 import com.example.fernando.appcivico.utils.Constants;
