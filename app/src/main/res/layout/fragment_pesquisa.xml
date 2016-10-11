@@ -3,10 +3,6 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Pesquisa:" />
-
     <LinearLayout android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/border_default"
@@ -26,7 +22,7 @@
 
     <TextView android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Busca por palavras chave:" />
+        android:text="Pesquisar:" />
 
     <LinearLayout android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -34,7 +30,9 @@
         android:orientation="vertical"
         android:id="@+id/linearLayout_busca_texto"
         android:layout_marginBottom="20dp"
-        android:layout_marginTop="5dp">
+        android:layout_marginTop="5dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp">
 
         <EditText android:layout_width="match_parent"
             android:id="@+id/edt_busca_texto"
@@ -51,4 +49,10 @@
         android:id="@+id/seekbar_pesquisa_km"
         android:max="100" />
 
+    <Button android:id="@+id/buscar_pesquisa"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="Buscar"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp" />
 </LinearLayout>

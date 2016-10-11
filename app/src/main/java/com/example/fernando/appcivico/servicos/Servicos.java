@@ -76,14 +76,23 @@ public class Servicos {
         this.requestQueue.add(jsonObjectRequest);
     }
 
-    public void consultaEstabelecimento(Response.Listener r) {
-        String url = "http://mobile-aceite.tcu.gov.br:80/mapa-da-saude/rest/estabelecimentos?quantidade=30";
-        final JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, r , new Response.ErrorListener() {
+    public void consultaEstabelecimentoLatLong(Response.Listener responseListener, double latitude, double longitude, float raio, final String texto, final String categoria) {
+
+        String url = "http://mobile-aceite.tcu.gov.br:80/mapa-da-saude/rest/estabelecimentos/latitude/"+latitude+"/longitude/"+longitude+"/raio/"+raio;
+        final JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, responseListener , new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(context,fragmentActivity.getString(R.string.algo_deu_errado),Toast.LENGTH_LONG).show();
             }
-        });
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("texto", texto);
+                params.put("categoria", categoria);
+                return super.getParams();
+            }
+        };
 
         requestQueue.add(jsonArrayRequest);
 
