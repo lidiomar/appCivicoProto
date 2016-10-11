@@ -16,6 +16,11 @@
             android:id="@+id/nav_mapa"
             android:icon="@drawable/ic_location_on_black_18dp"
             android:title="@string/mapa" />
+
+        <item
+            android:id="@+id/nav_pesquisa"
+            android:icon="@drawable/ic_public_black_18dp"
+            android:title="@string/pesquisar" />
     </group>
 
 </menu>

@@ -33,6 +33,9 @@
     <string name="avaliar">Avaliar</string>
     <string name="mapa">Mapa</string>
 
+    <string name="pesquisar">Pesquisar</string>
+    <string name="x_km">Distância de: %s km</string>
+
     <string name="avaliacao_enviada_com_sucesso">Avaliação enviado com sucesso!</string>
     <string name="avalie_o_estabelecimento">Avalie o estabelecimento:</string>
     <string name="google_maps_key">AIzaSyBC-cwvsgVDdDPg0kXXgrpHPgWY6pkAgno</string>

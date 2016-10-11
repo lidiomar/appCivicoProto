@@ -29,7 +29,6 @@ public class AvaliarFragment extends Fragment {
     private Button buttonAvaliar;
     private RatingBar ratingBar;
     @Nullable
-
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_avaliar, container, false);
