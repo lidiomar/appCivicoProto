@@ -3,20 +3,48 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pesquisa:" />
+
+    <LinearLayout android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/border_default"
+        android:orientation="vertical"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="5dp">
+
+        <Spinner android:layout_height="50dp"
+            android:layout_width="match_parent"
+            android:id="@+id/spinner_pesquisa_categoria"
+            android:gravity="center_vertical"
+            android:layout_gravity="top|center_vertical"
+            android:paddingBottom="9dp"
+            android:paddingTop="9dp" />
+
+    </LinearLayout>
+
+    <TextView android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Busca por palavras chave:" />
+
+    <LinearLayout android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/border_default"
+        android:orientation="vertical"
+        android:id="@+id/linearLayout_busca_texto"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="5dp">
+
+        <EditText android:layout_width="match_parent"
+            android:id="@+id/edt_busca_texto"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-        android:text="Pesquisa:"/>
-
-    <Spinner android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:id="@+id/spinner_pesquisa_categoria"/>
-
-    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-        android:text="Texto:" />
-
-    <EditText android:layout_width="wrap_content" android:layout_height="wrap_content" />
-
-    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-        android:id="@+id/seekbar_value"/>
+        android:id="@+id/seekbar_value"
+        android:layout_marginBottom="20dp" />
     <SeekBar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

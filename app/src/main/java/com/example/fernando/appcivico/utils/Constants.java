@@ -11,6 +11,7 @@ public class Constants {
     public static final String FILE_USUARIO_AUTENTICADO = "file_usuario_autenticado";
     public static final String FILE_APP_TOKEN = "file_app_token";
     public static final Categorias[] CATEGORIAS = new Categorias[]{
+        new Categorias("","Selecione uma categoria:"),
         new Categorias("HOSPITAL","Hospital"),
         new Categorias("POSTO DE SAÚDE","Posto de Saúde"),
         new Categorias("URGÊNCIA","Urgência"),
