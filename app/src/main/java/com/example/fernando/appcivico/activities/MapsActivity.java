@@ -1,13 +1,7 @@
 package com.example.fernando.appcivico.activities;
 
-import android.Manifest;
-import android.content.Context;
-import android.content.pm.PackageManager;
-import android.location.Criteria;
-import android.location.Location;
-import android.location.LocationManager;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.widget.Toast;
 
@@ -17,38 +11,43 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.util.EmptyStackException;
+import java.util.HashMap;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    private Estabelecimento[] estabelecimentos = null;
+    private double lat;
+    private double lng;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
-
-        /*Bundle extras = getIntent().getExtras();
+        Bundle extras = getIntent().getExtras();
 
         Object[] estabelecimentosObj = (Object[]) extras.get("estabelecimentos");
-        Estabelecimento[] estabelecimentos = new Estabelecimento[estabelecimentosObj.length];
-        System.arraycopy(estabelecimentosObj,0,estabelecimentos,0,estabelecimentos.length);
+        lat = (double) extras.get("latitudeUsuario");
+        lng = (double) extras.get("longitudeUsuario");
 
-        if(estabelecimentos.length <= 0) {
+        if (estabelecimentosObj != null) {
+            estabelecimentos = new Estabelecimento[estabelecimentosObj.length];
+            System.arraycopy(estabelecimentosObj, 0, estabelecimentos, 0, estabelecimentos.length);
+        }
+
+        if (estabelecimentos == null || estabelecimentos.length <= 0) {
             Toast.makeText(MapsActivity.this, "Não há resultados para a busca", Toast.LENGTH_SHORT).show();
-        }else {
+        } else {
             // Obtain the SupportMapFragment and get notified when the map is ready to be used.
             SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
             mapFragment.getMapAsync(this);
-        }*/
+        }
     }
 
 
@@ -64,25 +63,43 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        final HashMap<String, Estabelecimento> hashEstabelecimentos = new HashMap<>();
 
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        Marker marker1 = mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-        marker1.showInfoWindow();
+        for (Estabelecimento estabelecimento : estabelecimentos) {
+            LatLng latLng = new LatLng(estabelecimento.getLat(), estabelecimento.getLongitude());
+            Marker marker = mMap.addMarker(new MarkerOptions().position(latLng).title(estabelecimento.getNomeFantasia()).snippet("Vinculo SUS: " + estabelecimento.getVinculoSus()));
+            hashEstabelecimentos.put(marker.getId(), estabelecimento);
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
 
-        LatLng joinville = new LatLng(48.4434759, 5.137688000000026);
-        Marker marker = mMap.addMarker(new MarkerOptions().position(joinville).title("Marker in Joinville"));
-        marker.showInfoWindow();
+        }
 
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
-                Toast.makeText(MapsActivity.this, "Cliquei", Toast.LENGTH_SHORT).show();
-                Toast.makeText(MapsActivity.this, "ID: " + marker.getId(), Toast.LENGTH_SHORT).show();
+                String id = marker.getId();
+                Estabelecimento estabelecimento = hashEstabelecimentos.get(id);
+                if(estabelecimento != null) {
+                    Intent intent = new Intent(MapsActivity.this, InformacoesActivity.class);
+                    intent.putExtra("estabelecimento",estabelecimento);
+                    startActivity(intent);
+                }
                 return false;
             }
         });
+
+        CameraPosition cameraPosition = new CameraPosition.Builder()
+                .target(new LatLng(lat, lng))
+                .zoom(10)
+                .bearing(90)                // Sets the orientation of the camera to east
+                .tilt(40)                   // Sets the tilt of the camera to 30 degrees
+                .build();
+
+        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
+        LatLng latLng = new LatLng(lat, lng);
+        Marker marker = mMap.addMarker(new MarkerOptions().position(latLng).title("Sua localização").snippet("Encontre estabelecimentos de saúde próximos"));
+        marker.showInfoWindow();
+
 
     }
 }

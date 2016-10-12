@@ -92,10 +92,10 @@ public class PesquisaFragment extends Fragment{
                 String categoriaId = ((Categoria)spinnerCategoria.getSelectedItem()).getId();
                 String texto = buscaTexto.getText().toString();
                 float progress = (float)seekBar.getProgress();
-                double lat;
-                double lng;
+                final double lat;
+                final double lng;
 
-                /*LocationManager locationManager = (LocationManager) PesquisaFragment.this.getActivity().getSystemService(Context.LOCATION_SERVICE);
+                LocationManager locationManager = (LocationManager) PesquisaFragment.this.getActivity().getSystemService(Context.LOCATION_SERVICE);
                 Criteria criteria = new Criteria();
                 if (ActivityCompat.checkSelfPermission(PesquisaFragment.this.getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(PesquisaFragment.this.getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                     Toast.makeText(PesquisaFragment.this.getActivity(), "É necessário permitir o envio das informações de localização",Toast.LENGTH_SHORT).show();
@@ -108,9 +108,12 @@ public class PesquisaFragment extends Fragment{
                         @Override
                         public void onResponse(JSONArray response) {
                             Gson gson = new Gson();
-                            Estabelecimento[] estabelecimentos = gson.fromJson(String.valueOf(response), Estabelecimento[].class);
+                            String stringJson = String.valueOf(response).replace("\"long\":", "\"longitude\":");
+                            Estabelecimento[] estabelecimentos = gson.fromJson(stringJson, Estabelecimento[].class);
                             Intent intent = new Intent(PesquisaFragment.this.getActivity(), MapsActivity.class);
                             intent.putExtra("estabelecimentos",estabelecimentos);
+                            intent.putExtra("latitudeUsuario",lat);
+                            intent.putExtra("longitudeUsuario",lng);
 
                             startActivity(intent);
                         }
@@ -119,7 +122,7 @@ public class PesquisaFragment extends Fragment{
                     Servicos servicos = new Servicos(PesquisaFragment.this.getActivity());
                     servicos.consultaEstabelecimentoLatLong(respListener,lat,lng,progress,texto,categoriaId);
 
-                }*/
+                }
 
             }
         });

@@ -38,7 +38,32 @@
 
     <string name="avaliacao_enviada_com_sucesso">Avaliação enviado com sucesso!</string>
     <string name="avalie_o_estabelecimento">Avalie o estabelecimento:</string>
-    <string name="google_maps_key">AIzaSyDyU4uhEZWliIigoqktmN3OVMCC17VxTv4</string>
-    google_maps_key
+    <string name="google_maps_key">AIzaSyBC-cwvsgVDdDPg0kXXgrpHPgWY6pkAgno</string>
+
+
+    <string name="nome_fantasia">Nome fantasia: %s</string>
+    <string name="natureza">Natureza: %s</string>
+    <string name="tipo_unidade">Tipo unidade: %s</string>
+    <string name="esfera_administrativa">Esfera administrativa: %s</string>
+    <string name="vinculo_sus">Vínculo com SUS: %s</string>
+    <string name="retencao">Retenção: %s</string>
+    <string name="fluxo_clientela">Fluxo clientela: %s</string>
+    <string name="tem_atendimento_urgencia">Atendimento urgência: %s</string>
+    <string name="tem_atendimento_ambulatorial">Atendimento ambulatorial: %s</string>
+    <string name="tem_centro_cirurgico">Centro cirúrgico: %s</string>
+    <string name="tem_obstetra">Obstetra: %s</string>
+    <string name="tem_neonatal">Neonatal: %s</string>
+    <string name="tem_dialise">Diálise: %s</string>
+    <string name="descricao_completa">Descrição completa: %s</string>
+    <string name="categoria_unidade">Categoria unidade: %s</string>
+    <string name="logradouro">Logradouro: %s</string>
+    <string name="numero">Número: %s</string>
+    <string name="bairro">Bairro: %s</string>
+    <string name="cidade">Cidade: %s</string>
+    <string name="uf">UF: %s</string>
+    <string name="cep_estabelecimento">CEP: %s</string>
+    <string name="telefone">Telefone: %s</string>
+    <string name="turno_atendimento">Turno de atendimento: %s</string>
 
 </resources>
+
