@@ -101,6 +101,11 @@ public class MainActivity extends AppCompatActivity
             startActivity(i);
         }
 
+        if (id == R.id.nav_informacoes) {
+            Intent i = new Intent(this,InformacoesActivity.class);
+            startActivity(i);
+        }
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
