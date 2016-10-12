@@ -52,9 +52,41 @@
             android:layout_marginBottom="25dp" />
 
         <LinearLayout android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_marginBottom="15dp">
+
+            <TextView
+                android:id="@+id/text_media_avaliacoes"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:visibility="gone"
+                android:layout_gravity="center_horizontal" />
+
+            <RatingBar
+                android:id="@+id/rating_avaliacao_readonly"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:numStars="5"
+                android:rating="0"
+                android:isIndicator="true"
+                android:layout_marginBottom="5dp"
+                android:layout_gravity="center_horizontal" />
+
+            <TextView
+                android:id="@+id/text_numero_avaliacoes"
+                android:layout_height="wrap_content"
+                android:text="@string/sem_avaliacoes"
+                android:layout_width="wrap_content"
+                android:layout_gravity="center_horizontal" />
+
+        </LinearLayout>
+
+        <LinearLayout android:layout_height="wrap_content"
             android:id="@+id/linearlayout_endereco_wrap"
             android:layout_width="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_marginBottom="15dp">
 
             <TextView android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -140,6 +172,7 @@
                     android:id="@+id/categoria_unidade" />-->
             </LinearLayout>
         </LinearLayout>
+
     </LinearLayout>
 
 

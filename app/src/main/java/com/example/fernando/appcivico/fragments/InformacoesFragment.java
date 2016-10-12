@@ -1,19 +1,30 @@
 package com.example.fernando.appcivico.fragments;
 
 import android.animation.Animator;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.android.volley.Response;
 import com.example.fernando.appcivico.R;
 import com.example.fernando.appcivico.estrutura.Estabelecimento;
+import com.example.fernando.appcivico.estrutura.PostagemMedia;
+import com.example.fernando.appcivico.estrutura.PostagemRetorno;
 import com.example.fernando.appcivico.servicos.Avaliacao;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 /**
  * Created by fernando on 11/10/16.
@@ -51,6 +62,15 @@ public class InformacoesFragment extends Fragment{
     private LinearLayout linearlayoutInformacoesWrap;
     private LinearLayout linearlayoutInformacoesContent;
     private int linearlayoutInformacoesContentHeight;
+
+    private PostagemRetorno postagemRetorno;
+    private PostagemMedia postagemMedia;
+
+    private RatingBar ratingBarReadonly;
+    private Avaliacao avaliacao;
+    private TextView txtNumeroAvaliacoes;
+    private TextView txtMediaAvaliacoes;
+
 
     @Nullable
     @Override
@@ -131,6 +151,14 @@ public class InformacoesFragment extends Fragment{
         txtViewTelefone = (TextView)view.findViewById(R.id.telefone);
         txtViewTurnoAtendimento = (TextView)view.findViewById(R.id.turno_atendimento);
 
+        ratingBarReadonly = (RatingBar)view.findViewById(R.id.rating_avaliacao_readonly);
+        Drawable progress = ratingBarReadonly.getProgressDrawable();
+        DrawableCompat.setTint(progress, Color.rgb(11111111,01011010,00000000));
+
+        txtNumeroAvaliacoes = (TextView)view.findViewById(R.id.text_numero_avaliacoes);
+        txtMediaAvaliacoes = (TextView)view.findViewById(R.id.text_media_avaliacoes);
+
+        avaliacao = new Avaliacao(this.getActivity());
         this.inicializaCampos();
 
         return view;
@@ -248,11 +276,55 @@ public class InformacoesFragment extends Fragment{
                 }
             }
         });
+        this.buscaMedia();
+    }
 
+    public void inicializaAvaliacoesMedia() {
+        Float media = 0f;
+        int contagem = 0;
+
+        if(postagemMedia != null) {
+            media = postagemMedia.getMedia();
+            contagem = postagemMedia.getContagem();
+        }
+
+        ratingBarReadonly.setRating(media);
+        if(contagem <= 0) {
+            txtNumeroAvaliacoes.setText(this.getActivity().getString(R.string.sem_avaliacoes));
+        }else {
+            txtMediaAvaliacoes.setVisibility(View.VISIBLE);
+            txtMediaAvaliacoes.setText(String.format(this.getActivity().getString(R.string.media_das_avaliacoes_x),String.valueOf(media)));
+            if(contagem > 1) {
+                txtNumeroAvaliacoes.setText(String.format(this.getActivity().getString(R.string.x_pessoas_avaliaram), String.valueOf(contagem)));
+            }else {
+                txtNumeroAvaliacoes.setText(String.format(this.getActivity().getString(R.string.x_pessoa_avaliou), String.valueOf(contagem)));
+            }
+        }
+    }
+
+    public void buscaMedia() {
+        Response.Listener respListener = new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Gson gson = new Gson();
+                postagemMedia = gson.fromJson(response.toString(), PostagemMedia.class);
+                inicializaAvaliacoesMedia();
+            }
+        };
+
+        avaliacao.buscaMediaAvaliacoes(estabelecimento.getCodUnidade(),respListener);
     }
 
     public void buscaAvaliacoes() {
-        Avaliacao avaliacao = new Avaliacao();
+
+        Response.Listener respListener = new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                Gson gson = new Gson();
+                postagemRetorno = gson.fromJson(response.toString(), PostagemRetorno.class);
+            }
+        };
+        avaliacao.buscaPostagens(0,5,estabelecimento.getCodUnidade(),respListener);
     }
 
 }

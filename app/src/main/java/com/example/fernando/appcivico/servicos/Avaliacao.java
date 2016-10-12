@@ -12,6 +12,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.fernando.appcivico.R;
@@ -186,6 +187,22 @@ public class Avaliacao {
         });
 
         this.requestQueue.add(jsonArrayRequest);
+    }
+
+    public void buscaMediaAvaliacoes(String codObjetoDestino, Response.Listener responseListener) {
+        String url = "http://mobile-aceite.tcu.gov.br:80/appCivicoRS/rest/postagens" +
+                "/tipopostagem/"+Constants.CODE_TIPO_POSTAGEM+
+                "/tipoobjeto/"+Constants.CODE_TIPO_OBJETO_DESTINO+
+                "/objeto/"+codObjetoDestino;
+
+        final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, responseListener , new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context,fragmentActivity.getString(R.string.algo_deu_errado),Toast.LENGTH_LONG).show();
+            }
+        });
+
+        this.requestQueue.add(jsonObjectRequest);
     }
 
     public String getUrlResponse() {
