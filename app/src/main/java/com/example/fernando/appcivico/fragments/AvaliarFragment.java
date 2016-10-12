@@ -19,7 +19,7 @@ import com.example.fernando.appcivico.estrutura.Autor;
 import com.example.fernando.appcivico.estrutura.ConteudoPostagem;
 import com.example.fernando.appcivico.estrutura.Postagem;
 import com.example.fernando.appcivico.estrutura.Tipo;
-import com.example.fernando.appcivico.servicos.Avaliar;
+import com.example.fernando.appcivico.servicos.Avaliacao;
 
 /**
  * Created by fernando on 06/10/16.
@@ -41,7 +41,7 @@ public class AvaliarFragment extends Fragment {
         buttonAvaliar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Avaliar avaliar = new Avaliar(AvaliarFragment.this.getActivity());
+                Avaliacao avaliacao = new Avaliacao(AvaliarFragment.this.getActivity());
 
                 Tipo tipo = new Tipo();
                 tipo.setCodTipoPostagem(173);
@@ -59,7 +59,7 @@ public class AvaliarFragment extends Fragment {
                 int notaAvaliacao = (int)ratingBar.getRating();
                 conteudoPostagem.setValor(notaAvaliacao);
 
-                avaliar.criarPostagem(postagem, conteudoPostagem);
+                avaliacao.criarPostagem(postagem, conteudoPostagem);
 
             }
         });

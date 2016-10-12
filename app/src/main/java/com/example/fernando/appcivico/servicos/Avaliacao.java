@@ -11,6 +11,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.fernando.appcivico.R;
@@ -28,13 +29,13 @@ import java.util.Map;
 /**
  * Created by fernando on 06/10/16.
  */
-public class Avaliar {
+public class Avaliacao {
     private final Context context;
     private final FragmentActivity fragmentActivity;
     private final RequestQueue requestQueue;
     private String urlResponse;
 
-    public Avaliar(FragmentActivity fragmentActivity) {
+    public Avaliacao(FragmentActivity fragmentActivity) {
         this.fragmentActivity = fragmentActivity;
         this.context = fragmentActivity;
         this.requestQueue = Volley.newRequestQueue(context);
@@ -82,7 +83,7 @@ public class Avaliar {
             @Override
             protected Response<String> parseNetworkResponse(NetworkResponse response) {
                 final String location = response.headers.get("location");
-                Avaliar.this.setUrlResponse(location);
+                Avaliacao.this.setUrlResponse(location);
                 return super.parseNetworkResponse(response);
             }
         };
@@ -132,7 +133,7 @@ public class Avaliar {
             @Override
             protected Response<String> parseNetworkResponse(NetworkResponse response) {
                 final String location = response.headers.get("location");
-                Avaliar.this.setUrlResponse(location);
+                Avaliacao.this.setUrlResponse(location);
                 return super.parseNetworkResponse(response);
             }
         };
@@ -165,6 +166,26 @@ public class Avaliar {
 
 
         this.requestQueue.add(stringRequest);
+    }
+
+    public void buscaPostagens(int pagina, int quantidadeItens, String codObjetoDestino, Response.Listener responseListener) {
+
+        String url = "http://mobile-aceite.tcu.gov.br:80/appCivicoRS/rest/postagens" +
+                "?codAplicativo="+Constants.CODE_APP+"" +
+                "&codTiposPostagem="+Constants.CODE_TIPO_POSTAGEM+"" +
+                "&codTipoObjetoDestino="+Constants.CODE_TIPO_OBJETO_DESTINO+"" +
+                "&quantidadeDeItens="+quantidadeItens+
+                "&pagina="+pagina+
+                "&codObjetoDestino="+codObjetoDestino;
+
+        final JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, responseListener , new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context,fragmentActivity.getString(R.string.algo_deu_errado),Toast.LENGTH_LONG).show();
+            }
+        });
+
+        this.requestQueue.add(jsonArrayRequest);
     }
 
     public String getUrlResponse() {
