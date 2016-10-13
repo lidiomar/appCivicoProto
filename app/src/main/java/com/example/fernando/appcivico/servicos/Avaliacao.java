@@ -24,8 +24,10 @@ import com.example.fernando.appcivico.utils.StaticFunctions;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,7 +40,7 @@ public class Avaliacao {
     private final RequestQueue requestQueue;
     private String urlResponse;
     private int buscaPostagemStatusCode;
-
+    private ArrayList<ConteudoPostagem> conteudoPostagemList = new ArrayList<>();
     public Avaliacao(FragmentActivity fragmentActivity) {
         this.fragmentActivity = fragmentActivity;
         this.context = fragmentActivity;
@@ -189,6 +191,12 @@ public class Avaliacao {
         };
 
         this.requestQueue.add(stringRequest);
+        requestQueue.addRequestFinishedListener(new RequestQueue.RequestFinishedListener<Object>() {
+            @Override
+            public void onRequestFinished(Request<Object> request) {
+
+            }
+        });
     }
 
     public void buscaPostagens(int pagina, int quantidadeItens, String codObjetoDestino, Response.Listener<String> responseListener, Response.ErrorListener responseErrorListener) {
@@ -225,7 +233,30 @@ public class Avaliacao {
         this.requestQueue.add(jsonObjectRequest);
     }
 
-    public void buscaConteudoPostagem(){};
+    public JsonObjectRequest buscaConteudoPostagem(String codPostagem, String codConteudo){
+        String url = "http://mobile-aceite.tcu.gov.br:80/appCivicoRS/rest/postagens/"+codPostagem+"/conteudos/"+codConteudo;
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Gson gson = new Gson();
+                ConteudoPostagem conteudoPostagem = gson.fromJson(String.valueOf(response), ConteudoPostagem.class);
+                Avaliacao.this.getConteudoPostagemList().add(conteudoPostagem);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {}
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String,String> params = new HashMap<String, String>();
+                params.put("appToken",((ApplicationAppCivico)fragmentActivity.getApplication()).getApptoken());
+                return params;
+            }
+        };
+        return jsonObjectRequest;
+    }
+
     public String getUrlResponse() {
         return urlResponse;
     }
@@ -240,5 +271,17 @@ public class Avaliacao {
 
     public void setBuscaPostagemStatusCode(int buscaPostagemStatusCode) {
         this.buscaPostagemStatusCode = buscaPostagemStatusCode;
+    }
+
+    public ArrayList<ConteudoPostagem> getConteudoPostagemList() {
+        return conteudoPostagemList;
+    }
+
+    public void setConteudoPostagemList(ArrayList<ConteudoPostagem> conteudoPostagemList) {
+        this.conteudoPostagemList = conteudoPostagemList;
+    }
+
+    public RequestQueue getRequestQueue() {
+        return requestQueue;
     }
 }

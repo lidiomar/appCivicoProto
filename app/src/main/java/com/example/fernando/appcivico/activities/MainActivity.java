@@ -13,7 +13,9 @@ import android.view.MenuItem;
 
 import com.example.fernando.appcivico.R;
 import com.example.fernando.appcivico.estrutura.Estabelecimento;
+import com.example.fernando.appcivico.fragments.AvaliarFragment;
 import com.example.fernando.appcivico.fragments.MainFragment;
+import com.example.fernando.appcivico.servicos.Avaliacao;
 import com.example.fernando.appcivico.utils.CacheDadosDeUsuario;
 import com.example.fernando.appcivico.utils.Constants;
 

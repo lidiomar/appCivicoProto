@@ -15,8 +15,12 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.fernando.appcivico.R;
 import com.example.fernando.appcivico.application.ApplicationAppCivico;
 import com.example.fernando.appcivico.estrutura.Autor;
@@ -30,6 +34,8 @@ import com.example.fernando.appcivico.servicos.Avaliacao;
 import com.example.fernando.appcivico.servicos.Servicos;
 import com.example.fernando.appcivico.utils.Constants;
 import com.google.gson.Gson;
+
+import java.util.ArrayList;
 
 /**
  * Created by fernando on 06/10/16.
@@ -106,7 +112,8 @@ public class AvaliarFragment extends Fragment {
     }
 
     public void buscarComentarios() {
-        Avaliacao avaliacao = new Avaliacao(AvaliarFragment.this.getActivity());
+        final Avaliacao avaliacao = new Avaliacao(AvaliarFragment.this.getActivity());
+        final RequestQueue requestQueue = Volley.newRequestQueue(AvaliarFragment.this.getActivity());
 
         Response.Listener responseListener = new Response.Listener<String>() {
             @Override
@@ -115,16 +122,19 @@ public class AvaliarFragment extends Fragment {
                 PostagemRetorno[] postagemRetornos = gson.fromJson(response, PostagemRetorno[].class);
                 if(postagemRetornos != null) {
                     for(PostagemRetorno postagemRetorno : postagemRetornos) {
-                        String codAutor = postagemRetorno.getCodAutor();
-
                         ConteudoPostagemRetorno[] conteudos = postagemRetorno.getConteudos();
                         String codConteudoPostagem = conteudos[0].getCodConteudoPostagem();
-
                         String codPostagem = postagemRetorno.getCodPostagem();
 
-
-
+                        JsonObjectRequest jsonObjectRequest = avaliacao.buscaConteudoPostagem(codPostagem, codConteudoPostagem);
+                        requestQueue.add(jsonObjectRequest);
                     }
+                    requestQueue.addRequestFinishedListener(new RequestQueue.RequestFinishedListener<Object>() {
+                        @Override
+                        public void onRequestFinished(Request<Object> request) {
+                            ArrayList<ConteudoPostagem> conteudoPostagemList = avaliacao.getConteudoPostagemList();
+                        }
+                    });
                 }
             }
         };

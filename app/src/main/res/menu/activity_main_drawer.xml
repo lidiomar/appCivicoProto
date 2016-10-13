@@ -26,6 +26,7 @@
             android:id="@+id/nav_informacoes"
             android:icon="@drawable/ic_cake_black_18dp"
             android:title="informacoes" />
+
     </group>
 
 </menu>
