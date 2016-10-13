@@ -16,15 +16,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.example.fernando.appcivico.R;
 import com.example.fernando.appcivico.application.ApplicationAppCivico;
 import com.example.fernando.appcivico.estrutura.Autor;
 import com.example.fernando.appcivico.estrutura.ConteudoPostagem;
+import com.example.fernando.appcivico.estrutura.ConteudoPostagemRetorno;
 import com.example.fernando.appcivico.estrutura.Estabelecimento;
 import com.example.fernando.appcivico.estrutura.Postagem;
+import com.example.fernando.appcivico.estrutura.PostagemRetorno;
 import com.example.fernando.appcivico.estrutura.Tipo;
 import com.example.fernando.appcivico.servicos.Avaliacao;
+import com.example.fernando.appcivico.servicos.Servicos;
 import com.example.fernando.appcivico.utils.Constants;
+import com.google.gson.Gson;
 
 /**
  * Created by fernando on 06/10/16.
@@ -89,6 +94,7 @@ public class AvaliarFragment extends Fragment {
                 }
             }
         });
+        buscarComentarios();
         return view;
     }
 
@@ -97,5 +103,38 @@ public class AvaliarFragment extends Fragment {
             return false;
         }
         return true;
+    }
+
+    public void buscarComentarios() {
+        Avaliacao avaliacao = new Avaliacao(AvaliarFragment.this.getActivity());
+
+        Response.Listener responseListener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Gson gson = new Gson();
+                PostagemRetorno[] postagemRetornos = gson.fromJson(response, PostagemRetorno[].class);
+                if(postagemRetornos != null) {
+                    for(PostagemRetorno postagemRetorno : postagemRetornos) {
+                        String codAutor = postagemRetorno.getCodAutor();
+
+                        ConteudoPostagemRetorno[] conteudos = postagemRetorno.getConteudos();
+                        String codConteudoPostagem = conteudos[0].getCodConteudoPostagem();
+
+                        String codPostagem = postagemRetorno.getCodPostagem();
+
+
+
+                    }
+                }
+            }
+        };
+
+        Response.ErrorListener responseErrorListener = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(AvaliarFragment.this.getActivity(),AvaliarFragment.this.getActivity().getString(R.string.algo_deu_errado),Toast.LENGTH_SHORT).show();
+            }
+        };
+        avaliacao.buscaPostagens(0,5,estabelecimento.getCodUnidade(),responseListener,responseErrorListener);
     }
 }

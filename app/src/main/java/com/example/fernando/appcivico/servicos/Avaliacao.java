@@ -160,7 +160,7 @@ public class Avaliacao {
         this.requestQueue.add(stringRequest);
     }
 
-    public void buscaPostagens(int pagina, int quantidadeItens, String codObjetoDestino, int codAutor, Response.Listener<String> responseListener, Response.ErrorListener responseErrorListener) {
+    public void buscaPostagem(int pagina, int quantidadeItens, String codObjetoDestino, int codAutor, Response.Listener<String> responseListener, Response.ErrorListener responseErrorListener) {
 
         String url = "http://mobile-aceite.tcu.gov.br:80/appCivicoRS/rest/postagens" +
                 "?codAplicativo="+Constants.CODE_APP+"" +
@@ -191,6 +191,29 @@ public class Avaliacao {
         this.requestQueue.add(stringRequest);
     }
 
+    public void buscaPostagens(int pagina, int quantidadeItens, String codObjetoDestino, Response.Listener<String> responseListener, Response.ErrorListener responseErrorListener) {
+
+        String url = "http://mobile-aceite.tcu.gov.br:80/appCivicoRS/rest/postagens" +
+                "?codAplicativo="+Constants.CODE_APP+"" +
+                "&codTiposPostagem="+Constants.CODE_TIPO_POSTAGEM+"" +
+                "&codTipoObjetoDestino="+Constants.CODE_TIPO_OBJETO_DESTINO+"" +
+                "&quantidadeDeItens="+quantidadeItens+
+                "&pagina="+pagina+
+                "&codObjetoDestino="+codObjetoDestino;
+
+        final StringRequest stringRequest = new StringRequest(Request.Method.GET, url, responseListener , responseErrorListener){
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String,String> params = new HashMap<String, String>();
+                params.put("appToken",((ApplicationAppCivico)fragmentActivity.getApplication()).getApptoken());
+                return params;
+            }
+        };
+
+        this.requestQueue.add(stringRequest);
+    }
+
     public void buscaMediaAvaliacoes(String codObjetoDestino, Response.Listener responseListener, Response.ErrorListener responseErrorListener) {
         String url = "http://mobile-aceite.tcu.gov.br:80/appCivicoRS/rest/postagens" +
                 "/tipopostagem/"+Constants.CODE_TIPO_POSTAGEM+
@@ -202,6 +225,7 @@ public class Avaliacao {
         this.requestQueue.add(jsonObjectRequest);
     }
 
+    public void buscaConteudoPostagem(){};
     public String getUrlResponse() {
         return urlResponse;
     }

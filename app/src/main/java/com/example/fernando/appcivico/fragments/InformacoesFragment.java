@@ -154,6 +154,40 @@ public class InformacoesFragment extends Fragment{
                 "            \"long\": -48.84534\n" +
                 "    }";
 
+        String s3 = "{\n" +
+                "    \"codCnes\": 5417600,\n" +
+                "    \"codUnidade\": \"4209105417600\",\n" +
+                "    \"codIbge\": 420910,\n" +
+                "    \"cnpj\": \"04676887000193\",\n" +
+                "    \"nomeFantasia\": \"PSIQUE\",\n" +
+                "    \"natureza\": \"Empresa\",\n" +
+                "    \"tipoUnidade\": \"DIAGNOSE E TERAPIA\",\n" +
+                "    \"esferaAdministrativa\": \"Privada\",\n" +
+                "    \"vinculoSus\": \"Não\",\n" +
+                "    \"retencao\": \"Unidade Privada Lucrativa***\",\n" +
+                "    \"fluxoClientela\": \"Atendimento de demanda espontânea\",\n" +
+                "    \"origemGeografica\": \"CNES_GEO\",\n" +
+                "    \"temAtendimentoUrgencia\": \"Não\",\n" +
+                "    \"temAtendimentoAmbulatorial\": \"Sim\",\n" +
+                "    \"temCentroCirurgico\": \"Não\",\n" +
+                "    \"temObstetra\": \"Não\",\n" +
+                "    \"temNeoNatal\": \"Não\",\n" +
+                "    \"temDialise\": \"Sim\",\n" +
+                "    \"descricaoCompleta\": \"PSIQUE  EMPRESA PRIVADA    \",\n" +
+                "    \"tipoUnidadeCnes\": \"UNIDADE DE APOIO DIAGNOSE E TERAPIA (SADT ISOLADO)\",\n" +
+                "    \"categoriaUnidade\": \"LABORATÓRIO\",\n" +
+                "    \"logradouro\": \"RUA EXPEDICIONARIO HOLZ\",\n" +
+                "    \"numero\": \"149\",\n" +
+                "    \"bairro\": \"AMERICA\",\n" +
+                "    \"cidade\": \"JOINVILLE\",\n" +
+                "    \"uf\": \"SC\",\n" +
+                "    \"cep\": \"89201740\",\n" +
+                "    \"telefone\": \"(47) 34331840\",\n" +
+                "    \"turnoAtendimento\": \"Atendimento nos turnos da manhã e à tarde.\",\n" +
+                "    \"lat\": -26.30451,\n" +
+                "    \"long\": -48.85344\n" +
+                "  }";
+
         /*Bundle extras = getActivity().getIntent().getExtras();
         estabelecimento = (Estabelecimento)extras.get("estabelecimento");*/
 
@@ -211,7 +245,11 @@ public class InformacoesFragment extends Fragment{
                     Response.Listener respListener = new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-                            int statusCodeResponse = avaliacao.getBuscaPostagemStatusCode();
+                            Intent intent = new Intent(InformacoesFragment.this.getActivity(), AvaliarActivity.class);
+                            intent.putExtra("estabelecimento",estabelecimento);
+                            startActivity(intent);
+
+                            /*int statusCodeResponse = avaliacao.getBuscaPostagemStatusCode();
                             if(statusCodeResponse == 204) {
                                 Intent intent = new Intent(InformacoesFragment.this.getActivity(), AvaliarActivity.class);
                                 intent.putExtra("estabelecimento",estabelecimento);
@@ -220,7 +258,7 @@ public class InformacoesFragment extends Fragment{
                                 Toast.makeText(InformacoesFragment.this.getActivity(),InformacoesFragment.this.getActivity().getString(R.string.ja_existe_avaliacao),Toast.LENGTH_LONG).show();
                             }else {
                                 Toast.makeText(InformacoesFragment.this.getActivity(),InformacoesFragment.this.getActivity().getString(R.string.algo_deu_errado),Toast.LENGTH_LONG).show();
-                            }
+                            }*/
                         }
                     };
 
@@ -231,7 +269,7 @@ public class InformacoesFragment extends Fragment{
                         }
                     };
                     ApplicationAppCivico applicationAppCivico = (ApplicationAppCivico)InformacoesFragment.this.getActivity().getApplication();
-                    avaliacao.buscaPostagens(0,1,estabelecimento.getCodUnidade(),applicationAppCivico.getUsuarioAutenticado().getCod(), respListener,responseErrorListener);
+                    avaliacao.buscaPostagem(0,1,estabelecimento.getCodUnidade(),applicationAppCivico.getUsuarioAutenticado().getCod(), respListener,responseErrorListener);
 
                 }else {
                     Intent intent = new Intent(InformacoesFragment.this.getActivity(), EscolherAcessoActivity.class);
