@@ -10,59 +10,92 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RatingBar;
-import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Response;
 import com.example.fernando.appcivico.R;
 import com.example.fernando.appcivico.application.ApplicationAppCivico;
 import com.example.fernando.appcivico.estrutura.Autor;
 import com.example.fernando.appcivico.estrutura.ConteudoPostagem;
+import com.example.fernando.appcivico.estrutura.Estabelecimento;
 import com.example.fernando.appcivico.estrutura.Postagem;
 import com.example.fernando.appcivico.estrutura.Tipo;
 import com.example.fernando.appcivico.servicos.Avaliacao;
+import com.example.fernando.appcivico.utils.Constants;
 
 /**
  * Created by fernando on 06/10/16.
  */
 public class AvaliarFragment extends Fragment {
-    private Spinner spinnerEstabelecimentos;
     private Button buttonAvaliar;
     private RatingBar ratingBar;
+    private EditText editTextComentario;
+    private Estabelecimento estabelecimento;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_avaliar, container, false);
 
+        Bundle extras = getActivity().getIntent().getExtras();
+        estabelecimento = (Estabelecimento)extras.get("estabelecimento");
+        
         ratingBar = (RatingBar)view.findViewById(R.id.rating_avaliacao);
         Drawable progress = ratingBar.getProgressDrawable();
         DrawableCompat.setTint(progress, Color.rgb(11111111,01011010,00000000));
+
+        editTextComentario = (EditText)view.findViewById(R.id.comentario_avaliacao);
 
         buttonAvaliar = (Button)view.findViewById(R.id.button_avaliar);
         buttonAvaliar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Avaliacao avaliacao = new Avaliacao(AvaliarFragment.this.getActivity());
-
-                Tipo tipo = new Tipo();
-                tipo.setCodTipoPostagem(173);
-                Autor autor = new Autor();
-                autor.setCodPessoa(((ApplicationAppCivico)AvaliarFragment.this.getActivity().getApplication()).getUsuarioAutenticado().getCod());
-                Postagem postagem = new Postagem();
-                postagem.setCodTipoObjetoDestino(100);
-                postagem.setCodObjetoDestino(3402126);
-                postagem.setTipo(tipo);
-                postagem.setAutor(autor);
-
-                ConteudoPostagem conteudoPostagem = new ConteudoPostagem();
-                conteudoPostagem.setJSON("");
-                conteudoPostagem.setTexto("Avaliação");
                 int notaAvaliacao = (int)ratingBar.getRating();
-                conteudoPostagem.setValor(notaAvaliacao);
+                String comentario = editTextComentario.getText().toString();
 
-                avaliacao.criarPostagem(postagem, conteudoPostagem);
+                if(validarEnvio(comentario, notaAvaliacao)) {
+                    final Avaliacao avaliacao = new Avaliacao(AvaliarFragment.this.getActivity());
+                    Tipo tipo = new Tipo();
+                    tipo.setCodTipoPostagem(Constants.CODE_TIPO_POSTAGEM);
+                    Autor autor = new Autor();
+                    autor.setCodPessoa(((ApplicationAppCivico) AvaliarFragment.this.getActivity().getApplication()).getUsuarioAutenticado().getCod());
 
+                    Postagem postagem = new Postagem();
+                    postagem.setCodTipoObjetoDestino(Constants.CODE_TIPO_OBJETO_DESTINO);
+                    postagem.setCodObjetoDestino(estabelecimento.getCodUnidade());
+                    postagem.setTipo(tipo);
+                    postagem.setAutor(autor);
+
+                    final ConteudoPostagem conteudoPostagem = new ConteudoPostagem();
+                    conteudoPostagem.setJSON("");
+                    conteudoPostagem.setTexto(comentario);
+                    conteudoPostagem.setValor(notaAvaliacao);
+
+                    Response.Listener<String> responseListenerCriarPostagem = new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            avaliacao.atribuirConteudoPostagem(conteudoPostagem);
+                        }
+                    };
+
+                    avaliacao.criarPostagem(postagem, conteudoPostagem, responseListenerCriarPostagem);
+
+                } else {
+                    Toast.makeText(AvaliarFragment.this.getActivity(),AvaliarFragment.this.getActivity().getString(R.string
+                    .preencha_os_dados_da_avaliacao) ,Toast.LENGTH_SHORT).show();
+                }
             }
         });
         return view;
+    }
+
+    public Boolean validarEnvio(String comentario, int rating) {
+        if(comentario.isEmpty() && rating <= 0) {
+            return false;
+        }
+        return true;
     }
 }

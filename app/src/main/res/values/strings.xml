@@ -36,7 +36,7 @@
     <string name="pesquisar">Pesquisar</string>
     <string name="x_km">Distância de: %s km</string>
 
-    <string name="avaliacao_enviada_com_sucesso">Avaliação enviado com sucesso!</string>
+    <string name="avaliacao_enviada_com_sucesso">Avaliação enviada com sucesso!</string>
     <string name="avalie_o_estabelecimento">Avalie o estabelecimento:</string>
     <string name="google_maps_key">AIzaSyBC-cwvsgVDdDPg0kXXgrpHPgWY6pkAgno</string>
 
@@ -69,6 +69,12 @@
     <string name="x_pessoa_avaliou">Avaliado por %s usuário</string>
     <string name="x_pessoas_avaliaram">Avaliado por %s usuário(s)</string>
     <string name="media_das_avaliacoes_x">Média das avaliações: %s</string>
+
+    <string name="deixe_o_seu_comentario">Deixe o seu comentário:</string>
+    <string name="preencha_os_dados_da_avaliacao">Preencha os dados da avaliação</string>
+
+    <string name="ja_existe_avaliacao">Já foi registrada uma avaliação para esse estabelecimento.</string>
+
 
 
 </resources>

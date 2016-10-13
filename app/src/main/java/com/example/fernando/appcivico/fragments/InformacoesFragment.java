@@ -1,27 +1,34 @@
 package com.example.fernando.appcivico.fragments;
 
 import android.animation.Animator;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.graphics.drawable.DrawableCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.example.fernando.appcivico.R;
+import com.example.fernando.appcivico.activities.AvaliarActivity;
+import com.example.fernando.appcivico.activities.EscolherAcessoActivity;
+import com.example.fernando.appcivico.application.ApplicationAppCivico;
 import com.example.fernando.appcivico.estrutura.Estabelecimento;
 import com.example.fernando.appcivico.estrutura.PostagemMedia;
 import com.example.fernando.appcivico.estrutura.PostagemRetorno;
 import com.example.fernando.appcivico.servicos.Avaliacao;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -71,6 +78,8 @@ public class InformacoesFragment extends Fragment{
     private TextView txtNumeroAvaliacoes;
     private TextView txtMediaAvaliacoes;
 
+    private Button buttonDeixeSuaAvaliação;
+    private ApplicationAppCivico applicationAppCivico;
 
     @Nullable
     @Override
@@ -78,6 +87,40 @@ public class InformacoesFragment extends Fragment{
         View view = inflater.inflate(R.layout.fragment_informacoes, container,false);
 
         String s = "{\n" +
+                "    \"codCnes\": 5467799,\n" +
+                "    \"codUnidade\": \"4209105467799\",\n" +
+                "    \"codIbge\": 420910,\n" +
+                "    \"cnpj\": \"08902792000100\",\n" +
+                "    \"nomeFantasia\": \"IAPSI ISNTITUTO DE AVALIACAO PSICOLOGICA E PSICOTERAPIA\",\n" +
+                "    \"natureza\": \"Empresa\",\n" +
+                "    \"tipoUnidade\": \"DIAGNOSE E TERAPIA\",\n" +
+                "    \"esferaAdministrativa\": \"Privada\",\n" +
+                "    \"vinculoSus\": \"Não\",\n" +
+                "    \"retencao\": \"Unidade Privada Lucrativa***\",\n" +
+                "    \"fluxoClientela\": \"Atendimento de demanda espontânea\",\n" +
+                "    \"origemGeografica\": \"CNES_GEO\",\n" +
+                "    \"temAtendimentoUrgencia\": \"Não\",\n" +
+                "    \"temAtendimentoAmbulatorial\": \"Sim\",\n" +
+                "    \"temCentroCirurgico\": \"Não\",\n" +
+                "    \"temObstetra\": \"Não\",\n" +
+                "    \"temNeoNatal\": \"Não\",\n" +
+                "    \"temDialise\": \"Sim\",\n" +
+                "    \"descricaoCompleta\": \"IAPSI ISNTITUTO DE AVALIACAO PSICOLOGICA E PSICOTERAPIA  EMPRESA PRIVADA    \",\n" +
+                "    \"tipoUnidadeCnes\": \"UNIDADE DE APOIO DIAGNOSE E TERAPIA (SADT ISOLADO)\",\n" +
+                "    \"categoriaUnidade\": \"LABORATÓRIO\",\n" +
+                "    \"logradouro\": \"RUA OTTOKAR DOERFFEL\",\n" +
+                "    \"numero\": \"929\",\n" +
+                "    \"bairro\": \"ANITA GARIBALDI\",\n" +
+                "    \"cidade\": \"JOINVILLE\",\n" +
+                "    \"uf\": \"SC\",\n" +
+                "    \"cep\": \"89203307\",\n" +
+                "    \"telefone\": \"(47) 38010881\",\n" +
+                "    \"turnoAtendimento\": \"Atendimento nos turnos da manhã e à tarde.\",\n" +
+                "    \"lat\": -26.31644,\n" +
+                "    \"long\": -48.86307\n" +
+                "  }";
+
+        String s2 = "{\n" +
                 "        \"codCnes\": 2521431,\n" +
                 "            \"codUnidade\": \"4209102521431\",\n" +
                 "            \"codIbge\": 420910,\n" +
@@ -157,6 +200,46 @@ public class InformacoesFragment extends Fragment{
 
         txtNumeroAvaliacoes = (TextView)view.findViewById(R.id.text_numero_avaliacoes);
         txtMediaAvaliacoes = (TextView)view.findViewById(R.id.text_media_avaliacoes);
+        buttonDeixeSuaAvaliação = (Button)view.findViewById(R.id.button_deixe_sua_avaliacao);
+
+        applicationAppCivico = (ApplicationAppCivico)this.getActivity().getApplication();
+
+        buttonDeixeSuaAvaliação.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(applicationAppCivico.usuarioAutenticado()) {
+                    Response.Listener respListener = new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            int statusCodeResponse = avaliacao.getBuscaPostagemStatusCode();
+                            if(statusCodeResponse == 204) {
+                                Intent intent = new Intent(InformacoesFragment.this.getActivity(), AvaliarActivity.class);
+                                intent.putExtra("estabelecimento",estabelecimento);
+                                startActivity(intent);
+                            }else if(statusCodeResponse == 200) {
+                                Toast.makeText(InformacoesFragment.this.getActivity(),InformacoesFragment.this.getActivity().getString(R.string.ja_existe_avaliacao),Toast.LENGTH_LONG).show();
+                            }else {
+                                Toast.makeText(InformacoesFragment.this.getActivity(),InformacoesFragment.this.getActivity().getString(R.string.algo_deu_errado),Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    };
+
+                    Response.ErrorListener responseErrorListener = new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Toast.makeText(InformacoesFragment.this.getActivity(),InformacoesFragment.this.getActivity().getString(R.string.algo_deu_errado),Toast.LENGTH_LONG).show();
+                        }
+                    };
+                    ApplicationAppCivico applicationAppCivico = (ApplicationAppCivico)InformacoesFragment.this.getActivity().getApplication();
+                    avaliacao.buscaPostagens(0,1,estabelecimento.getCodUnidade(),applicationAppCivico.getUsuarioAutenticado().getCod(), respListener,responseErrorListener);
+
+                }else {
+                    Intent intent = new Intent(InformacoesFragment.this.getActivity(), EscolherAcessoActivity.class);
+                    startActivity(intent);
+                }
+
+            }
+        });
 
         avaliacao = new Avaliacao(this.getActivity());
         this.inicializaCampos();
@@ -312,19 +395,14 @@ public class InformacoesFragment extends Fragment{
             }
         };
 
-        avaliacao.buscaMediaAvaliacoes(estabelecimento.getCodUnidade(),respListener);
-    }
-
-    public void buscaAvaliacoes() {
-
-        Response.Listener respListener = new Response.Listener<JSONArray>() {
+        Response.ErrorListener errorListener = new Response.ErrorListener() {
             @Override
-            public void onResponse(JSONArray response) {
-                Gson gson = new Gson();
-                postagemRetorno = gson.fromJson(response.toString(), PostagemRetorno.class);
+            public void onErrorResponse(VolleyError error) {
+                Log.i("logError",new String(error.networkResponse.data));
             }
         };
-        avaliacao.buscaPostagens(0,5,estabelecimento.getCodUnidade(),respListener);
+
+        avaliacao.buscaMediaAvaliacoes(estabelecimento.getCodUnidade(),respListener, errorListener);
     }
 
 }

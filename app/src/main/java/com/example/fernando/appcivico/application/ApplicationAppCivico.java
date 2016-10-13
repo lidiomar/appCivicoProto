@@ -62,7 +62,8 @@ public class ApplicationAppCivico extends Application {
         this.usuarioAutenticado = usuarioAutenticado;
     }
 
-    public Boolean isAuthenticated() {
-        return (apptoken.isEmpty() ? false : true);
+    public Boolean usuarioAutenticado() {
+        String apptoken = getApptoken();
+        return ((apptoken == null || apptoken.isEmpty()) ? false : true);
     }
 }

@@ -5,10 +5,10 @@ package com.example.fernando.appcivico.estrutura;
  */
 public class Postagem {
     private Autor autor;
-    private Integer codGrupoDestino;
-    private Integer codPessoaDestino;
-    private Integer codObjetoDestino;
-    private Integer codTipoObjetoDestino;
+    private String codGrupoDestino;
+    private String codPessoaDestino;
+    private String codObjetoDestino;
+    private String codTipoObjetoDestino;
     private Integer latitude;
     private Integer longitude;
     private PostagemRelacionada postagemRelacionada;
@@ -20,38 +20,6 @@ public class Postagem {
 
     public void setAutor(Autor autor) {
         this.autor = autor;
-    }
-
-    public Integer getCodGrupoDestino() {
-        return codGrupoDestino;
-    }
-
-    public void setCodGrupoDestino(Integer codGrupoDestino) {
-        this.codGrupoDestino = codGrupoDestino;
-    }
-
-    public Integer getCodPessoaDestino() {
-        return codPessoaDestino;
-    }
-
-    public void setCodPessoaDestino(Integer codPessoaDestino) {
-        this.codPessoaDestino = codPessoaDestino;
-    }
-
-    public Integer getCodObjetoDestino() {
-        return codObjetoDestino;
-    }
-
-    public void setCodObjetoDestino(Integer codObjetoDestino) {
-        this.codObjetoDestino = codObjetoDestino;
-    }
-
-    public Integer getCodTipoObjetoDestino() {
-        return codTipoObjetoDestino;
-    }
-
-    public void setCodTipoObjetoDestino(Integer codTipoObjetoDestino) {
-        this.codTipoObjetoDestino = codTipoObjetoDestino;
     }
 
     public Integer getLatitude() {
@@ -84,5 +52,37 @@ public class Postagem {
 
     public void setTipo(Tipo tipo) {
         this.tipo = tipo;
+    }
+
+    public String getCodTipoObjetoDestino() {
+        return codTipoObjetoDestino;
+    }
+
+    public void setCodTipoObjetoDestino(String codTipoObjetoDestino) {
+        this.codTipoObjetoDestino = codTipoObjetoDestino;
+    }
+
+    public String getCodGrupoDestino() {
+        return codGrupoDestino;
+    }
+
+    public void setCodGrupoDestino(String codGrupoDestino) {
+        this.codGrupoDestino = codGrupoDestino;
+    }
+
+    public String getCodPessoaDestino() {
+        return codPessoaDestino;
+    }
+
+    public void setCodPessoaDestino(String codPessoaDestino) {
+        this.codPessoaDestino = codPessoaDestino;
+    }
+
+    public String getCodObjetoDestino() {
+        return codObjetoDestino;
+    }
+
+    public void setCodObjetoDestino(String codObjetoDestino) {
+        this.codObjetoDestino = codObjetoDestino;
     }
 }

@@ -4,13 +4,13 @@ package com.example.fernando.appcivico.estrutura;
  * Created by fernando on 06/10/16.
  */
 public class Tipo {
-    private int codTipoPostagem;
+    private String codTipoPostagem;
 
-    public int getCodTipoPostagem() {
+    public String getCodTipoPostagem() {
         return codTipoPostagem;
     }
 
-    public void setCodTipoPostagem(int codTipoPostagem) {
+    public void setCodTipoPostagem(String codTipoPostagem) {
         this.codTipoPostagem = codTipoPostagem;
     }
 }

@@ -20,9 +20,31 @@
         android:layout_height="wrap_content"
         android:numStars="5"
         android:stepSize="1.0"
-        android:rating="1"
+        android:rating="0"
         android:layout_marginBottom="20dp"
         android:layout_gravity="center_horizontal" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/deixe_o_seu_comentario"
+        android:layout_marginBottom="20dp"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center" />
+
+    <EditText
+        android:id="@+id/comentario_avaliacao"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:singleLine="false"
+        android:background="@drawable/border_default"
+        android:lines="5"
+        android:gravity="top"
+        android:inputType="textMultiLine"
+        android:maxLength="250"
+        android:layout_marginLeft="10dip"
+        android:layout_marginRight="10dip" />
+
 
     <Button android:layout_height="wrap_content"
         android:layout_width="wrap_content"

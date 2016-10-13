@@ -23,6 +23,8 @@ import com.example.fernando.appcivico.utils.Constants;
 import com.example.fernando.appcivico.utils.StaticFunctions;
 import com.google.gson.Gson;
 
+import org.json.JSONArray;
+
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
@@ -35,6 +37,7 @@ public class Avaliacao {
     private final FragmentActivity fragmentActivity;
     private final RequestQueue requestQueue;
     private String urlResponse;
+    private int buscaPostagemStatusCode;
 
     public Avaliacao(FragmentActivity fragmentActivity) {
         this.fragmentActivity = fragmentActivity;
@@ -42,18 +45,13 @@ public class Avaliacao {
         this.requestQueue = Volley.newRequestQueue(context);
     }
 
-    public void criarPostagem(Postagem postagem, final ConteudoPostagem conteudoPostagem) {
+    public void criarPostagem(Postagem postagem, final ConteudoPostagem conteudoPostagem, Response.Listener<String> responseListener) {
 
         String url = "http://mobile-aceite.tcu.gov.br:80/appCivicoRS/rest/postagens";
         Gson gson = new Gson();
         final String mRequestBody = gson.toJson(postagem);
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url , new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                atribuirConteudoPostagem(conteudoPostagem);
-            }
-        }, new Response.ErrorListener() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url , responseListener, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(fragmentActivity,fragmentActivity.getString(R.string.algo_deu_errado),Toast.LENGTH_SHORT).show();
@@ -99,7 +97,7 @@ public class Avaliacao {
         Gson gson = new Gson();
         final String mRequestBody = gson.toJson(conteudoPostagem);
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url , new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url ,new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 StaticFunctions.exibeMensagemEFecha(fragmentActivity.getString(R.string.avaliacao_enviada_com_sucesso), fragmentActivity);
@@ -129,13 +127,6 @@ public class Avaliacao {
             @Override
             public String getBodyContentType() {
                 return "application/json; charset=utf-8";
-            }
-
-            @Override
-            protected Response<String> parseNetworkResponse(NetworkResponse response) {
-                final String location = response.headers.get("location");
-                Avaliacao.this.setUrlResponse(location);
-                return super.parseNetworkResponse(response);
             }
         };
 
@@ -169,7 +160,7 @@ public class Avaliacao {
         this.requestQueue.add(stringRequest);
     }
 
-    public void buscaPostagens(int pagina, int quantidadeItens, String codObjetoDestino, Response.Listener responseListener) {
+    public void buscaPostagens(int pagina, int quantidadeItens, String codObjetoDestino, int codAutor, Response.Listener<String> responseListener, Response.ErrorListener responseErrorListener) {
 
         String url = "http://mobile-aceite.tcu.gov.br:80/appCivicoRS/rest/postagens" +
                 "?codAplicativo="+Constants.CODE_APP+"" +
@@ -177,30 +168,36 @@ public class Avaliacao {
                 "&codTipoObjetoDestino="+Constants.CODE_TIPO_OBJETO_DESTINO+"" +
                 "&quantidadeDeItens="+quantidadeItens+
                 "&pagina="+pagina+
+                "&codAutor"+codAutor+
                 "&codObjetoDestino="+codObjetoDestino;
 
-        final JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, responseListener , new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(context,fragmentActivity.getString(R.string.algo_deu_errado),Toast.LENGTH_LONG).show();
-            }
-        });
+        final StringRequest stringRequest = new StringRequest(Request.Method.GET, url, responseListener , responseErrorListener){
 
-        this.requestQueue.add(jsonArrayRequest);
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String,String> params = new HashMap<String, String>();
+                params.put("appToken",((ApplicationAppCivico)fragmentActivity.getApplication()).getApptoken());
+                return params;
+            }
+
+            @Override
+            protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                int statusCode = response.statusCode;
+                Avaliacao.this.setBuscaPostagemStatusCode(statusCode);
+                return super.parseNetworkResponse(response);
+            }
+        };
+
+        this.requestQueue.add(stringRequest);
     }
 
-    public void buscaMediaAvaliacoes(String codObjetoDestino, Response.Listener responseListener) {
+    public void buscaMediaAvaliacoes(String codObjetoDestino, Response.Listener responseListener, Response.ErrorListener responseErrorListener) {
         String url = "http://mobile-aceite.tcu.gov.br:80/appCivicoRS/rest/postagens" +
                 "/tipopostagem/"+Constants.CODE_TIPO_POSTAGEM+
                 "/tipoobjeto/"+Constants.CODE_TIPO_OBJETO_DESTINO+
                 "/objeto/"+codObjetoDestino;
 
-        final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, responseListener , new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(context,fragmentActivity.getString(R.string.algo_deu_errado),Toast.LENGTH_LONG).show();
-            }
-        });
+        final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, responseListener ,responseErrorListener);
 
         this.requestQueue.add(jsonObjectRequest);
     }
@@ -211,5 +208,13 @@ public class Avaliacao {
 
     public void setUrlResponse(String urlResponse) {
         this.urlResponse = urlResponse;
+    }
+
+    public int getBuscaPostagemStatusCode() {
+        return buscaPostagemStatusCode;
+    }
+
+    public void setBuscaPostagemStatusCode(int buscaPostagemStatusCode) {
+        this.buscaPostagemStatusCode = buscaPostagemStatusCode;
     }
 }
