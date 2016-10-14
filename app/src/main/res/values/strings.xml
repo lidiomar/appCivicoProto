@@ -67,7 +67,7 @@
 
     <string name="sem_avaliacoes">Ainda não foram feitas avaliações</string>
     <string name="x_pessoa_avaliou">Avaliado por %s usuário</string>
-    <string name="x_pessoas_avaliaram">Avaliado por %s usuário(s)</string>
+    <string name="x_pessoas_avaliaram">Avaliado por %s usuários</string>
     <string name="media_das_avaliacoes_x">Média das avaliações: %s</string>
 
     <string name="deixe_o_seu_comentario">Deixe o seu comentário:</string>

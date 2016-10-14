@@ -40,7 +40,7 @@ public class Avaliacao {
     private final RequestQueue requestQueue;
     private String urlResponse;
     private int buscaPostagemStatusCode;
-    private ArrayList<ConteudoPostagem> conteudoPostagemList = new ArrayList<>();
+
     public Avaliacao(FragmentActivity fragmentActivity) {
         this.fragmentActivity = fragmentActivity;
         this.context = fragmentActivity;
@@ -233,20 +233,10 @@ public class Avaliacao {
         this.requestQueue.add(jsonObjectRequest);
     }
 
-    public JsonObjectRequest buscaConteudoPostagem(String codPostagem, String codConteudo){
+    public JsonObjectRequest buscaConteudoPostagem(final String codPostagem, String codConteudo, Response.Listener respListener, Response.ErrorListener errorListener){
         String url = "http://mobile-aceite.tcu.gov.br:80/appCivicoRS/rest/postagens/"+codPostagem+"/conteudos/"+codConteudo;
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                Gson gson = new Gson();
-                ConteudoPostagem conteudoPostagem = gson.fromJson(String.valueOf(response), ConteudoPostagem.class);
-                Avaliacao.this.getConteudoPostagemList().add(conteudoPostagem);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {}
-        }) {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null,respListener , errorListener) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String,String> params = new HashMap<String, String>();
@@ -261,6 +251,12 @@ public class Avaliacao {
         return urlResponse;
     }
 
+    public JsonObjectRequest getRequisicaoPessoaPorCodigo(String codPessoa, Response.Listener responseListener, Response.ErrorListener errorListener) {
+        String url = "http://mobile-aceite.tcu.gov.br:80/appCivicoRS/rest/pessoas/"+codPessoa;
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,url,null,responseListener, errorListener);
+        return jsonObjectRequest;
+    }
+
     public void setUrlResponse(String urlResponse) {
         this.urlResponse = urlResponse;
     }
@@ -271,14 +267,6 @@ public class Avaliacao {
 
     public void setBuscaPostagemStatusCode(int buscaPostagemStatusCode) {
         this.buscaPostagemStatusCode = buscaPostagemStatusCode;
-    }
-
-    public ArrayList<ConteudoPostagem> getConteudoPostagemList() {
-        return conteudoPostagemList;
-    }
-
-    public void setConteudoPostagemList(ArrayList<ConteudoPostagem> conteudoPostagemList) {
-        this.conteudoPostagemList = conteudoPostagemList;
     }
 
     public RequestQueue getRequestQueue() {
