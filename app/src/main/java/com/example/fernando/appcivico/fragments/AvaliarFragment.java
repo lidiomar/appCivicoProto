@@ -9,11 +9,13 @@ import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -66,7 +68,11 @@ public class AvaliarFragment extends Fragment {
     private Gson gson = new Gson();
     private TextView txtEmptyComentarios;
     int pastVisiblesItems, visibleItemCount, totalItemCount;
-    private int countOffset = 1;
+    private int countOffset = 0;
+    private Boolean inicializar = true;
+    private ArrayList<Comentario> comentariosList = new ArrayList<>();
+    private ProgressBar progressBar;
+    private Boolean carregando = false;
 
     @Nullable
     @Override
@@ -75,7 +81,9 @@ public class AvaliarFragment extends Fragment {
 
         Bundle extras = getActivity().getIntent().getExtras();
         estabelecimento = (Estabelecimento)extras.get("estabelecimento");
-        
+
+        progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
+
         ratingBar = (RatingBar)view.findViewById(R.id.rating_avaliacao);
         Drawable progress = ratingBar.getProgressDrawable();
         DrawableCompat.setTint(progress, Color.rgb(11111111,01011010,00000000));
@@ -88,6 +96,7 @@ public class AvaliarFragment extends Fragment {
         recyclerViewComentarios.setItemAnimator(new DefaultItemAnimator());
         recyclerViewComentarios.setHasFixedSize(true);
 
+
         recyclerViewComentarios.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
             @Override
@@ -98,8 +107,9 @@ public class AvaliarFragment extends Fragment {
                     visibleItemCount = linearLayoutManager.getChildCount();
                     totalItemCount = linearLayoutManager.getItemCount();
                     pastVisiblesItems = linearLayoutManager.findFirstVisibleItemPosition();
-                    if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
-                        actionLast();
+                    if (((visibleItemCount + pastVisiblesItems) >= totalItemCount) && !carregando) {
+                        carregando = true;
+                        carregaComentarios();
                     }
                 }
             }
@@ -181,6 +191,7 @@ public class AvaliarFragment extends Fragment {
             @Override
             public void onResponse(String response) {
                 final PostagemRetorno[] postagemRetornos = gson.fromJson(response, PostagemRetorno[].class);
+                AvaliarFragment.this.getConteudoPostagemHash().clear();
                 if(postagemRetornos != null) {
                     for(PostagemRetorno postagemRetorno : postagemRetornos) {
 
@@ -223,7 +234,7 @@ public class AvaliarFragment extends Fragment {
             }
         };
 
-        avaliacao.buscaPostagens(0,5,estabelecimento.getCodUnidade(),responseListener,responseErrorListener);
+        avaliacao.buscaPostagens(countOffset,5,estabelecimento.getCodUnidade(),responseListener,responseErrorListener);
     }
 
     public void atribuiEmptyView() {
@@ -233,12 +244,17 @@ public class AvaliarFragment extends Fragment {
 
     public void atribuiValoresRecyclerView() {
         ArrayList<Comentario> comentarios = montaListaComentarios();
-        comentarioAdapter = new ComentarioAdapter(AvaliarFragment.this.getActivity(),comentarios);
-        recyclerViewComentarios.setAdapter(comentarioAdapter);
+        this.comentariosList.addAll(comentarios);
 
-
-        recyclerViewComentarios.setVisibility(View.VISIBLE);
-        txtEmptyComentarios.setVisibility(View.GONE);
+        if(inicializar) {
+            comentarioAdapter = new ComentarioAdapter(AvaliarFragment.this.getActivity(), this.comentariosList);
+            recyclerViewComentarios.setAdapter(comentarioAdapter);
+            recyclerViewComentarios.setVisibility(View.VISIBLE);
+            txtEmptyComentarios.setVisibility(View.GONE);
+        } else {
+            ReceiverThread receiverThread = new ReceiverThread();
+            receiverThread.run();
+        }
     }
 
     public ArrayList<Comentario> montaListaComentarios() {
@@ -276,17 +292,51 @@ public class AvaliarFragment extends Fragment {
         return conteudoPostagemHash;
     }
 
-    public void actionLast() {
+    public void carregaComentarios() {
 
-        if (comentarioAdapter != null && (comentarioAdapter.getItemCount() >= (2 * countOffset))) {
+        if (comentarioAdapter != null && (comentarioAdapter.getItemCount()% 5 == 0 )) {
+            inicializar = false;
             countOffset++;
+            showProgressBar();
             buscarComentarios();
-            /*showProgressBar();
-            if(queryString.isEmpty()) {
-                runBackground("", false, true, Constants.ACTION_LIST_OLDER);
-            }else {
-                runBackgroundParams("", false, true, Constants.ACTION_SEARCH_LIST, queryString, avaliacaoAdapter.getItemCount());
-            }*/
+        }
+    }
+
+    protected void hideProgressBar() {
+        progressBar.setVisibility(View.INVISIBLE);
+    }
+
+    protected void showProgressBar() {
+
+        try {
+            if (!isVisibleProgressBar()) {
+                progressBar.setVisibility(View.VISIBLE);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    protected boolean isVisibleProgressBar() {
+
+        if (this.progressBar.getVisibility() == View.GONE || progressBar.getVisibility() == View.INVISIBLE) {
+            return false;
+        }
+
+        return true;
+    }
+    private class ReceiverThread extends Thread {
+        @Override
+        public void run() {
+            AvaliarFragment.this.getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    comentarioAdapter.notifyDataSetChanged();
+                    carregando =false;
+                    hideProgressBar();
+                }
+            });
         }
     }
 }
