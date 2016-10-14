@@ -8,6 +8,7 @@ import com.example.fernando.appcivico.utils.Constants;
 import com.google.gson.Gson;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * Created by fernando on 06/10/16.
@@ -66,4 +67,22 @@ public class ApplicationAppCivico extends Application {
         String apptoken = getApptoken();
         return ((apptoken == null || apptoken.isEmpty()) ? false : true);
     }
+
+    public String carregaEstadosCidades() {
+        String json = null;
+        try {
+
+            InputStream is = this.getAssets().open("estadoCidades.json");
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            json = new String(buffer, "UTF-8");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+        return json;
+    }
+
 }

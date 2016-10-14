@@ -177,7 +177,7 @@ public class AvaliarFragment extends Fragment {
     }
 
     public Boolean validarEnvio(String comentario, int rating) {
-        if(comentario.isEmpty() && rating <= 0) {
+        if(comentario.isEmpty() || rating <= 0) {
             return false;
         }
         return true;
@@ -303,7 +303,7 @@ public class AvaliarFragment extends Fragment {
     }
 
     protected void hideProgressBar() {
-        progressBar.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.GONE);
     }
 
     protected void showProgressBar() {

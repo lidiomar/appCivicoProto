@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.fernando.appcivico.R;
+import com.example.fernando.appcivico.application.ApplicationAppCivico;
 import com.example.fernando.appcivico.estrutura.Estabelecimento;
 import com.example.fernando.appcivico.fragments.AvaliarFragment;
 import com.example.fernando.appcivico.fragments.MainFragment;
@@ -40,6 +41,9 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        ApplicationAppCivico application = (ApplicationAppCivico) getApplication();
+        String s = application.carregaEstadosCidades();
 
         getSupportFragmentManager().beginTransaction().replace(R.id.main_container,new MainFragment()).commit();
 
