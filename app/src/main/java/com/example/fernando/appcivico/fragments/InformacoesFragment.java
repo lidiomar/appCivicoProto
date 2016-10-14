@@ -30,7 +30,6 @@ import com.example.fernando.appcivico.estrutura.PostagemRetorno;
 import com.example.fernando.appcivico.servicos.Avaliacao;
 import com.google.gson.Gson;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -414,7 +413,7 @@ public class InformacoesFragment extends Fragment{
             txtNumeroAvaliacoes.setText(this.getActivity().getString(R.string.sem_avaliacoes));
         }else {
             txtMediaAvaliacoes.setVisibility(View.VISIBLE);
-            txtMediaAvaliacoes.setText(String.format(this.getActivity().getString(R.string.media_das_avaliacoes_x),String.valueOf(media)));
+            txtMediaAvaliacoes.setText(String.format(this.getActivity().getString(R.string.media_das_avaliacoes_x),String.valueOf(Math.ceil(media))));
             if(contagem > 1) {
                 txtNumeroAvaliacoes.setText(String.format(this.getActivity().getString(R.string.x_pessoas_avaliaram), String.valueOf(contagem)));
             }else {

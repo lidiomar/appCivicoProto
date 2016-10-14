@@ -66,15 +66,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:indeterminate="true"
-        android:visibility="invisible"
-        style="@style/CustomProgressBar"
-        android:layout_alignParentTop="true"/>
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/comentarios_recyclerview"
         android:layout_width="match_parent"
@@ -85,5 +76,14 @@
         android:listSelector="@android:color/transparent"
         android:scrollbarStyle="outsideOverlay"
         android:scrollbars="vertical" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:visibility="visible" />
+
     </LinearLayout>
 </LinearLayout>
+

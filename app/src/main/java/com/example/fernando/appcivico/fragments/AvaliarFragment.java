@@ -303,7 +303,7 @@ public class AvaliarFragment extends Fragment {
     }
 
     protected void hideProgressBar() {
-        progressBar.setVisibility(View.INVISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
     }
 
     protected void showProgressBar() {
