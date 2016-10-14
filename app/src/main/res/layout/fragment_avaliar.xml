@@ -52,6 +52,15 @@
         android:id="@+id/button_avaliar"
         android:layout_gravity="center_horizontal" />
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/nao_ha_comentarios"
+        android:layout_marginBottom="20dp"
+        android:id="@+id/txt_empty_comentarios"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/comentarios_recyclerview"
         android:layout_width="match_parent"

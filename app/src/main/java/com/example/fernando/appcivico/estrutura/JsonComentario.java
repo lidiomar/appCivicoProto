@@ -6,6 +6,7 @@ package com.example.fernando.appcivico.estrutura;
 public class JsonComentario {
     private String dataComentario;
     private String nomeAutorComentario;
+    private String nomeFantasiaEstabelecimento;
 
     public String getDataComentario() {
         return dataComentario;
@@ -21,5 +22,13 @@ public class JsonComentario {
 
     public void setNomeAutorComentario(String nomeAutorComentario) {
         this.nomeAutorComentario = nomeAutorComentario;
+    }
+
+    public String getNomeFantasiaEstabelecimento() {
+        return nomeFantasiaEstabelecimento;
+    }
+
+    public void setNomeFantasiaEstabelecimento(String nomeFantasiaEstabelecimento) {
+        this.nomeFantasiaEstabelecimento = nomeFantasiaEstabelecimento;
     }
 }

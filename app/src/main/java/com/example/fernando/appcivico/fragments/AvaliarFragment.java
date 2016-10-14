@@ -9,13 +9,13 @@ import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RatingBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -36,11 +36,9 @@ import com.example.fernando.appcivico.estrutura.JsonComentario;
 import com.example.fernando.appcivico.estrutura.Postagem;
 import com.example.fernando.appcivico.estrutura.PostagemRetorno;
 import com.example.fernando.appcivico.estrutura.Tipo;
-import com.example.fernando.appcivico.estrutura.Usuario;
 import com.example.fernando.appcivico.servicos.Avaliacao;
 import com.example.fernando.appcivico.utils.Constants;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 
 import org.json.JSONObject;
 
@@ -49,7 +47,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -63,11 +60,13 @@ public class AvaliarFragment extends Fragment {
     private int requestCount = 0;
     private HashMap<String,ConteudoPostagem> conteudoPostagemHash = new HashMap<>();
     private HashMap<String,String> autoresPostagemHash = new HashMap<>();
-    private HashMap<String,Usuario> autoresHash = new HashMap<>();
     private RecyclerView recyclerViewComentarios;
     private LinearLayoutManager linearLayoutManager;
     private ComentarioAdapter comentarioAdapter;
     private Gson gson = new Gson();
+    private TextView txtEmptyComentarios;
+    int pastVisiblesItems, visibleItemCount, totalItemCount;
+    private int countOffset = 1;
 
     @Nullable
     @Override
@@ -88,12 +87,30 @@ public class AvaliarFragment extends Fragment {
         recyclerViewComentarios.setLayoutManager(linearLayoutManager);
         recyclerViewComentarios.setItemAnimator(new DefaultItemAnimator());
         recyclerViewComentarios.setHasFixedSize(true);
-        registerForContextMenu(recyclerViewComentarios);
 
+        recyclerViewComentarios.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                if (dy > 0) { //check for scroll down
+                    visibleItemCount = linearLayoutManager.getChildCount();
+                    totalItemCount = linearLayoutManager.getItemCount();
+                    pastVisiblesItems = linearLayoutManager.findFirstVisibleItemPosition();
+                    if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
+                        actionLast();
+                    }
+                }
+            }
+
+        });
 
         editTextComentario = (EditText)view.findViewById(R.id.comentario_avaliacao);
+        txtEmptyComentarios = (TextView)view.findViewById(R.id.txt_empty_comentarios);
 
         buttonAvaliar = (Button)view.findViewById(R.id.button_avaliar);
+
         buttonAvaliar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -122,6 +139,7 @@ public class AvaliarFragment extends Fragment {
                     String dataFormatada = sdf.format(data);
                     jsonComentario.setDataComentario(dataFormatada);
                     jsonComentario.setNomeAutorComentario(((ApplicationAppCivico) AvaliarFragment.this.getActivity().getApplication()).getUsuarioAutenticado().getNomeUsuario());
+                    jsonComentario.setNomeFantasiaEstabelecimento(estabelecimento.getNomeFantasia());
 
                     conteudoPostagem.setJSON(gson.toJson(jsonComentario));
                     conteudoPostagem.setTexto(comentario);
@@ -192,6 +210,8 @@ public class AvaliarFragment extends Fragment {
                             }
                         }
                     });
+                }else {
+                    atribuiEmptyView();
                 }
             }
         };
@@ -206,10 +226,19 @@ public class AvaliarFragment extends Fragment {
         avaliacao.buscaPostagens(0,5,estabelecimento.getCodUnidade(),responseListener,responseErrorListener);
     }
 
+    public void atribuiEmptyView() {
+        recyclerViewComentarios.setVisibility(View.GONE);
+        txtEmptyComentarios.setVisibility(View.VISIBLE);
+    }
+
     public void atribuiValoresRecyclerView() {
         ArrayList<Comentario> comentarios = montaListaComentarios();
         comentarioAdapter = new ComentarioAdapter(AvaliarFragment.this.getActivity(),comentarios);
         recyclerViewComentarios.setAdapter(comentarioAdapter);
+
+
+        recyclerViewComentarios.setVisibility(View.VISIBLE);
+        txtEmptyComentarios.setVisibility(View.GONE);
     }
 
     public ArrayList<Comentario> montaListaComentarios() {
@@ -247,8 +276,18 @@ public class AvaliarFragment extends Fragment {
         return conteudoPostagemHash;
     }
 
-    public HashMap<String, Usuario> getAutoresHash() {
-        return autoresHash;
+    public void actionLast() {
+
+        if (comentarioAdapter != null && (comentarioAdapter.getItemCount() >= (2 * countOffset))) {
+            countOffset++;
+            buscarComentarios();
+            /*showProgressBar();
+            if(queryString.isEmpty()) {
+                runBackground("", false, true, Constants.ACTION_LIST_OLDER);
+            }else {
+                runBackgroundParams("", false, true, Constants.ACTION_SEARCH_LIST, queryString, avaliacaoAdapter.getItemCount());
+            }*/
+        }
     }
 }
 

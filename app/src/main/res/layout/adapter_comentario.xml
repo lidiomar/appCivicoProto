@@ -6,6 +6,7 @@
     <RatingBar
         android:id="@+id/ratingbar_nota"
         android:layout_width="wrap_content"
+        android:isIndicator="true"
         android:layout_height="wrap_content"/>
 
     <TextView

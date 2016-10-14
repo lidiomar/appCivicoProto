@@ -8,7 +8,8 @@ import com.example.fernando.appcivico.estrutura.Categoria;
 public class Constants {
     public static final String CODE_PERFIL = "115";
     public static final String CODE_APP = "282";
-    public static final String CODE_TIPO_POSTAGEM = "173";
+    /*public static final String CODE_TIPO_POSTAGEM = "173";*/
+    public static final String CODE_TIPO_POSTAGEM = "205";
     public static final String CODE_TIPO_OBJETO_DESTINO = "100";
     public static final String FILE_USUARIO_AUTENTICADO = "file_usuario_autenticado";
     public static final String FILE_APP_TOKEN = "file_app_token";

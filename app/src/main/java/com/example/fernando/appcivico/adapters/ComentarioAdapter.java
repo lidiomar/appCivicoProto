@@ -38,7 +38,7 @@ public class ComentarioAdapter extends RecyclerView.Adapter<ComentarioAdapter.Co
         holder.ratingbar_nota.setRating(comentario.getValor());
         holder.txt_autor.setText(comentario.getNomeUsuario());
         holder.txt_comentario.setText(comentario.getTexto());
-        holder.txt_data_hora.setText(comentario.getDataEhora());
+        holder.txt_data_hora.setText(comentario.getDataComentario());
     }
 
 
