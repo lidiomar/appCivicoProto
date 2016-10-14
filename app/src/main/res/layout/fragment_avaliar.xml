@@ -52,5 +52,15 @@
         android:id="@+id/button_avaliar"
         android:layout_gravity="center_horizontal" />
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/comentarios_recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:cacheColorHint="@android:color/transparent"
+        android:clipToPadding="false"
+        android:divider="@null"
+        android:listSelector="@android:color/transparent"
+        android:scrollbarStyle="outsideOverlay"
+        android:scrollbars="vertical" />
 
 </LinearLayout>

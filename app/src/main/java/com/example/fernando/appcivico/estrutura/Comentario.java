@@ -8,6 +8,7 @@ public class Comentario {
     private String texto;
     private int valor;
     private String codigoPostagem;
+    private String dataComentario;
 
     public String getNomeUsuario() {
         return nomeUsuario;
@@ -39,5 +40,13 @@ public class Comentario {
 
     public void setCodigoPostagem(String codigoPostagem) {
         this.codigoPostagem = codigoPostagem;
+    }
+
+    public String getDataComentario() {
+        return dataComentario;
+    }
+
+    public void setDataComentario(String dataComentario) {
+        this.dataComentario = dataComentario;
     }
 }

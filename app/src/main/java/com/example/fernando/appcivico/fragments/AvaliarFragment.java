@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.graphics.drawable.DrawableCompat;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,12 +25,14 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.fernando.appcivico.R;
+import com.example.fernando.appcivico.adapters.ComentarioAdapter;
 import com.example.fernando.appcivico.application.ApplicationAppCivico;
 import com.example.fernando.appcivico.estrutura.Autor;
 import com.example.fernando.appcivico.estrutura.Comentario;
 import com.example.fernando.appcivico.estrutura.ConteudoPostagem;
 import com.example.fernando.appcivico.estrutura.ConteudoPostagemRetorno;
 import com.example.fernando.appcivico.estrutura.Estabelecimento;
+import com.example.fernando.appcivico.estrutura.JsonComentario;
 import com.example.fernando.appcivico.estrutura.Postagem;
 import com.example.fernando.appcivico.estrutura.PostagemRetorno;
 import com.example.fernando.appcivico.estrutura.Tipo;
@@ -39,7 +44,10 @@ import com.google.gson.JsonObject;
 
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -56,6 +64,10 @@ public class AvaliarFragment extends Fragment {
     private HashMap<String,ConteudoPostagem> conteudoPostagemHash = new HashMap<>();
     private HashMap<String,String> autoresPostagemHash = new HashMap<>();
     private HashMap<String,Usuario> autoresHash = new HashMap<>();
+    private RecyclerView recyclerViewComentarios;
+    private LinearLayoutManager linearLayoutManager;
+    private ComentarioAdapter comentarioAdapter;
+    private Gson gson = new Gson();
 
     @Nullable
     @Override
@@ -68,6 +80,16 @@ public class AvaliarFragment extends Fragment {
         ratingBar = (RatingBar)view.findViewById(R.id.rating_avaliacao);
         Drawable progress = ratingBar.getProgressDrawable();
         DrawableCompat.setTint(progress, Color.rgb(11111111,01011010,00000000));
+
+        linearLayoutManager = new LinearLayoutManager(getActivity());
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+
+        recyclerViewComentarios = (RecyclerView)view.findViewById(R.id.comentarios_recyclerview);
+        recyclerViewComentarios.setLayoutManager(linearLayoutManager);
+        recyclerViewComentarios.setItemAnimator(new DefaultItemAnimator());
+        recyclerViewComentarios.setHasFixedSize(true);
+        registerForContextMenu(recyclerViewComentarios);
+
 
         editTextComentario = (EditText)view.findViewById(R.id.comentario_avaliacao);
 
@@ -92,7 +114,16 @@ public class AvaliarFragment extends Fragment {
                     postagem.setAutor(autor);
 
                     final ConteudoPostagem conteudoPostagem = new ConteudoPostagem();
-                    conteudoPostagem.setJSON("");
+
+                    JsonComentario jsonComentario = new JsonComentario();
+                    Calendar c = Calendar.getInstance();
+                    Date data = c.getTime();
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyyy");
+                    String dataFormatada = sdf.format(data);
+                    jsonComentario.setDataComentario(dataFormatada);
+                    jsonComentario.setNomeAutorComentario(((ApplicationAppCivico) AvaliarFragment.this.getActivity().getApplication()).getUsuarioAutenticado().getNomeUsuario());
+
+                    conteudoPostagem.setJSON(gson.toJson(jsonComentario));
                     conteudoPostagem.setTexto(comentario);
                     conteudoPostagem.setValor(notaAvaliacao);
 
@@ -111,7 +142,9 @@ public class AvaliarFragment extends Fragment {
                 }
             }
         });
+
         buscarComentarios();
+
         return view;
     }
 
@@ -129,7 +162,6 @@ public class AvaliarFragment extends Fragment {
         Response.Listener responseListener = new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Gson gson = new Gson();
                 final PostagemRetorno[] postagemRetornos = gson.fromJson(response, PostagemRetorno[].class);
                 if(postagemRetornos != null) {
                     for(PostagemRetorno postagemRetorno : postagemRetornos) {
@@ -142,7 +174,6 @@ public class AvaliarFragment extends Fragment {
                         Response.Listener<JSONObject> listener = new Response.Listener<JSONObject>() {
                             @Override
                             public void onResponse(JSONObject response) {
-                                Gson gson = new Gson();
                                 ConteudoPostagem conteudoPostagem = gson.fromJson(String.valueOf(response), ConteudoPostagem.class);
                                 AvaliarFragment.this.getConteudoPostagemHash().put(codPostagem, conteudoPostagem);
                             }
@@ -157,7 +188,7 @@ public class AvaliarFragment extends Fragment {
                         public void onRequestFinished(Request<Object> request) {
                             requestCount = requestCount + 1;
                             if(requestCount == postagemRetornos.length) {
-                                buscarAutores();
+                                atribuiValoresRecyclerView();
                             }
                         }
                     });
@@ -175,7 +206,55 @@ public class AvaliarFragment extends Fragment {
         avaliacao.buscaPostagens(0,5,estabelecimento.getCodUnidade(),responseListener,responseErrorListener);
     }
 
-    public void buscarAutores() {
+    public void atribuiValoresRecyclerView() {
+        ArrayList<Comentario> comentarios = montaListaComentarios();
+        comentarioAdapter = new ComentarioAdapter(AvaliarFragment.this.getActivity(),comentarios);
+        recyclerViewComentarios.setAdapter(comentarioAdapter);
+    }
+
+    public ArrayList<Comentario> montaListaComentarios() {
+
+        HashMap<String, ConteudoPostagem> conteudoPostagemHash = getConteudoPostagemHash();
+        ArrayList<Comentario> comentariosList = new ArrayList<>();
+
+        Set<String> chaves = conteudoPostagemHash.keySet();
+
+        for(String codigoPostagem : chaves) {
+            ConteudoPostagem conteudo = conteudoPostagemHash.get(codigoPostagem);
+            String json = conteudo.getJSON();
+            JsonComentario jsonComentario = gson.fromJson(json, JsonComentario.class);
+
+            String nomeUsuario = jsonComentario.getNomeAutorComentario();
+            String texto = conteudo.getTexto();
+            int valor = conteudo.getValor();
+            String dataComentario = jsonComentario.getDataComentario();
+
+
+            Comentario comentario = new Comentario();
+            comentario.setCodigoPostagem(codigoPostagem);
+            comentario.setValor(valor);
+            comentario.setNomeUsuario(nomeUsuario);
+            comentario.setTexto(texto);
+            comentario.setDataComentario(dataComentario);
+
+            comentariosList.add(comentario);
+        }
+
+        return comentariosList;
+    }
+
+    public HashMap<String, ConteudoPostagem> getConteudoPostagemHash() {
+        return conteudoPostagemHash;
+    }
+
+    public HashMap<String, Usuario> getAutoresHash() {
+        return autoresHash;
+    }
+}
+
+
+
+    /*public void buscarAutores() {
         final Avaliacao avaliacao = new Avaliacao(AvaliarFragment.this.getActivity());
         final RequestQueue requestQueue = Volley.newRequestQueue(AvaliarFragment.this.getActivity());
         requestCount = 0;
@@ -208,48 +287,8 @@ public class AvaliarFragment extends Fragment {
             public void onRequestFinished(Request<Object> request) {
                 requestCount = requestCount + 1;
                 if(requestCount == autoresPostagemHash.size()) {
-
+                    atribuiValoresRecyclerView();
                 }
             }
         });
-    }
-
-    public ArrayList<Comentario> montaListaComentarios() {
-        HashMap<String, Usuario> autoresHash = getAutoresHash();
-        HashMap<String, ConteudoPostagem> conteudoPostagemHash = getConteudoPostagemHash();
-        ArrayList<Comentario> comentariosList = new ArrayList<>();
-
-        Set<String> chaves = conteudoPostagemHash.keySet();
-
-        if(autoresHash.size() < conteudoPostagemHash.size()) {
-            chaves = autoresHash.keySet();
-        }
-
-        for(String codigoPostagem : chaves) {
-            Usuario u = autoresHash.get(codigoPostagem);
-            ConteudoPostagem conteudo = conteudoPostagemHash.get(codigoPostagem);
-
-            String nomeUsuario = u.getNomeUsuario();
-            String texto = conteudo.getTexto();
-            int valor = conteudo.getValor();
-
-            Comentario comentario = new Comentario();
-            comentario.setCodigoPostagem(codigoPostagem);
-            comentario.setValor(valor);
-            comentario.setNomeUsuario(nomeUsuario);
-            comentario.setTexto(texto);
-
-            comentariosList.add(comentario);
-        }
-
-        return comentariosList;
-    }
-
-    public HashMap<String, ConteudoPostagem> getConteudoPostagemHash() {
-        return conteudoPostagemHash;
-    }
-
-    public HashMap<String, Usuario> getAutoresHash() {
-        return autoresHash;
-    }
-}
+    }*/

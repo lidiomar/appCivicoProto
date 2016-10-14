@@ -31,4 +31,5 @@ public class ConteudoPostagem {
     public void setValor(int valor) {
         this.valor = valor;
     }
+
 }
