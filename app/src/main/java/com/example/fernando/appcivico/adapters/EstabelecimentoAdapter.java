@@ -39,8 +39,8 @@ public class EstabelecimentoAdapter extends RecyclerView.Adapter<Estabelecimento
 
     @Override
     public void onBindViewHolder(EstabelecimentoViewHolder holder, int position) {
-        estabelecimento = estabelecimentosList.get(position);
-        holder.txtnomeFantasia.setText(estabelecimento.getNomeFantasia());
+        holder.setEstabelecimento(estabelecimentosList.get(position));
+        holder.txtnomeFantasia.setText(estabelecimentosList.get(position).getNomeFantasia());
     }
 
 
@@ -51,6 +51,7 @@ public class EstabelecimentoAdapter extends RecyclerView.Adapter<Estabelecimento
 
     public class EstabelecimentoViewHolder extends RecyclerView.ViewHolder {
         private TextView txtnomeFantasia;
+        private Estabelecimento estabelecimento;
         public EstabelecimentoViewHolder(View itemView, final Context context) {
             super(itemView);
             txtnomeFantasia = (TextView)itemView.findViewById(R.id.txt_nome_fantasia);
@@ -58,10 +59,18 @@ public class EstabelecimentoAdapter extends RecyclerView.Adapter<Estabelecimento
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(context, InformacoesActivity.class);
-                    intent.putExtra("estabelecimento",estabelecimento);
+                    intent.putExtra("estabelecimento",getEstabelecimento());
                     context.startActivity(intent);
                 }
             });
+        }
+
+        public Estabelecimento getEstabelecimento() {
+            return estabelecimento;
+        }
+
+        public void setEstabelecimento(Estabelecimento estabelecimento) {
+            this.estabelecimento = estabelecimento;
         }
     }
 }

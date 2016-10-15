@@ -28,4 +28,15 @@ public class StaticFunctions {
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
     }
+
+    public static String convertISOtoUTF8(String str) {
+        String ret = null;
+        try {
+            ret = new String(str.getBytes("UTF-8"), "ISO-8859-1");
+        }
+        catch (java.io.UnsupportedEncodingException e) {
+            return null;
+        }
+        return ret;
+    }
 }

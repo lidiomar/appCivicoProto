@@ -23,6 +23,7 @@ import com.example.fernando.appcivico.estrutura.Estabelecimento;
 import com.example.fernando.appcivico.estrutura.Estado;
 import com.example.fernando.appcivico.servicos.Servicos;
 import com.example.fernando.appcivico.utils.Constants;
+import com.example.fernando.appcivico.utils.StaticFunctions;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -97,6 +98,11 @@ public class BuscaAvancadaFragment extends Fragment  {
         });
 
         buttonPesquisar.setOnClickListener(new View.OnClickListener() {
+            String uf;
+            String cidade;
+            String categoria;
+            String especialidade;
+
             @Override
             public void onClick(View view) {
                 Response.Listener respListener = new Response.Listener() {
@@ -106,6 +112,10 @@ public class BuscaAvancadaFragment extends Fragment  {
                         Estabelecimento[] estabelecimentos = gson.fromJson(String.valueOf(response), Estabelecimento[].class);
                         Intent intent = new Intent(BuscaAvancadaFragment.this.getActivity(), ListaEstabelecimentosActivity.class);
                         intent.putExtra("estabelecimentos",estabelecimentos);
+                        intent.putExtra("uf",uf);
+                        intent.putExtra("cidade",cidade);
+                        intent.putExtra("categoria",categoria);
+                        intent.putExtra("especialidade",especialidade);
                         startActivity(intent);
 
                     }
@@ -117,13 +127,13 @@ public class BuscaAvancadaFragment extends Fragment  {
                         Toast.makeText(BuscaAvancadaFragment.this.getActivity(),BuscaAvancadaFragment.this.getActivity().getString(R.string.algo_deu_errado),Toast.LENGTH_SHORT).show();
                     }
                 };
-                String uf = (String)spinnerBuscaUf.getSelectedItem();
-                String cidade = (String)spinnerBuscaCidade.getSelectedItem();
+                uf = (String) spinnerBuscaUf.getSelectedItem();
+                cidade = (String)spinnerBuscaCidade.getSelectedItem();
 
-                String categoria = ((Categoria)spinnerBuscaCategoria.getSelectedItem()).getId();
-                String especialidade = ((Especialidade)spinnerBuscaEspecialidades.getSelectedItem()).getId();
+                categoria = ((Categoria)spinnerBuscaCategoria.getSelectedItem()).getId();
+                especialidade = ((Especialidade)spinnerBuscaEspecialidades.getSelectedItem()).getId();
 
-                servicos.consultaEstabelecimentos(convertISOtoUTF8(cidade),uf,categoria,especialidade,20,0,respListener,errorListener);
+                servicos.consultaEstabelecimentos(StaticFunctions.convertISOtoUTF8(cidade),uf,categoria,especialidade,20,0,respListener,errorListener);
             }
         });
 
@@ -147,14 +157,4 @@ public class BuscaAvancadaFragment extends Fragment  {
         return json;
     }
 
-    public static String convertISOtoUTF8(String str) {
-        String ret = null;
-        try {
-            ret = new String(str.getBytes("UTF-8"), "ISO-8859-1");
-        }
-        catch (java.io.UnsupportedEncodingException e) {
-            return null;
-        }
-        return ret;
-    }
 }

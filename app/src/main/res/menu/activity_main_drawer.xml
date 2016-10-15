@@ -8,28 +8,8 @@
             android:title="@string/login" />
 
         <item
-            android:id="@+id/nav_avaliar"
-            android:icon="@drawable/ic_chat_bubble_black_18dp"
-            android:title="@string/avaliacao" />
-
-        <item
-            android:id="@+id/nav_mapa"
-            android:icon="@drawable/ic_location_on_black_18dp"
-            android:title="@string/mapa" />
-
-        <item
-            android:id="@+id/nav_pesquisa"
-            android:icon="@drawable/ic_public_black_18dp"
-            android:title="@string/pesquisar" />
-
-        <item
-            android:id="@+id/nav_informacoes"
-            android:icon="@drawable/ic_cake_black_18dp"
-            android:title="informacoes" />
-
-        <item
             android:id="@+id/nav_busca_avancada"
-            android:icon="@drawable/ic_business_black_18dp"
+            android:icon="@drawable/ic_location_city_black_18dp"
             android:title="Busca por cidades" />
 
     </group>
