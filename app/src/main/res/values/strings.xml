@@ -77,5 +77,10 @@
 
     <string name="nao_ha_comentarios">Não há comentários para serem exibidos.</string>
 
+    <string name="busca_cidade">Cidade:</string>
+    <string name="busca_uf">UF:</string>
+    <string name="busca_categoria">Categoria:</string>
+    <string name="busca_especialidade">Especialidade:</string>
 </resources>
+
 

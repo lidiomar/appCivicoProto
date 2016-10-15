@@ -114,4 +114,24 @@ public class Servicos {
         requestQueue.add(jsonArrayRequest);
 
     }
+
+    public void consultaEstabelecimentos(String municipio, String uf, String categoria, String especialidade, int quantidade, int pagina, Response.Listener resListener, Response.ErrorListener errorListener) {
+        String url = "http://mobile-aceite.tcu.gov.br:80/mapa-da-saude/rest/estabelecimentos" +
+                "?municipio=" + municipio +
+                "&uf=" + uf +
+                "&quantidade=" + quantidade +
+                "&pagina="+ pagina;
+
+        if(!categoria.isEmpty()) {
+            url = url + "&categoria=" + categoria;
+        }
+        if(!especialidade.isEmpty()) {
+            url = url + "&especialidade=" + especialidade;
+        }
+
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET,url,null,resListener, errorListener);
+
+        requestQueue.add(jsonArrayRequest);
+
+    }
 }

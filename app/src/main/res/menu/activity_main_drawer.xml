@@ -27,6 +27,11 @@
             android:icon="@drawable/ic_cake_black_18dp"
             android:title="informacoes" />
 
+        <item
+            android:id="@+id/nav_busca_avancada"
+            android:icon="@drawable/ic_business_black_18dp"
+            android:title="Busca por cidades" />
+
     </group>
 
 </menu>

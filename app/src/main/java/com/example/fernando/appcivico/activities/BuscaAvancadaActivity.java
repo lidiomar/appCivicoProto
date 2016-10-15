@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.example.fernando.appcivico.R;
 import com.example.fernando.appcivico.fragments.AvaliarFragment;
+import com.example.fernando.appcivico.fragments.BuscaAvancadaFragment;
 
 /**
  * Created by fernando on 06/10/16.
@@ -17,7 +18,7 @@ public class BuscaAvancadaActivity extends AppCompatActivity {
 
         setContentView(R.layout.layout_default);
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.main_container,new AvaliarFragment()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_container,new BuscaAvancadaFragment()).commit();
 
     }
 }

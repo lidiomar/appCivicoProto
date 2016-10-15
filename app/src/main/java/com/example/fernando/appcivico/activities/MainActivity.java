@@ -42,9 +42,6 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        ApplicationAppCivico application = (ApplicationAppCivico) getApplication();
-        String s = application.carregaEstadosCidades();
-
         getSupportFragmentManager().beginTransaction().replace(R.id.main_container,new MainFragment()).commit();
 
     }
@@ -109,6 +106,11 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_informacoes) {
             Intent i = new Intent(this,InformacoesActivity.class);
+            startActivity(i);
+        }
+
+        if (id == R.id.nav_busca_avancada) {
+            Intent i = new Intent(this,BuscaAvancadaActivity.class);
             startActivity(i);
         }
 
