@@ -68,4 +68,10 @@ public class ApplicationAppCivico extends Application {
         return ((apptoken == null || apptoken.isEmpty()) ? false : true);
     }
 
+    public void removeDadosDeSessao() {
+        apptoken = null;
+        usuarioAutenticado = null;
+        cacheDadosDeUsuario.deleteFiles();
+    }
+
 }

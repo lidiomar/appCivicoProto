@@ -76,7 +76,7 @@ public class Servicos {
         this.requestQueue.add(jsonObjectRequest);
     }
 
-    public void consultaEstabelecimentoLatLong(Response.Listener responseListener, double latitude, double longitude, float raio, final String texto, final String categoria) {
+    public void consultaEstabelecimentoLatLong(Response.Listener responseListener, double latitude, double longitude, int raio, final String texto, final String categoria) {
 
         String url = "http://mobile-aceite.tcu.gov.br:80/mapa-da-saude/rest/estabelecimentos/latitude/"+latitude+"/longitude/"+longitude+"/raio/"+raio;
         String queryParams = "";

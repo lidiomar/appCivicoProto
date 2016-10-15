@@ -28,6 +28,8 @@ import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -98,10 +100,10 @@ public class BuscaAvancadaFragment extends Fragment  {
         });
 
         buttonPesquisar.setOnClickListener(new View.OnClickListener() {
-            String uf;
-            String cidade;
-            String categoria;
-            String especialidade;
+            String uf = "";
+            String cidade = "";
+            String categoria = "";
+            String especialidade ="";
 
             @Override
             public void onClick(View view) {
@@ -127,13 +129,18 @@ public class BuscaAvancadaFragment extends Fragment  {
                         Toast.makeText(BuscaAvancadaFragment.this.getActivity(),BuscaAvancadaFragment.this.getActivity().getString(R.string.algo_deu_errado),Toast.LENGTH_SHORT).show();
                     }
                 };
-                uf = (String) spinnerBuscaUf.getSelectedItem();
-                cidade = (String)spinnerBuscaCidade.getSelectedItem();
 
-                categoria = ((Categoria)spinnerBuscaCategoria.getSelectedItem()).getId();
-                especialidade = ((Especialidade)spinnerBuscaEspecialidades.getSelectedItem()).getId();
+                try {
+                    uf = URLEncoder.encode((String) spinnerBuscaUf.getSelectedItem(),"UTF-8");
+                    cidade = URLEncoder.encode((String)spinnerBuscaCidade.getSelectedItem(),"UTF-8");
+                    categoria = URLEncoder.encode(((Categoria)spinnerBuscaCategoria.getSelectedItem()).getId(),"UTF-8");
+                    especialidade = URLEncoder.encode(((Especialidade)spinnerBuscaEspecialidades.getSelectedItem()).getId(),"UTF-8");
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
 
-                servicos.consultaEstabelecimentos(StaticFunctions.convertISOtoUTF8(cidade),uf,categoria,especialidade,20,0,respListener,errorListener);
+
+                servicos.consultaEstabelecimentos(cidade,uf,categoria,especialidade,20,0,respListener,errorListener);
             }
         });
 

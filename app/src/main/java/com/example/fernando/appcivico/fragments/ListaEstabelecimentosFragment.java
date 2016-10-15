@@ -28,6 +28,8 @@ import com.example.fernando.appcivico.servicos.Servicos;
 import com.example.fernando.appcivico.utils.StaticFunctions;
 import com.google.gson.Gson;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -174,7 +176,17 @@ public class ListaEstabelecimentosFragment extends Fragment {
             }
         };
 
-        servicos.consultaEstabelecimentos(StaticFunctions.convertISOtoUTF8(cidade),uf,categoria,especialidade,20,countOffset,respListener,errorListener);
+        try {
+            cidade = URLEncoder.encode(cidade, "UTF-8");
+            uf = URLEncoder.encode(uf, "UTF-8");
+            categoria = URLEncoder.encode(categoria, "UTF-8");
+            especialidade = URLEncoder.encode(especialidade, "UTF-8");
+
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+        servicos.consultaEstabelecimentos(cidade,uf,categoria,especialidade,20,countOffset,respListener,errorListener);
     }
 
 

@@ -1,15 +1,18 @@
 package com.example.fernando.appcivico.activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.fernando.appcivico.R;
 import com.example.fernando.appcivico.application.ApplicationAppCivico;
@@ -27,6 +30,10 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private ArrayList<Estabelecimento> arrayListEstabelecimento2 = new ArrayList<>();
+
+    private NavigationView navigationView;
+    private ApplicationAppCivico applicationAppCivico;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,11 +47,27 @@ public class MainActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
+
         navigationView.setNavigationItemSelectedListener(this);
+
+        applicationAppCivico = (ApplicationAppCivico) this.getApplication();
 
         getSupportFragmentManager().beginTransaction().replace(R.id.main_container,new PesquisaFragment()).commit();
 
+    }
+
+    @Override
+    protected void onResume() {
+        if (applicationAppCivico.usuarioAutenticado()) {
+            navigationView.getMenu().clear();
+            navigationView.inflateMenu(R.menu.activity_main_drawer_autenticado);
+        }else{
+            navigationView.getMenu().clear();
+            navigationView.inflateMenu(R.menu.activity_main_drawer);
+        }
+
+        super.onResume();
     }
 
     @Override
@@ -93,6 +116,25 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_busca_avancada) {
             Intent i = new Intent(this,BuscaAvancadaActivity.class);
             startActivity(i);
+        }
+
+        if (id == R.id.nav_logout) {
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+
+            alertDialogBuilder.setMessage("Deseja encerrar a sessão?")
+                    .setCancelable(true)
+                    .setPositiveButton(this.getString(R.string.confirmar),new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog,int id) {
+                            applicationAppCivico.removeDadosDeSessao();
+                            MainActivity.this.onResume();
+                            Toast.makeText(MainActivity.this, "Sessão encerrada com sucesso",Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .setNegativeButton(this.getString(R.string.cancelar),null);
+
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
