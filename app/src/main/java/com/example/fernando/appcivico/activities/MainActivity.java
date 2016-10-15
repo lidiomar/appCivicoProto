@@ -16,6 +16,7 @@ import com.example.fernando.appcivico.application.ApplicationAppCivico;
 import com.example.fernando.appcivico.estrutura.Estabelecimento;
 import com.example.fernando.appcivico.fragments.AvaliarFragment;
 import com.example.fernando.appcivico.fragments.MainFragment;
+import com.example.fernando.appcivico.fragments.PesquisaFragment;
 import com.example.fernando.appcivico.servicos.Avaliacao;
 import com.example.fernando.appcivico.utils.CacheDadosDeUsuario;
 import com.example.fernando.appcivico.utils.Constants;
@@ -42,7 +43,7 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.main_container,new MainFragment()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_container,new PesquisaFragment()).commit();
 
     }
 
@@ -86,26 +87,6 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_login) {
             Intent i = new Intent(this,EscolherAcessoActivity.class);
-            startActivity(i);
-        }
-
-        if (id == R.id.nav_avaliar) {
-            Intent i = new Intent(this,AvaliarActivity.class);
-            startActivity(i);
-        }
-
-        if (id == R.id.nav_mapa) {
-            Intent i = new Intent(this,MapsActivity.class);
-            startActivity(i);
-        }
-
-        if (id == R.id.nav_pesquisa) {
-            Intent i = new Intent(this,PesquisaActivity.class);
-            startActivity(i);
-        }
-
-        if (id == R.id.nav_informacoes) {
-            Intent i = new Intent(this,InformacoesActivity.class);
             startActivity(i);
         }
 

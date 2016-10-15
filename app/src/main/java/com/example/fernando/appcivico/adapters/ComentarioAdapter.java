@@ -64,4 +64,6 @@ public class ComentarioAdapter extends RecyclerView.Adapter<ComentarioAdapter.Co
 
         }
     }
+
+
 }

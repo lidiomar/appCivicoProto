@@ -1,5 +1,6 @@
 package com.example.fernando.appcivico.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.example.fernando.appcivico.R;
+import com.example.fernando.appcivico.activities.ListaEstabelecimentosActivity;
 import com.example.fernando.appcivico.estrutura.Categoria;
 import com.example.fernando.appcivico.estrutura.Especialidade;
 import com.example.fernando.appcivico.estrutura.Estabelecimento;
@@ -102,6 +104,9 @@ public class BuscaAvancadaFragment extends Fragment  {
                     public void onResponse(Object response) {
                         Gson gson = new Gson();
                         Estabelecimento[] estabelecimentos = gson.fromJson(String.valueOf(response), Estabelecimento[].class);
+                        Intent intent = new Intent(BuscaAvancadaFragment.this.getActivity(), ListaEstabelecimentosActivity.class);
+                        intent.putExtra("estabelecimentos",estabelecimentos);
+                        startActivity(intent);
 
                     }
                 };

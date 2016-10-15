@@ -187,8 +187,8 @@ public class InformacoesFragment extends Fragment{
                 "    \"long\": -48.85344\n" +
                 "  }";
 
-        /*Bundle extras = getActivity().getIntent().getExtras();
-        estabelecimento = (Estabelecimento)extras.get("estabelecimento");*/
+        Bundle extras = getActivity().getIntent().getExtras();
+        estabelecimento = (Estabelecimento)extras.get("estabelecimento");
 
         linearlayoutEnderecoWrap = (LinearLayout)view.findViewById(R.id.linearlayout_endereco_wrap);
         linearlayoutEnderecoContent = (LinearLayout)view.findViewById(R.id.linearlayout_endereco_content);
@@ -199,9 +199,9 @@ public class InformacoesFragment extends Fragment{
         linearlayoutInformacoesContent = (LinearLayout)view.findViewById(R.id.linearlayout_informacoes_content);
         linearlayoutInformacoesContentHeight = linearlayoutInformacoesContent.getHeight();
 
-        Gson gson = new Gson();
+        /*Gson gson = new Gson();
         String stringJson = String.valueOf(s).replace("\"long\":", "\"longitude\":");
-        estabelecimento = gson.fromJson(stringJson, Estabelecimento.class);
+        estabelecimento = gson.fromJson(stringJson, Estabelecimento.class);*/
 
         txtViewNomeFantasia  = (TextView)view.findViewById(R.id.nome_fantasia);
         txtViewNatureza = (TextView)view.findViewById(R.id.natureza);
