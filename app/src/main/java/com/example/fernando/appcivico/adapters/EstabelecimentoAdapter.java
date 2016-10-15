@@ -2,10 +2,14 @@ package com.example.fernando.appcivico.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.example.fernando.appcivico.R;
@@ -39,8 +43,14 @@ public class EstabelecimentoAdapter extends RecyclerView.Adapter<Estabelecimento
 
     @Override
     public void onBindViewHolder(EstabelecimentoViewHolder holder, int position) {
-        holder.setEstabelecimento(estabelecimentosList.get(position));
-        holder.txtnomeFantasia.setText(estabelecimentosList.get(position).getNomeFantasia());
+        Estabelecimento estabelecimento = estabelecimentosList.get(position);
+        holder.setEstabelecimento(estabelecimento);
+
+        holder.txtnomeFantasia.setText(estabelecimento.getNomeFantasia());
+        holder.txtVinculoSus.setText(estabelecimento.getVinculoSus());
+        holder.txtVinculoTurno.setText(estabelecimento.getTurnoAtendimento());
+        holder.txtMedia.setText("Media de "+ 1);
+        holder.ratingBarNota.setRating(1);
     }
 
 
@@ -50,11 +60,26 @@ public class EstabelecimentoAdapter extends RecyclerView.Adapter<Estabelecimento
     }
 
     public class EstabelecimentoViewHolder extends RecyclerView.ViewHolder {
+        private TextView txtVinculoSus;
         private TextView txtnomeFantasia;
+        private TextView txtVinculoTurno;
+        private TextView txtMedia;
+        private RatingBar ratingBarNota;
+
         private Estabelecimento estabelecimento;
+
         public EstabelecimentoViewHolder(View itemView, final Context context) {
             super(itemView);
             txtnomeFantasia = (TextView)itemView.findViewById(R.id.txt_nome_fantasia);
+            txtVinculoSus = (TextView) itemView.findViewById(R.id.txt_vinculo_sus);
+            txtVinculoTurno = (TextView)itemView.findViewById(R.id.txt_vinculo_turno);
+            txtMedia = (TextView)itemView.findViewById(R.id.txt_media);
+            ratingBarNota = (RatingBar)itemView.findViewById(R.id.ratingbar_nota);
+
+            Drawable progress = ratingBarNota.getProgressDrawable();
+            DrawableCompat.setTint(progress, Color.rgb(11111111,01011010,00000000));
+
+
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
