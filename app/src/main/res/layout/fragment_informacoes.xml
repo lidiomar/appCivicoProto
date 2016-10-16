@@ -9,49 +9,70 @@
         android:layout_width="match_parent"
         android:paddingTop="15dp"
         android:paddingBottom="15dp"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:gravity="center">
 
         <TextView android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/nome_fantasia"
             android:layout_gravity="center_horizontal"
             android:textSize="20sp"
-            android:layout_marginBottom="5dp" />
+            android:layout_marginBottom="5dp"
+            android:text="Nome fantasia"
+            android:textAlignment="center" />
 
         <TextView android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="25dp"
             android:id="@+id/natureza"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"
+            android:text="Natureza"
+            android:textAlignment="center" />
 
-        <TextView android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/tipo_unidade" />
+        <LinearLayout android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:id="@+id/linearlayout_geral_wrap"
+            android:background="@drawable/border_default"
+            android:orientation="vertical"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:padding="10dp"
+            android:layout_marginBottom="15dp">
 
-        <TextView android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/esfera_administrativa" />
+                <TextView android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tipo_unidade"
+                    android:text="Unidade" />
 
-        <TextView android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/vinculo_sus" />
+                <TextView android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/esfera_administrativa"
+                    android:text="Esfera administraviva" />
 
-<!--        <TextView android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/retencao" />-->
+                <TextView android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/vinculo_sus"
+                    android:text="SUS" />
 
-        <TextView android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/fluxo_clientela" />
+        <!--        <TextView android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/retencao" />-->
 
-        <TextView android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/turno_atendimento" />
+                <TextView android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/fluxo_clientela"
+                    android:text="Fluxo" />
 
-        <TextView android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/telefone"
-            android:layout_marginBottom="25dp" />
+                <TextView android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/turno_atendimento"
+                    android:text="Turno" />
+
+                <TextView android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/telefone"
+                    android:text="Telefone" />
+        </LinearLayout>
 
         <LinearLayout android:layout_height="wrap_content"
             android:layout_width="match_parent"
@@ -71,6 +92,7 @@
                 android:layout_height="wrap_content"
                 android:numStars="5"
                 android:rating="0"
+                android:visibility="gone"
                 android:isIndicator="true"
                 android:layout_marginBottom="5dp"
                 android:layout_gravity="center_horizontal" />
@@ -80,27 +102,31 @@
                 android:layout_height="wrap_content"
                 android:text="@string/sem_avaliacoes"
                 android:layout_width="wrap_content"
-                android:layout_gravity="center_horizontal" />
+                android:layout_gravity="center_horizontal"
+                android:textAlignment="center" />
+
+            <Button android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Deixe sua avaliação"
+                android:id="@+id/button_deixe_sua_avaliacao"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="15dp" />
 
         </LinearLayout>
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Deixe sua avaliação"
-            android:id="@+id/button_deixe_sua_avaliacao"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="15dp" />
 
         <LinearLayout android:layout_height="wrap_content"
             android:id="@+id/linearlayout_endereco_wrap"
             android:layout_width="match_parent"
             android:orientation="vertical"
-            android:layout_marginBottom="15dp">
+            android:layout_marginBottom="15dp"
+            android:background="@drawable/border_default"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:padding="10dp">
 
             <TextView android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Endereço"
+                android:text="Endereço:"
                 android:layout_gravity="center_horizontal" />
 
             <LinearLayout android:layout_height="wrap_content"
@@ -110,34 +136,44 @@
 
                 <TextView android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/logradouro" />
+                    android:id="@+id/logradouro"
+                    android:text="Logradouro" />
 
                 <TextView android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/numero" />
+                    android:id="@+id/numero"
+                    android:text="Numero" />
 
                 <TextView android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/bairro" />
+                    android:id="@+id/bairro"
+                    android:text="Bairro" />
 
                 <TextView android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/cidade" />
+                    android:id="@+id/cidade"
+                    android:text="Cidade" />
 
                 <TextView android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/uf" />
+                    android:id="@+id/uf"
+                    android:text="UF" />
 
                 <TextView android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/cep_estabelecimento" />
+                    android:id="@+id/cep_estabelecimento"
+                    android:text="CEP" />
             </LinearLayout>
         </LinearLayout>
 
         <LinearLayout android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:id="@+id/linearlayout_informacoes_wrap"
-            android:orientation="vertical">
+            android:background="@drawable/border_default"
+            android:orientation="vertical"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:padding="10dp">
 
             <TextView android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -151,27 +187,33 @@
 
                 <TextView android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/tem_atendimento_urgencia" />
+                    android:id="@+id/tem_atendimento_urgencia"
+                    android:text="Urgencia" />
 
                 <TextView android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/tem_atendimento_ambulatorial" />
+                    android:id="@+id/tem_atendimento_ambulatorial"
+                    android:text="Ambulatorial" />
 
                 <TextView android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/tem_centro_cirurgico" />
+                    android:id="@+id/tem_centro_cirurgico"
+                    android:text="Cirurgico" />
 
                 <TextView android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/tem_obstetra" />
+                    android:id="@+id/tem_obstetra"
+                    android:text="Obstetra" />
 
                 <TextView android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/tem_neonatal" />
+                    android:id="@+id/tem_neonatal"
+                    android:text="Neonatal" />
 
                 <TextView android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/tem_dialise" />
+                    android:id="@+id/tem_dialise"
+                    android:text="Dialise" />
 
                 <!--<TextView android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -179,7 +221,8 @@
 
                 <TextView android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/categoria_unidade" />
+                    android:id="@+id/categoria_unidade"
+                    android:text="Categoria" />
             </LinearLayout>
         </LinearLayout>
 

@@ -176,16 +176,6 @@ public class ListaEstabelecimentosFragment extends Fragment {
             }
         };
 
-        try {
-            cidade = URLEncoder.encode(cidade, "UTF-8");
-            uf = URLEncoder.encode(uf, "UTF-8");
-            categoria = URLEncoder.encode(categoria, "UTF-8");
-            especialidade = URLEncoder.encode(especialidade, "UTF-8");
-
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-
         servicos.consultaEstabelecimentos(cidade,uf,categoria,especialidade,20,countOffset,respListener,errorListener);
     }
 

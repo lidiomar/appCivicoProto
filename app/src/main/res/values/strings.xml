@@ -65,7 +65,7 @@
     <string name="telefone">Telefone: %s</string>
     <string name="turno_atendimento">Turno de atendimento: %s</string>
 
-    <string name="sem_avaliacoes">Ainda não foram feitas avaliações</string>
+    <string name="sem_avaliacoes">Ainda não foram feitas avaliações para esse estabelecimento.</string>
     <string name="x_pessoa_avaliou">Avaliado por %s usuário</string>
     <string name="x_pessoas_avaliaram">Avaliado por %s usuários</string>
     <string name="media_das_avaliacoes_x">Média das avaliações: %s</string>
@@ -76,6 +76,7 @@
     <string name="ja_existe_avaliacao">Já foi registrada uma avaliação para esse estabelecimento.</string>
 
     <string name="nao_ha_comentarios">Não há comentários para serem exibidos.</string>
+    <string name="nao_ha_resultados">Não há resultados para a busca.</string>
 
     <string name="busca_cidade">Cidade:</string>
     <string name="busca_uf">UF:</string>

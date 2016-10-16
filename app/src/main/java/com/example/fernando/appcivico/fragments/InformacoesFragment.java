@@ -412,6 +412,7 @@ public class InformacoesFragment extends Fragment{
         if(contagem <= 0) {
             txtNumeroAvaliacoes.setText(this.getActivity().getString(R.string.sem_avaliacoes));
         }else {
+            ratingBarReadonly.setVisibility(View.VISIBLE);
             txtMediaAvaliacoes.setVisibility(View.VISIBLE);
             txtMediaAvaliacoes.setText(String.format(this.getActivity().getString(R.string.media_das_avaliacoes_x),String.valueOf(Math.ceil(media))));
             if(contagem > 1) {
