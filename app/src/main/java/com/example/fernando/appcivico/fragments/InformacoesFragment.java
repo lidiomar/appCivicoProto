@@ -205,7 +205,7 @@ public class InformacoesFragment extends Fragment{
 
         txtViewNomeFantasia  = (TextView)view.findViewById(R.id.nome_fantasia);
         txtViewNatureza = (TextView)view.findViewById(R.id.natureza);
-        /*txtViewTipoUnidade = (TextView)view.findViewById(R.id.tipo_unidade);*/
+        txtViewTipoUnidade = (TextView)view.findViewById(R.id.tipo_unidade);
         txtViewEsferaAdministrativa = (TextView)view.findViewById(R.id.esfera_administrativa);
         txtViewVinculoSus = (TextView)view.findViewById(R.id.vinculo_sus);
         /*txtViewRetencao = (TextView)view.findViewById(R.id.retencao);*/
@@ -217,7 +217,7 @@ public class InformacoesFragment extends Fragment{
         txtViewNeonatal = (TextView)view.findViewById(R.id.tem_neonatal);
         txtViewDialise = (TextView)view.findViewById(R.id.tem_dialise);
         /*txtViewDescricaoCompleta = (TextView)view.findViewById(R.id.descricao_completa);*/
-        /*txtViewCategoriaUnidade = (TextView)view.findViewById(R.id.categoria_unidade);*/
+        txtViewCategoriaUnidade = (TextView)view.findViewById(R.id.categoria_unidade);
         txtViewLogradouro = (TextView)view.findViewById(R.id.logradouro);
         txtViewNumero = (TextView)view.findViewById(R.id.numero);
         txtViewBairro = (TextView)view.findViewById(R.id.bairro);
@@ -287,7 +287,7 @@ public class InformacoesFragment extends Fragment{
     public void inicializaCampos() {
         txtViewNomeFantasia.setText(estabelecimento.getNomeFantasia());
         txtViewNatureza.setText(estabelecimento.getNatureza());
-        /*txtViewTipoUnidade.setText(String.format(this.getActivity().getString(R.string.tipo_unidade),estabelecimento.getTipoUnidade()));*/
+        txtViewTipoUnidade.setText(String.format(this.getActivity().getString(R.string.tipo_unidade),estabelecimento.getTipoUnidade()));
         txtViewEsferaAdministrativa.setText(String.format(this.getActivity().getString(R.string.esfera_administrativa),estabelecimento.getEsferaAdministrativa()));
         txtViewVinculoSus.setText(String.format(this.getActivity().getString(R.string.vinculo_sus),estabelecimento.getVinculoSus()));
         /*txtViewRetencao.setText(String.format(this.getActivity().getString(R.string.retencao),estabelecimento.getRetencao()));*/
@@ -299,7 +299,7 @@ public class InformacoesFragment extends Fragment{
         txtViewNeonatal.setText(String.format(this.getActivity().getString(R.string.tem_neonatal),estabelecimento.getTemNeoNatal()));
         txtViewDialise.setText(String.format(this.getActivity().getString(R.string.tem_dialise),estabelecimento.getTemDialise()));
         /*txtViewDescricaoCompleta.setText(String.format(this.getActivity().getString(R.string.descricao_completa),estabelecimento.getDescricaoCompleta()));*/
-        /*txtViewCategoriaUnidade.setText(String.format(this.getActivity().getString(R.string.categoria_unidade),estabelecimento.getCategoriaUnidade()));*/
+        txtViewCategoriaUnidade.setText(String.format(this.getActivity().getString(R.string.categoria_unidade),estabelecimento.getCategoriaUnidade()));
         txtViewLogradouro.setText(String.format(this.getActivity().getString(R.string.logradouro),estabelecimento.getLogradouro()));
         txtViewNumero.setText(String.format(this.getActivity().getString(R.string.numero),estabelecimento.getNumero()));
         txtViewBairro.setText(String.format(this.getActivity().getString(R.string.bairro),estabelecimento.getBairro()));

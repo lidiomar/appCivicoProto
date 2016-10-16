@@ -47,10 +47,18 @@ public class EstabelecimentoAdapter extends RecyclerView.Adapter<Estabelecimento
         holder.setEstabelecimento(estabelecimento);
 
         holder.txtnomeFantasia.setText(estabelecimento.getNomeFantasia());
-        holder.txtVinculoSus.setText(estabelecimento.getVinculoSus());
-        holder.txtVinculoTurno.setText(estabelecimento.getTurnoAtendimento());
-        holder.txtMedia.setText("Media de "+ 1);
-        holder.ratingBarNota.setRating(1);
+        holder.txtVinculoSus.setText(String.format(context.getString(R.string.vinculo_sus),estabelecimento.getVinculoSus()));
+        holder.txtVinculoTurno.setText(String.format(context.getString(R.string.turno_atendimento),estabelecimento.getTurnoAtendimento()));
+
+        holder.tipoUnidade.setText(String.format(context.getString(R.string.tipo_unidade),
+                estabelecimento.getTipoUnidade().substring(0,1).toUpperCase()+
+                estabelecimento.getTipoUnidade().substring(1).toLowerCase()
+        ));
+        holder.categoriaUnidade.setText(String.format(context.getString(R.string.categoria_unidade),
+                estabelecimento.getCategoriaUnidade().substring(0,1).toUpperCase()+
+                estabelecimento.getCategoriaUnidade().substring(1).toLowerCase()
+        ));
+
     }
 
 
@@ -63,8 +71,8 @@ public class EstabelecimentoAdapter extends RecyclerView.Adapter<Estabelecimento
         private TextView txtVinculoSus;
         private TextView txtnomeFantasia;
         private TextView txtVinculoTurno;
-        private TextView txtMedia;
-        private RatingBar ratingBarNota;
+        private TextView tipoUnidade;
+        private TextView categoriaUnidade;
 
         private Estabelecimento estabelecimento;
 
@@ -73,11 +81,9 @@ public class EstabelecimentoAdapter extends RecyclerView.Adapter<Estabelecimento
             txtnomeFantasia = (TextView)itemView.findViewById(R.id.txt_nome_fantasia);
             txtVinculoSus = (TextView) itemView.findViewById(R.id.txt_vinculo_sus);
             txtVinculoTurno = (TextView)itemView.findViewById(R.id.txt_vinculo_turno);
-            txtMedia = (TextView)itemView.findViewById(R.id.txt_media);
-            ratingBarNota = (RatingBar)itemView.findViewById(R.id.ratingbar_nota);
+            tipoUnidade = (TextView)itemView.findViewById(R.id.tipo_unidade);
+            categoriaUnidade = (TextView)itemView.findViewById(R.id.categoria_unidade);
 
-            Drawable progress = ratingBarNota.getProgressDrawable();
-            DrawableCompat.setTint(progress, Color.rgb(11111111,01011010,00000000));
 
 
             itemView.setOnClickListener(new View.OnClickListener() {

@@ -1,8 +1,13 @@
 package com.example.fernando.appcivico.activities;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.fernando.appcivico.R;
@@ -24,13 +29,33 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Estabelecimento[] estabelecimentos = null;
     private double lat;
     private double lng;
+    private TextView txtVinculoSus;
+    private TextView txtnomeFantasia;
+    private TextView txtVinculoTurno;
+    private TextView tipoUnidade;
+    private TextView categoriaUnidade;
+    private LinearLayout adapterEstabelecimento;
+    private TextView textoInformativo;
 
+
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
         Bundle extras = getIntent().getExtras();
+
+        adapterEstabelecimento = (LinearLayout)findViewById(R.id.adapter_estabelecimento);
+
+        txtnomeFantasia = (TextView)adapterEstabelecimento.findViewById(R.id.txt_nome_fantasia);
+        txtVinculoSus = (TextView) adapterEstabelecimento.findViewById(R.id.txt_vinculo_sus);
+        txtVinculoTurno = (TextView)adapterEstabelecimento.findViewById(R.id.txt_vinculo_turno);
+        tipoUnidade = (TextView)adapterEstabelecimento.findViewById(R.id.tipo_unidade);
+        categoriaUnidade = (TextView)adapterEstabelecimento.findViewById(R.id.categoria_unidade);
+        textoInformativo = (TextView) findViewById(R.id.texto_informativo);
+        adapterEstabelecimento.setBackground(null);
+        adapterEstabelecimento.setVisibility(View.GONE);
 
         Object[] estabelecimentosObj = (Object[]) extras.get("estabelecimentos");
         lat = (double) extras.get("latitudeUsuario");
@@ -40,6 +65,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             estabelecimentos = new Estabelecimento[estabelecimentosObj.length];
             System.arraycopy(estabelecimentosObj, 0, estabelecimentos, 0, estabelecimentos.length);
         }
+
 
         if (estabelecimentos == null || estabelecimentos.length <= 0) {
             Toast.makeText(MapsActivity.this, "Não há resultados para a busca", Toast.LENGTH_SHORT).show();
@@ -79,9 +105,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 String id = marker.getId();
                 Estabelecimento estabelecimento = hashEstabelecimentos.get(id);
                 if(estabelecimento != null) {
-                    Intent intent = new Intent(MapsActivity.this, InformacoesActivity.class);
-                    intent.putExtra("estabelecimento",estabelecimento);
-                    startActivity(intent);
+                    inicializaEstabelecimento(estabelecimento);
+                }else {
+                    inicializaInfo();
                 }
                 return false;
             }
@@ -99,7 +125,39 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         LatLng latLng = new LatLng(lat, lng);
         Marker marker = mMap.addMarker(new MarkerOptions().position(latLng).title("Sua localização").snippet("Encontre estabelecimentos próximos a você"));
         marker.showInfoWindow();
-
-
     }
+
+    public void inicializaEstabelecimento(final Estabelecimento estabelecimento) {
+
+        this.txtnomeFantasia.setText(estabelecimento.getNomeFantasia());
+        this.txtVinculoSus.setText(String.format(this.getString(R.string.vinculo_sus),estabelecimento.getVinculoSus()));
+        this.txtVinculoTurno.setText(String.format(this.getString(R.string.turno_atendimento),estabelecimento.getTurnoAtendimento()));
+
+        this.tipoUnidade.setText(String.format(this.getString(R.string.tipo_unidade),
+                estabelecimento.getTipoUnidade().substring(0,1).toUpperCase()+
+                        estabelecimento.getTipoUnidade().substring(1).toLowerCase()
+        ));
+        this.categoriaUnidade.setText(String.format(this.getString(R.string.categoria_unidade),
+                estabelecimento.getCategoriaUnidade().substring(0,1).toUpperCase()+
+                        estabelecimento.getCategoriaUnidade().substring(1).toLowerCase()
+        ));
+
+        adapterEstabelecimento.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MapsActivity.this, InformacoesActivity.class);
+                intent.putExtra("estabelecimento",estabelecimento);
+                startActivity(intent);
+            }
+        });
+
+        adapterEstabelecimento.setVisibility(View.VISIBLE);
+        textoInformativo.setVisibility(View.GONE);
+    }
+
+    private void inicializaInfo() {
+        adapterEstabelecimento.setVisibility(View.GONE);
+        textoInformativo.setVisibility(View.VISIBLE);
+    }
+
 }
