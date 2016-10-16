@@ -20,4 +20,7 @@
     <style name="CustomProgressBar" parent="Widget.AppCompat.ProgressBar.Horizontal">
     </style>
 
+    <style name="bla" parent="android:Widget.DeviceDefault.RatingBar.Small">
+
+    </style>
 </resources>

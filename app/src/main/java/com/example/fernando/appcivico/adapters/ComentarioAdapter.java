@@ -1,6 +1,9 @@
 package com.example.fernando.appcivico.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,7 +40,7 @@ public class ComentarioAdapter extends RecyclerView.Adapter<ComentarioAdapter.Co
         Comentario comentario = comentarios.get(position);
         holder.ratingbar_nota.setRating(comentario.getValor());
         holder.txt_autor.setText(comentario.getNomeUsuario());
-        holder.txt_comentario.setText(comentario.getTexto());
+        holder.txt_comentario.setText("\""+comentario.getTexto()+"\"");
         holder.txt_data_hora.setText(comentario.getDataComentario());
     }
 

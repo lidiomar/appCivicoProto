@@ -12,22 +12,70 @@
         android:layout_height="match_parent"
         android:gravity="center">
 
-        <TextView android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/nome_fantasia"
-            android:layout_gravity="center_horizontal"
-            android:textSize="20sp"
-            android:layout_marginBottom="5dp"
-            android:text="Nome fantasia"
-            android:textAlignment="center" />
+        <LinearLayout android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:background="@drawable/border_default"
+            android:orientation="vertical"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:padding="10dp"
+            android:layout_marginBottom="25dp">
 
-        <TextView android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="25dp"
-            android:id="@+id/natureza"
-            android:layout_gravity="center_horizontal"
-            android:text="Natureza"
-            android:textAlignment="center" />
+                <TextView android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/nome_fantasia"
+                    android:layout_gravity="center_horizontal"
+                    android:textSize="20sp"
+                    android:layout_marginBottom="5dp"
+                    android:text="Nome fantasia"
+                    android:textAlignment="center" />
+
+                <TextView android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/natureza"
+                    android:layout_gravity="center_horizontal"
+                    android:text="Natureza"
+                    android:textAlignment="center" />
+        </LinearLayout>
+        <LinearLayout android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_marginBottom="15dp">
+
+            <TextView
+                android:id="@+id/text_media_avaliacoes"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:visibility="gone"
+                android:layout_gravity="center_horizontal" />
+
+            <RatingBar
+                android:id="@+id/rating_avaliacao_readonly"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:numStars="5"
+                android:rating="0"
+                android:visibility="gone"
+                android:isIndicator="true"
+                android:layout_marginBottom="5dp"
+                android:layout_gravity="center_horizontal" />
+
+            <TextView
+                android:id="@+id/text_numero_avaliacoes"
+                android:layout_height="wrap_content"
+                android:text="@string/sem_avaliacoes"
+                android:layout_width="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:textAlignment="center" />
+
+            <Button android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Deixe sua avaliação"
+                android:id="@+id/button_deixe_sua_avaliacao"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="15dp" />
+
+        </LinearLayout>
 
         <LinearLayout android:layout_height="wrap_content"
             android:layout_width="match_parent"
@@ -74,45 +122,7 @@
                     android:text="Telefone" />
         </LinearLayout>
 
-        <LinearLayout android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:orientation="vertical"
-            android:layout_marginBottom="15dp">
 
-            <TextView
-                android:id="@+id/text_media_avaliacoes"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:visibility="gone"
-                android:layout_gravity="center_horizontal" />
-
-            <RatingBar
-                android:id="@+id/rating_avaliacao_readonly"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:numStars="5"
-                android:rating="0"
-                android:visibility="gone"
-                android:isIndicator="true"
-                android:layout_marginBottom="5dp"
-                android:layout_gravity="center_horizontal" />
-
-            <TextView
-                android:id="@+id/text_numero_avaliacoes"
-                android:layout_height="wrap_content"
-                android:text="@string/sem_avaliacoes"
-                android:layout_width="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:textAlignment="center" />
-
-            <Button android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Deixe sua avaliação"
-                android:id="@+id/button_deixe_sua_avaliacao"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="15dp" />
-
-        </LinearLayout>
 
         <LinearLayout android:layout_height="wrap_content"
             android:id="@+id/linearlayout_endereco_wrap"
@@ -124,15 +134,36 @@
             android:layout_marginRight="10dp"
             android:padding="10dp">
 
-            <TextView android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Endereço:"
-                android:layout_gravity="center_horizontal" />
+            <LinearLayout android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center_horizontal">
+                <TextView android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Endereço"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center_horizontal" />
+
+                <ImageView android:layout_height="wrap_content"
+                    android:id="@+id/endereco_less"
+                    android:layout_width="wrap_content"
+                    android:foregroundGravity="right"
+                    android:src="@drawable/ic_expand_less_black_18dp"
+                    android:layout_gravity="right"
+                    android:visibility="gone" />
+
+                <ImageView android:layout_height="wrap_content"
+                    android:id="@+id/endereco_more"
+                    android:layout_width="wrap_content"
+                    android:src="@drawable/ic_expand_more_black_18dp"
+                    android:layout_gravity="right" />
+            </LinearLayout>
 
             <LinearLayout android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 android:id="@+id/linearlayout_endereco_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_marginTop="10dp">
 
                 <TextView android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -175,15 +206,37 @@
             android:layout_marginRight="10dp"
             android:padding="10dp">
 
-            <TextView android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Informações adicionais:"
-                android:layout_gravity="center_horizontal" />
+            <LinearLayout android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center_horizontal">
+
+                <TextView android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Informações adicionais"
+                    android:layout_gravity="center_horizontal" />
+
+                <ImageView android:layout_height="wrap_content"
+                    android:id="@+id/informacoes_less"
+                    android:layout_width="wrap_content"
+                    android:foregroundGravity="right"
+                    android:src="@drawable/ic_expand_less_black_18dp"
+                    android:layout_gravity="right"
+                    android:visibility="gone" />
+
+                <ImageView android:layout_height="wrap_content"
+                    android:id="@+id/informacoes_more"
+                    android:layout_width="wrap_content"
+                    android:src="@drawable/ic_expand_more_black_18dp"
+                    android:layout_gravity="right" />
+
+            </LinearLayout>
 
             <LinearLayout android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 android:id="@+id/linearlayout_informacoes_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_marginTop="10dp">
 
                 <TextView android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

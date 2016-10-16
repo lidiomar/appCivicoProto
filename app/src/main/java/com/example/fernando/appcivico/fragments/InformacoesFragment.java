@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -79,114 +80,16 @@ public class InformacoesFragment extends Fragment{
 
     private Button buttonDeixeSuaAvaliação;
     private ApplicationAppCivico applicationAppCivico;
+    private ImageView enderecoMore;
+    private ImageView enderecoLess;
+    private ImageView informacoesMore;
+    private ImageView informacoesLess;
+
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_informacoes, container,false);
-
-        String s = "{\n" +
-                "    \"codCnes\": 5467799,\n" +
-                "    \"codUnidade\": \"4209105467799\",\n" +
-                "    \"codIbge\": 420910,\n" +
-                "    \"cnpj\": \"08902792000100\",\n" +
-                "    \"nomeFantasia\": \"IAPSI ISNTITUTO DE AVALIACAO PSICOLOGICA E PSICOTERAPIA\",\n" +
-                "    \"natureza\": \"Empresa\",\n" +
-                "    \"tipoUnidade\": \"DIAGNOSE E TERAPIA\",\n" +
-                "    \"esferaAdministrativa\": \"Privada\",\n" +
-                "    \"vinculoSus\": \"Não\",\n" +
-                "    \"retencao\": \"Unidade Privada Lucrativa***\",\n" +
-                "    \"fluxoClientela\": \"Atendimento de demanda espontânea\",\n" +
-                "    \"origemGeografica\": \"CNES_GEO\",\n" +
-                "    \"temAtendimentoUrgencia\": \"Não\",\n" +
-                "    \"temAtendimentoAmbulatorial\": \"Sim\",\n" +
-                "    \"temCentroCirurgico\": \"Não\",\n" +
-                "    \"temObstetra\": \"Não\",\n" +
-                "    \"temNeoNatal\": \"Não\",\n" +
-                "    \"temDialise\": \"Sim\",\n" +
-                "    \"descricaoCompleta\": \"IAPSI ISNTITUTO DE AVALIACAO PSICOLOGICA E PSICOTERAPIA  EMPRESA PRIVADA    \",\n" +
-                "    \"tipoUnidadeCnes\": \"UNIDADE DE APOIO DIAGNOSE E TERAPIA (SADT ISOLADO)\",\n" +
-                "    \"categoriaUnidade\": \"LABORATÓRIO\",\n" +
-                "    \"logradouro\": \"RUA OTTOKAR DOERFFEL\",\n" +
-                "    \"numero\": \"929\",\n" +
-                "    \"bairro\": \"ANITA GARIBALDI\",\n" +
-                "    \"cidade\": \"JOINVILLE\",\n" +
-                "    \"uf\": \"SC\",\n" +
-                "    \"cep\": \"89203307\",\n" +
-                "    \"telefone\": \"(47) 38010881\",\n" +
-                "    \"turnoAtendimento\": \"Atendimento nos turnos da manhã e à tarde.\",\n" +
-                "    \"lat\": -26.31644,\n" +
-                "    \"long\": -48.86307\n" +
-                "  }";
-
-        String s2 = "{\n" +
-                "        \"codCnes\": 2521431,\n" +
-                "            \"codUnidade\": \"4209102521431\",\n" +
-                "            \"codIbge\": 420910,\n" +
-                "            \"cnpj\": \"82602327000360\",\n" +
-                "            \"nomeFantasia\": \"CENTRO HOSPITALAR UNIMED\",\n" +
-                "            \"natureza\": \"Cooperativa\",\n" +
-                "            \"tipoUnidade\": \"HOSPITAL GERAL\",\n" +
-                "            \"esferaAdministrativa\": \"Privada\",\n" +
-                "            \"vinculoSus\": \"Sim\",\n" +
-                "            \"retencao\": \"Unidade Privada Lucrativa***\",\n" +
-                "            \"fluxoClientela\": \"Atendimento de demanda espontânea e referenciada\",\n" +
-                "            \"origemGeografica\": \"CNES_GEO\",\n" +
-                "            \"temAtendimentoUrgencia\": \"Sim\",\n" +
-                "            \"temAtendimentoAmbulatorial\": \"Não\",\n" +
-                "            \"temCentroCirurgico\": \"Sim\",\n" +
-                "            \"temObstetra\": \"Sim\",\n" +
-                "            \"temNeoNatal\": \"Sim\",\n" +
-                "            \"temDialise\": \"Sim\",\n" +
-                "            \"descricaoCompleta\": \"CENTRO HOSPITALAR UNIMED  COOPERATIVA TRANSPLANTES   DIAGNOSTICA EXAMES MICROBIOLOGICOS EXAME  ELETROCARDIOGRAFICO  RETIRADA GLOBO OCULAR HUMANO TRANSPLANTE DOACAO CAPTACAO ORGAOS TECIDOS CARDIOLOGIA INTERVENCIONISTA (HEMODINAMICA) EXAMES SOROLOGICOS IMUNOLOGICOS NEONATAL ENTERAL EXAMES HORMONAIS DO APARELHO RESPIRATORIO EXAME ELETROENCEFALOGRAFICO CIRURGICA EXAMES COPROLOGICOS TOMOGRAFIA COMPUTADORIZADA EXAMES BIOQUIMICOS  UROANALISE ADULTO DO APARELHO DIGESTIVO EXAMES TOXICOLOGICOS MONITORIZACAO TERAPEUTICA RESSONANCIA MAGNETICA ULTRASONOGRAFIA RADIOLOGIA EXAMES IMUNOHEMATOLOGICOS  EXAMES HEMATOLOGICOS HEMOSTASIA   MEDICO CITOPATOLOGISTA  MEDICO GASTROENTEROLOGISTA  MEDICO GERIATRA  FARMACEUTICO  MEDICO PEDIATRA  MEDICO PSIQUIATRA  MEDICO FISIATRA  FISIOTERAPEUTA GERAL  MEDICO CIRURGIAO TORACICO  MEDICO HOMEOPATA  MEDICO GINECOLOGISTA E OBSTETRA  MEDICO ACUPUNTURISTA  MEDICO INFECTOLOGISTA  MEDICO CIRURGIAO GERAL  MEDICO EM MEDICINA NUCLEAR  MEDICO CIRURGIAO PEDIATRICO  MEDICO NEUROLOGISTA  CIRURGIAO DENTISTA - TRAUMATOLOGISTA BUCOMAXILOFACIAL  MEDICO DERMATOLOGISTA  MEDICO CIRURGIAO DE CABECA E PESCOCO  MEDICO NEUROCIRURGIAO  ENFERMEIRO  MEDICO UROLOGISTA  MEDICO OFTALMOLOGISTA  MEDICO CANCEROLOGISTA CIRURGICO  MEDICO PNEUMOLOGISTA  MEDICO NEFROLOGISTA  MEDICO ORTOPEDISTA E TRAUMATOLOGISTA  MEDICO CARDIOLOGISTA  MEDICO ANATOMOPATOLOGISTA  NUTRICIONISTA  MEDICO CIRURGIAO CARDIOVASCULAR  MEDICO ANESTESIOLOGISTA  FARMACEUTICO ANALISTA CLINICO  MEDICO HEMATOLOGISTA  MEDICO HEMOTERAPEUTA  MEDICO ONCOLOGISTA CLINICO  MEDICO RADIOTERAPEUTA  MEDICO COLOPROCTOLOGISTA  MEDICO EM RADIOLOGIA E DIAGNOSTICO POR IMAGEM  MEDICO ENDOCRINOLOGISTA E METABOLOGISTA  MEDICO OTORRINOLARINGOLOGISTA  MEDICO CLINICO  MEDICO CIRURGIAO PLASTICO  MEDICO EM MEDICINA DE TRAFEGO  MEDICO PATOLOGISTA CLINICO / MEDICINA LABORATORIAL  MEDICO EM MEDICINA INTENSIVA  MEDICO REUMATOLOGISTA  MEDICO EM CIRURGIA VASCULAR  \",\n" +
-                "            \"tipoUnidadeCnes\": \"HOSPITAL GERAL\",\n" +
-                "            \"categoriaUnidade\": \"HOSPITAL\",\n" +
-                "            \"logradouro\": \"RUA ORESTES GUIMARAES\",\n" +
-                "            \"numero\": \"905\",\n" +
-                "            \"bairro\": \"AMERICA\",\n" +
-                "            \"cidade\": \"JOINVILLE\",\n" +
-                "            \"uf\": \"SC\",\n" +
-                "            \"cep\": \"89204060\",\n" +
-                "            \"telefone\": \"(47) 34419555\",\n" +
-                "            \"turnoAtendimento\": \"Atendimento contínuo de 24 horas/ dia (plantão: inclui sábados, domingos e feriados).\",\n" +
-                "            \"lat\": -26.28946,\n" +
-                "            \"long\": -48.84534\n" +
-                "    }";
-
-        String s3 = "{\n" +
-                "    \"codCnes\": 5417600,\n" +
-                "    \"codUnidade\": \"4209105417600\",\n" +
-                "    \"codIbge\": 420910,\n" +
-                "    \"cnpj\": \"04676887000193\",\n" +
-                "    \"nomeFantasia\": \"PSIQUE\",\n" +
-                "    \"natureza\": \"Empresa\",\n" +
-                "    \"tipoUnidade\": \"DIAGNOSE E TERAPIA\",\n" +
-                "    \"esferaAdministrativa\": \"Privada\",\n" +
-                "    \"vinculoSus\": \"Não\",\n" +
-                "    \"retencao\": \"Unidade Privada Lucrativa***\",\n" +
-                "    \"fluxoClientela\": \"Atendimento de demanda espontânea\",\n" +
-                "    \"origemGeografica\": \"CNES_GEO\",\n" +
-                "    \"temAtendimentoUrgencia\": \"Não\",\n" +
-                "    \"temAtendimentoAmbulatorial\": \"Sim\",\n" +
-                "    \"temCentroCirurgico\": \"Não\",\n" +
-                "    \"temObstetra\": \"Não\",\n" +
-                "    \"temNeoNatal\": \"Não\",\n" +
-                "    \"temDialise\": \"Sim\",\n" +
-                "    \"descricaoCompleta\": \"PSIQUE  EMPRESA PRIVADA    \",\n" +
-                "    \"tipoUnidadeCnes\": \"UNIDADE DE APOIO DIAGNOSE E TERAPIA (SADT ISOLADO)\",\n" +
-                "    \"categoriaUnidade\": \"LABORATÓRIO\",\n" +
-                "    \"logradouro\": \"RUA EXPEDICIONARIO HOLZ\",\n" +
-                "    \"numero\": \"149\",\n" +
-                "    \"bairro\": \"AMERICA\",\n" +
-                "    \"cidade\": \"JOINVILLE\",\n" +
-                "    \"uf\": \"SC\",\n" +
-                "    \"cep\": \"89201740\",\n" +
-                "    \"telefone\": \"(47) 34331840\",\n" +
-                "    \"turnoAtendimento\": \"Atendimento nos turnos da manhã e à tarde.\",\n" +
-                "    \"lat\": -26.30451,\n" +
-                "    \"long\": -48.85344\n" +
-                "  }";
-
         Bundle extras = getActivity().getIntent().getExtras();
         estabelecimento = (Estabelecimento)extras.get("estabelecimento");
 
@@ -234,6 +137,12 @@ public class InformacoesFragment extends Fragment{
         txtNumeroAvaliacoes = (TextView)view.findViewById(R.id.text_numero_avaliacoes);
         txtMediaAvaliacoes = (TextView)view.findViewById(R.id.text_media_avaliacoes);
         buttonDeixeSuaAvaliação = (Button)view.findViewById(R.id.button_deixe_sua_avaliacao);
+
+        enderecoMore = (ImageView)view.findViewById(R.id.endereco_more);
+        enderecoLess = (ImageView)view.findViewById(R.id.endereco_less);
+
+        informacoesMore = (ImageView)view.findViewById(R.id.informacoes_more);
+        informacoesLess = (ImageView)view.findViewById(R.id.informacoes_less);
 
         applicationAppCivico = (ApplicationAppCivico)this.getActivity().getApplication();
 
@@ -287,7 +196,10 @@ public class InformacoesFragment extends Fragment{
     public void inicializaCampos() {
         txtViewNomeFantasia.setText(estabelecimento.getNomeFantasia());
         txtViewNatureza.setText(estabelecimento.getNatureza());
-        txtViewTipoUnidade.setText(String.format(this.getActivity().getString(R.string.tipo_unidade),estabelecimento.getTipoUnidade()));
+        txtViewTipoUnidade.setText(String.format(this.getString(R.string.tipo_unidade),
+                estabelecimento.getTipoUnidade().substring(0,1).toUpperCase()+
+                        estabelecimento.getTipoUnidade().substring(1).toLowerCase()
+        ));
         txtViewEsferaAdministrativa.setText(String.format(this.getActivity().getString(R.string.esfera_administrativa),estabelecimento.getEsferaAdministrativa()));
         txtViewVinculoSus.setText(String.format(this.getActivity().getString(R.string.vinculo_sus),estabelecimento.getVinculoSus()));
         /*txtViewRetencao.setText(String.format(this.getActivity().getString(R.string.retencao),estabelecimento.getRetencao()));*/
@@ -299,11 +211,24 @@ public class InformacoesFragment extends Fragment{
         txtViewNeonatal.setText(String.format(this.getActivity().getString(R.string.tem_neonatal),estabelecimento.getTemNeoNatal()));
         txtViewDialise.setText(String.format(this.getActivity().getString(R.string.tem_dialise),estabelecimento.getTemDialise()));
         /*txtViewDescricaoCompleta.setText(String.format(this.getActivity().getString(R.string.descricao_completa),estabelecimento.getDescricaoCompleta()));*/
-        txtViewCategoriaUnidade.setText(String.format(this.getActivity().getString(R.string.categoria_unidade),estabelecimento.getCategoriaUnidade()));
-        txtViewLogradouro.setText(String.format(this.getActivity().getString(R.string.logradouro),estabelecimento.getLogradouro()));
+        txtViewCategoriaUnidade.setText(String.format(this.getString(R.string.categoria_unidade),
+                estabelecimento.getCategoriaUnidade().substring(0,1).toUpperCase()+
+                estabelecimento.getCategoriaUnidade().substring(1).toLowerCase()
+        ));
+        txtViewLogradouro.setText(String.format(this.getActivity().getString(R.string.logradouro),
+                estabelecimento.getLogradouro().substring(0,1).toUpperCase()+
+                estabelecimento.getLogradouro().substring(1).toLowerCase()
+        ));
+
         txtViewNumero.setText(String.format(this.getActivity().getString(R.string.numero),estabelecimento.getNumero()));
-        txtViewBairro.setText(String.format(this.getActivity().getString(R.string.bairro),estabelecimento.getBairro()));
-        txtViewCidade.setText(String.format(this.getActivity().getString(R.string.cidade),estabelecimento.getCidade()));
+        txtViewBairro.setText(String.format(this.getActivity().getString(R.string.bairro),
+                estabelecimento.getBairro().substring(0,1).toUpperCase()+
+                estabelecimento.getBairro().substring(1).toLowerCase()
+        ));
+        txtViewCidade.setText(String.format(this.getActivity().getString(R.string.cidade),
+                estabelecimento.getCidade().substring(0,1).toUpperCase()+
+                estabelecimento.getCidade().substring(1).toLowerCase()
+        ));
         txtViewUf.setText(String.format(this.getActivity().getString(R.string.uf),estabelecimento.getUf()));
         txtViewCep.setText(String.format(this.getActivity().getString(R.string.cep_estabelecimento),estabelecimento.getCep()));
         txtViewTelefone.setText(String.format(this.getActivity().getString(R.string.telefone),estabelecimento.getTelefone()));
@@ -315,6 +240,7 @@ public class InformacoesFragment extends Fragment{
             @Override
             public void onClick(View view) {
                 if(linearlayoutEnderecoContent.getVisibility() == View.GONE) {
+
                     linearlayoutEnderecoContent.setVisibility(View.VISIBLE);
                     linearlayoutEnderecoContent.setAlpha(0.0f);
                     linearlayoutEnderecoContent.animate()
@@ -322,8 +248,10 @@ public class InformacoesFragment extends Fragment{
                             .translationY(linearlayoutEnderecoContentHeight)
                             .alpha(1.0f)
                             .setListener(null);
-
+                    enderecoLess.setVisibility(View.VISIBLE);
+                    enderecoMore.setVisibility(View.GONE);
                 }else if(linearlayoutEnderecoContent.getVisibility() == View.VISIBLE) {
+
                     linearlayoutEnderecoContent.animate()
                             .setDuration(400)
                             .alpha(0.0f)
@@ -349,6 +277,8 @@ public class InformacoesFragment extends Fragment{
 
                                 }
                             });
+                    enderecoMore.setVisibility(View.VISIBLE);
+                    enderecoLess.setVisibility(View.GONE);
                 }
             }
         });
@@ -366,6 +296,9 @@ public class InformacoesFragment extends Fragment{
                             .translationY(linearlayoutInformacoesContentHeight)
                             .alpha(1.0f)
                             .setListener(null);
+
+                    informacoesLess.setVisibility(View.VISIBLE);
+                    informacoesMore.setVisibility(View.GONE);
 
                 }else if(linearlayoutInformacoesContent.getVisibility() == View.VISIBLE) {
                     linearlayoutInformacoesContent.animate()
@@ -393,6 +326,9 @@ public class InformacoesFragment extends Fragment{
 
                                 }
                             });
+
+                    informacoesMore.setVisibility(View.VISIBLE);
+                    informacoesLess.setVisibility(View.GONE);
                 }
             }
         });

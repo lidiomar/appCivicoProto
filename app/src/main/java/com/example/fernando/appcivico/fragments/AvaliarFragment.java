@@ -10,11 +10,13 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -66,7 +68,6 @@ public class AvaliarFragment extends Fragment {
     private LinearLayoutManager linearLayoutManager;
     private ComentarioAdapter comentarioAdapter;
     private Gson gson = new Gson();
-    private TextView txtEmptyComentarios;
     int pastVisiblesItems, visibleItemCount, totalItemCount;
     private int countOffset = 0;
     private Boolean inicializar = true;
@@ -74,11 +75,14 @@ public class AvaliarFragment extends Fragment {
     private ProgressBar progressBar;
     private Boolean carregando = false;
 
+    private LinearLayout linearLayoutComentarios;
+    private LinearLayout linearLayoutMain;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_avaliar, container, false);
-
+        linearLayoutMain = (LinearLayout)view.findViewById(R.id.main_layout);
         Bundle extras = getActivity().getIntent().getExtras();
         estabelecimento = (Estabelecimento)extras.get("estabelecimento");
 
@@ -96,6 +100,7 @@ public class AvaliarFragment extends Fragment {
         recyclerViewComentarios.setItemAnimator(new DefaultItemAnimator());
         recyclerViewComentarios.setHasFixedSize(true);
 
+        linearLayoutComentarios = (LinearLayout)view.findViewById(R.id.linearlayout_comentarios);
 
         recyclerViewComentarios.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
@@ -117,7 +122,6 @@ public class AvaliarFragment extends Fragment {
         });
 
         editTextComentario = (EditText)view.findViewById(R.id.comentario_avaliacao);
-        txtEmptyComentarios = (TextView)view.findViewById(R.id.txt_empty_comentarios);
 
         buttonAvaliar = (Button)view.findViewById(R.id.button_avaliar);
 
@@ -127,7 +131,7 @@ public class AvaliarFragment extends Fragment {
                 int notaAvaliacao = (int)ratingBar.getRating();
                 String comentario = editTextComentario.getText().toString();
 
-                if(validarEnvio(comentario, notaAvaliacao)) {
+                if(validarEnvio(editTextComentario)) {
                     final Avaliacao avaliacao = new Avaliacao(AvaliarFragment.this.getActivity());
                     Tipo tipo = new Tipo();
                     tipo.setCodTipoPostagem(Constants.CODE_TIPO_POSTAGEM);
@@ -176,8 +180,9 @@ public class AvaliarFragment extends Fragment {
         return view;
     }
 
-    public Boolean validarEnvio(String comentario, int rating) {
-        if(comentario.isEmpty() || rating <= 0) {
+    public Boolean validarEnvio(EditText comentario) {
+        if(comentario.getText().toString().isEmpty()) {
+            comentario.setError(this.getActivity().getResources().getString(R.string.campo_obrigatorio));
             return false;
         }
         return true;
@@ -221,8 +226,6 @@ public class AvaliarFragment extends Fragment {
                             }
                         }
                     });
-                }else {
-                    atribuiEmptyView();
                 }
             }
         };
@@ -237,20 +240,17 @@ public class AvaliarFragment extends Fragment {
         avaliacao.buscaPostagens(countOffset,5,estabelecimento.getCodUnidade(),responseListener,responseErrorListener);
     }
 
-    public void atribuiEmptyView() {
-        recyclerViewComentarios.setVisibility(View.GONE);
-        txtEmptyComentarios.setVisibility(View.VISIBLE);
-    }
+
 
     public void atribuiValoresRecyclerView() {
         ArrayList<Comentario> comentarios = montaListaComentarios();
         this.comentariosList.addAll(comentarios);
 
         if(inicializar) {
+            setLayoutGravity();
             comentarioAdapter = new ComentarioAdapter(AvaliarFragment.this.getActivity(), this.comentariosList);
             recyclerViewComentarios.setAdapter(comentarioAdapter);
-            recyclerViewComentarios.setVisibility(View.VISIBLE);
-            txtEmptyComentarios.setVisibility(View.GONE);
+            linearLayoutComentarios.setVisibility(View.VISIBLE);
         } else {
             ReceiverThread receiverThread = new ReceiverThread();
             receiverThread.run();
@@ -338,5 +338,9 @@ public class AvaliarFragment extends Fragment {
                 }
             });
         }
+    }
+
+    private void setLayoutGravity() {
+        linearLayoutMain.setGravity(Gravity.TOP);
     }
 }

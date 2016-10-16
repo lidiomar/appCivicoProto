@@ -1,27 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
+    android:background="@drawable/border_default"
+    android:layout_margin="5dp"
+    android:padding="10dp"
     android:layout_height="wrap_content">
 
-    <RatingBar
-        android:id="@+id/ratingbar_nota"
-        android:layout_width="wrap_content"
-        android:isIndicator="true"
-        android:layout_height="wrap_content"/>
+    <LinearLayout android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:orientation="horizontal">
 
+        <LinearLayout android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:orientation="horizontal"
+            android:layout_weight="1">
+
+            <RatingBar
+                android:id="@+id/ratingbar_nota"
+                android:layout_width="wrap_content"
+                android:isIndicator="true"
+                style="?android:attr/ratingBarStyleSmall"
+                android:layout_height="wrap_content"
+                android:numStars="5"
+                android:stepSize="1.0"
+                android:rating="3" />
+        </LinearLayout>
+
+        <LinearLayout android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:orientation="horizontal"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/txt_data_hora"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="16/10/2016"
+                android:layout_gravity="right"
+                android:layout_weight="1"
+                android:textAlignment="textEnd"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </LinearLayout>
     <TextView
         android:id="@+id/txt_comentario"
         android:layout_height="wrap_content"
-        android:layout_width="wrap_content" />
+        android:layout_width="wrap_content"
+        android:text="bla"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:textStyle="italic" />
 
     <TextView
         android:id="@+id/txt_autor"
         android:layout_height="wrap_content"
-        android:layout_width="wrap_content" />
+        android:layout_width="wrap_content"
+        android:text="Lidiomar Fernando dos Santos Machado"
+        android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/txt_data_hora"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content" />
+
 
 </LinearLayout>

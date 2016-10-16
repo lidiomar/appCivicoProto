@@ -37,7 +37,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private LinearLayout adapterEstabelecimento;
     private TextView textoInformativo;
 
-
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,6 +104,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 String id = marker.getId();
                 Estabelecimento estabelecimento = hashEstabelecimentos.get(id);
                 if(estabelecimento != null) {
+                    /*if(adapterEstabelecimento.getVisibility() == View.VISIBLE) {
+                        startActivityInfo(estabelecimento);
+                    }*/
                     inicializaEstabelecimento(estabelecimento);
                 }else {
                     inicializaInfo();
@@ -145,11 +147,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         adapterEstabelecimento.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MapsActivity.this, InformacoesActivity.class);
-                intent.putExtra("estabelecimento",estabelecimento);
-                startActivity(intent);
+                startActivityInfo(estabelecimento);
             }
         });
+
 
         adapterEstabelecimento.setVisibility(View.VISIBLE);
         textoInformativo.setVisibility(View.GONE);
@@ -160,4 +161,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         textoInformativo.setVisibility(View.VISIBLE);
     }
 
+    private void startActivityInfo(final Estabelecimento estabelecimento) {
+        Intent intent = new Intent(MapsActivity.this, InformacoesActivity.class);
+        intent.putExtra("estabelecimento", estabelecimento);
+        startActivity(intent);
+    }
 }
