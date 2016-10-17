@@ -20,7 +20,11 @@
     <style name="CustomProgressBar" parent="Widget.AppCompat.ProgressBar.Horizontal">
     </style>
 
-    <style name="bla" parent="android:Widget.DeviceDefault.RatingBar.Small">
-
+    <style name="CustomDialog" parent="Theme.AppCompat.Light.Dialog">
+        <item name="windowNoTitle">true</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorButtonNormal">@color/colorAccent</item>
     </style>
 </resources>

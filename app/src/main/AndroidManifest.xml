@@ -82,6 +82,12 @@
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
+        <activity
+            android:name=".activities.DialogAvaliarActivity"
+            android:label="@string/app_name"
+            android:theme="@style/CustomDialog">
+        </activity>
+
     </application>
 
 </manifest>

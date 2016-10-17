@@ -2,64 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/main_layout"
-    android:gravity="center_vertical">
+    android:id="@+id/main_layout">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:id="@+id/linearlayout_avaliacao"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_gravity="center_vertical"
-        android:gravity="center_vertical">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/avalie_o_estabelecimento"
-            android:layout_marginBottom="10dp"
-            android:layout_gravity="center_horizontal"
-            android:gravity="center" />
-
-
-        <RatingBar
-            android:id="@+id/rating_avaliacao"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:numStars="5"
-            android:stepSize="1.0"
-            android:rating="0"
-            android:layout_marginBottom="15dp"
-            android:layout_gravity="center_horizontal" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/deixe_o_seu_comentario"
-            android:layout_marginBottom="10dp"
-            android:layout_gravity="center_horizontal"
-            android:gravity="center" />
-
-        <EditText
-            android:id="@+id/comentario_avaliacao"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:singleLine="false"
-            android:background="@drawable/border_default"
-            android:lines="5"
-            android:gravity="top"
-            android:inputType="textMultiLine"
-            android:maxLength="250"
-            android:layout_marginLeft="10dip"
-            android:layout_marginRight="10dip"
-            android:padding="5dp" />
-
-
-        <Button android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:text="@string/enviar"
-            android:id="@+id/button_avaliar"
-            android:layout_gravity="center_horizontal" />
-    </LinearLayout>
+    <Button android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="@string/deixe_a_sua_avaliacao"
+        android:id="@+id/button_avaliar_dialog"
+        android:layout_gravity="center_horizontal" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -72,13 +21,13 @@
         android:layout_marginLeft="5dp">
 
         <TextView
+            android:id="@+id/texto_informativo_comentarios"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/comentarios_de_outros_usuarios"
+            android:text="@string/nao_ha_comentarios"
             android:layout_marginBottom="25dp"
             android:layout_gravity="center_horizontal"
             android:gravity="center|center_horizontal"
-            android:visibility="gone"
             android:layout_marginTop="15dp" />
 
         <android.support.v7.widget.RecyclerView

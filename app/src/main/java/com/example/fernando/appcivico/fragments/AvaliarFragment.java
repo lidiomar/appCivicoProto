@@ -1,24 +1,18 @@
 package com.example.fernando.appcivico.fragments;
 
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,27 +23,22 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.fernando.appcivico.R;
+import com.example.fernando.appcivico.activities.DialogAvaliarActivity;
+import com.example.fernando.appcivico.activities.EscolherAcessoActivity;
 import com.example.fernando.appcivico.adapters.ComentarioAdapter;
 import com.example.fernando.appcivico.application.ApplicationAppCivico;
-import com.example.fernando.appcivico.estrutura.Autor;
 import com.example.fernando.appcivico.estrutura.Comentario;
 import com.example.fernando.appcivico.estrutura.ConteudoPostagem;
 import com.example.fernando.appcivico.estrutura.ConteudoPostagemRetorno;
 import com.example.fernando.appcivico.estrutura.Estabelecimento;
 import com.example.fernando.appcivico.estrutura.JsonComentario;
-import com.example.fernando.appcivico.estrutura.Postagem;
 import com.example.fernando.appcivico.estrutura.PostagemRetorno;
-import com.example.fernando.appcivico.estrutura.Tipo;
 import com.example.fernando.appcivico.servicos.Avaliacao;
-import com.example.fernando.appcivico.utils.Constants;
 import com.google.gson.Gson;
 
 import org.json.JSONObject;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Set;
 
@@ -57,9 +46,6 @@ import java.util.Set;
  * Created by fernando on 06/10/16.
  */
 public class AvaliarFragment extends Fragment {
-    private Button buttonAvaliar;
-    private RatingBar ratingBar;
-    private EditText editTextComentario;
     private Estabelecimento estabelecimento;
     private int requestCount = 0;
     private HashMap<String,ConteudoPostagem> conteudoPostagemHash = new HashMap<>();
@@ -74,23 +60,20 @@ public class AvaliarFragment extends Fragment {
     private ArrayList<Comentario> comentariosList = new ArrayList<>();
     private ProgressBar progressBar;
     private Boolean carregando = false;
-
+    private Button buttonAvaliarDialog;
     private LinearLayout linearLayoutComentarios;
-    private LinearLayout linearLayoutMain;
+    private TextView textoInformativoComentarios;
+    private ApplicationAppCivico applicationAppCivico;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_avaliar, container, false);
-        linearLayoutMain = (LinearLayout)view.findViewById(R.id.main_layout);
         Bundle extras = getActivity().getIntent().getExtras();
         estabelecimento = (Estabelecimento)extras.get("estabelecimento");
-
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
-
-        ratingBar = (RatingBar)view.findViewById(R.id.rating_avaliacao);
-        Drawable progress = ratingBar.getProgressDrawable();
-        DrawableCompat.setTint(progress, Color.rgb(11111111,01011010,00000000));
+        applicationAppCivico = (ApplicationAppCivico)this.getActivity().getApplication();
+        textoInformativoComentarios = (TextView)view.findViewById(R.id.texto_informativo_comentarios);
 
         linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -121,71 +104,19 @@ public class AvaliarFragment extends Fragment {
 
         });
 
-        editTextComentario = (EditText)view.findViewById(R.id.comentario_avaliacao);
-
-        buttonAvaliar = (Button)view.findViewById(R.id.button_avaliar);
-
-        buttonAvaliar.setOnClickListener(new View.OnClickListener() {
+        buttonAvaliarDialog = (Button)view.findViewById(R.id.button_avaliar_dialog);
+        buttonAvaliarDialog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int notaAvaliacao = (int)ratingBar.getRating();
-                String comentario = editTextComentario.getText().toString();
-
-                if(validarEnvio(editTextComentario)) {
-                    final Avaliacao avaliacao = new Avaliacao(AvaliarFragment.this.getActivity());
-                    Tipo tipo = new Tipo();
-                    tipo.setCodTipoPostagem(Constants.CODE_TIPO_POSTAGEM);
-                    Autor autor = new Autor();
-                    autor.setCodPessoa(((ApplicationAppCivico) AvaliarFragment.this.getActivity().getApplication()).getUsuarioAutenticado().getCod());
-
-                    Postagem postagem = new Postagem();
-                    postagem.setCodTipoObjetoDestino(Constants.CODE_TIPO_OBJETO_DESTINO);
-                    postagem.setCodObjetoDestino(estabelecimento.getCodUnidade());
-                    postagem.setTipo(tipo);
-                    postagem.setAutor(autor);
-
-                    final ConteudoPostagem conteudoPostagem = new ConteudoPostagem();
-
-                    JsonComentario jsonComentario = new JsonComentario();
-                    Calendar c = Calendar.getInstance();
-                    Date data = c.getTime();
-                    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyyy");
-                    String dataFormatada = sdf.format(data);
-                    jsonComentario.setDataComentario(dataFormatada);
-                    jsonComentario.setNomeAutorComentario(((ApplicationAppCivico) AvaliarFragment.this.getActivity().getApplication()).getUsuarioAutenticado().getNomeUsuario());
-                    jsonComentario.setNomeFantasiaEstabelecimento(estabelecimento.getNomeFantasia());
-
-                    conteudoPostagem.setJSON(gson.toJson(jsonComentario));
-                    conteudoPostagem.setTexto(comentario);
-                    conteudoPostagem.setValor(notaAvaliacao);
-
-                    Response.Listener<String> responseListenerCriarPostagem = new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            avaliacao.atribuirConteudoPostagem(conteudoPostagem);
-                        }
-                    };
-
-                    avaliacao.criarPostagem(postagem, conteudoPostagem, responseListenerCriarPostagem);
-
-                } else {
-                    Toast.makeText(AvaliarFragment.this.getActivity(),AvaliarFragment.this.getActivity().getString(R.string
-                    .preencha_os_dados_da_avaliacao) ,Toast.LENGTH_SHORT).show();
-                }
+                Intent intent = new Intent(AvaliarFragment.this.getActivity(), DialogAvaliarActivity.class);
+                intent.putExtra("estabelecimento", estabelecimento);
+                startActivity(intent);
             }
         });
 
         buscarComentarios();
 
         return view;
-    }
-
-    public Boolean validarEnvio(EditText comentario) {
-        if(comentario.getText().toString().isEmpty()) {
-            comentario.setError(this.getActivity().getResources().getString(R.string.campo_obrigatorio));
-            return false;
-        }
-        return true;
     }
 
     public void buscarComentarios() {
@@ -247,10 +178,10 @@ public class AvaliarFragment extends Fragment {
         this.comentariosList.addAll(comentarios);
 
         if(inicializar) {
-            setLayoutGravity();
             comentarioAdapter = new ComentarioAdapter(AvaliarFragment.this.getActivity(), this.comentariosList);
             recyclerViewComentarios.setAdapter(comentarioAdapter);
             linearLayoutComentarios.setVisibility(View.VISIBLE);
+            textoInformativoComentarios.setText(this.getActivity().getString(R.string.comentarios_de_outros_usuarios));
         } else {
             ReceiverThread receiverThread = new ReceiverThread();
             receiverThread.run();
@@ -340,7 +271,5 @@ public class AvaliarFragment extends Fragment {
         }
     }
 
-    private void setLayoutGravity() {
-        linearLayoutMain.setGravity(Gravity.TOP);
-    }
+
 }

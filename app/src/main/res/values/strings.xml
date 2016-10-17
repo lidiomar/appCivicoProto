@@ -89,7 +89,10 @@
     <string name="resultado_da_pesquisa">Resultado da pesquisa:</string>
     <string name="toque_no_mapa">Toque nos pontos marcados no mapa para obter detalhes sobre os estabelecimentos de saúde.</string>
 
-    <string name="comentarios_de_outros_usuarios">Comentários de outros usuários:</string>
+    <string name="comentarios_de_outros_usuarios">Comentários dos usuários sobre o estabelecimento:</string>
+
+    <string name="deixe_a_sua_avaliacao">Deixe a sua avaliação</string>
+    <string name="visualizar_avaliacoes">Visualizar avaliações</string>
 </resources>
 
 

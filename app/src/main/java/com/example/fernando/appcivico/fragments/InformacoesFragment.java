@@ -78,7 +78,7 @@ public class InformacoesFragment extends Fragment{
     private TextView txtNumeroAvaliacoes;
     private TextView txtMediaAvaliacoes;
 
-    private Button buttonDeixeSuaAvaliação;
+    private Button buttonVisualizarAvaliacoes;
     private ApplicationAppCivico applicationAppCivico;
     private ImageView enderecoMore;
     private ImageView enderecoLess;
@@ -101,10 +101,6 @@ public class InformacoesFragment extends Fragment{
         linearlayoutInformacoesWrap = (LinearLayout)view.findViewById(R.id.linearlayout_informacoes_wrap);
         linearlayoutInformacoesContent = (LinearLayout)view.findViewById(R.id.linearlayout_informacoes_content);
         linearlayoutInformacoesContentHeight = linearlayoutInformacoesContent.getHeight();
-
-        /*Gson gson = new Gson();
-        String stringJson = String.valueOf(s).replace("\"long\":", "\"longitude\":");
-        estabelecimento = gson.fromJson(stringJson, Estabelecimento.class);*/
 
         txtViewNomeFantasia  = (TextView)view.findViewById(R.id.nome_fantasia);
         txtViewNatureza = (TextView)view.findViewById(R.id.natureza);
@@ -136,7 +132,7 @@ public class InformacoesFragment extends Fragment{
 
         txtNumeroAvaliacoes = (TextView)view.findViewById(R.id.text_numero_avaliacoes);
         txtMediaAvaliacoes = (TextView)view.findViewById(R.id.text_media_avaliacoes);
-        buttonDeixeSuaAvaliação = (Button)view.findViewById(R.id.button_deixe_sua_avaliacao);
+        buttonVisualizarAvaliacoes = (Button)view.findViewById(R.id.button_deixe_sua_avaliacao);
 
         enderecoMore = (ImageView)view.findViewById(R.id.endereco_more);
         enderecoLess = (ImageView)view.findViewById(R.id.endereco_less);
@@ -146,7 +142,7 @@ public class InformacoesFragment extends Fragment{
 
         applicationAppCivico = (ApplicationAppCivico)this.getActivity().getApplication();
 
-        buttonDeixeSuaAvaliação.setOnClickListener(new View.OnClickListener() {
+        buttonVisualizarAvaliacoes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(applicationAppCivico.usuarioAutenticado()) {
@@ -156,17 +152,6 @@ public class InformacoesFragment extends Fragment{
                             Intent intent = new Intent(InformacoesFragment.this.getActivity(), AvaliarActivity.class);
                             intent.putExtra("estabelecimento",estabelecimento);
                             startActivity(intent);
-
-                            /*int statusCodeResponse = avaliacao.getBuscaPostagemStatusCode();
-                            if(statusCodeResponse == 204) {
-                                Intent intent = new Intent(InformacoesFragment.this.getActivity(), AvaliarActivity.class);
-                                intent.putExtra("estabelecimento",estabelecimento);
-                                startActivity(intent);
-                            }else if(statusCodeResponse == 200) {
-                                Toast.makeText(InformacoesFragment.this.getActivity(),InformacoesFragment.this.getActivity().getString(R.string.ja_existe_avaliacao),Toast.LENGTH_LONG).show();
-                            }else {
-                                Toast.makeText(InformacoesFragment.this.getActivity(),InformacoesFragment.this.getActivity().getString(R.string.algo_deu_errado),Toast.LENGTH_LONG).show();
-                            }*/
                         }
                     };
 
@@ -178,12 +163,10 @@ public class InformacoesFragment extends Fragment{
                     };
                     ApplicationAppCivico applicationAppCivico = (ApplicationAppCivico)InformacoesFragment.this.getActivity().getApplication();
                     avaliacao.buscaPostagem(0,1,estabelecimento.getCodUnidade(),applicationAppCivico.getUsuarioAutenticado().getCod(), respListener,responseErrorListener);
-
                 }else {
                     Intent intent = new Intent(InformacoesFragment.this.getActivity(), EscolherAcessoActivity.class);
                     startActivity(intent);
                 }
-
             }
         });
 
