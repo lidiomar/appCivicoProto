@@ -83,6 +83,7 @@
     <string name="busca_categoria">Categoria:</string>
     <string name="busca_especialidade">Especialidade:</string>
     <string name="busca_por_cidades">Busca por cidades</string>
+    <string name="busca_por_localizacao">Busca por localização</string>
     <string name="sair">Sair</string>
     <string name="minhas_avaliacoes">Minhas avaliações</string>
     <string name="cancelar">Cancelar</string>

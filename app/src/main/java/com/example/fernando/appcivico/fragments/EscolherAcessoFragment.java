@@ -13,6 +13,7 @@ import android.widget.Button;
 import com.example.fernando.appcivico.R;
 import com.example.fernando.appcivico.activities.CadastroActivity;
 import com.example.fernando.appcivico.activities.LoginActivity;
+import com.example.fernando.appcivico.utils.Constants;
 
 /**
  * Created by fernando on 05/10/16.
@@ -31,7 +32,7 @@ public class EscolherAcessoFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(context, LoginActivity.class);
-                startActivity(i);
+                startActivityForResult(i, 9);
             }
         });
         primeiroAcesso = (Button)view.findViewById(R.id.button_primeiro_acesso);
@@ -44,5 +45,12 @@ public class EscolherAcessoFragment extends Fragment {
         });
 
         return view;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(resultCode == Constants.LOGIN_AUTENTICADO) {
+            this.getActivity().finish();
+        }
     }
 }

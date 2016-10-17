@@ -11,19 +11,22 @@ import com.example.fernando.appcivico.fragments.BuscaAvancadaFragment;
 /**
  * Created by fernando on 06/10/16.
  */
-public class BuscaAvancadaActivity extends AppCompatActivity {
+public class BuscaAvancadaActivity extends ParentMenuActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        setContentView(R.layout.layout_default);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         getSupportFragmentManager().beginTransaction().replace(R.id.main_container,new BuscaAvancadaFragment()).commit();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (applicationAppCivico.usuarioAutenticado()) {
+            navigationView.getMenu().getItem(1).setChecked(true);
+        }else {
+            navigationView.getMenu().getItem(2).setChecked(true);
+        }
 
     }
 }

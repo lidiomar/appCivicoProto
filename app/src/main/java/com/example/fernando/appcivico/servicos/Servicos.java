@@ -41,17 +41,10 @@ public class Servicos {
         this.requestQueue = Volley.newRequestQueue(context);
     }
 
-    public void autenticarUsuario(final String email, final String senha) {
+    public void autenticarUsuario(final String email, final String senha, Response.Listener<JSONObject> listener) {
         String url = "http://mobile-aceite.tcu.gov.br:80/appCivicoRS/rest/pessoas/autenticar";
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null , new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                ((ApplicationAppCivico)fragmentActivity.getApplication()).setUsuarioAutenticado(response.toString());
-
-                StaticFunctions.exibeMensagemEFecha(fragmentActivity.getString(R.string.usuario_autenticado_com_sucesso),fragmentActivity);
-            }
-        }, new Response.ErrorListener() {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null,listener, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(fragmentActivity,fragmentActivity.getString(R.string.usuario_nao_cadastrado),Toast.LENGTH_SHORT).show();
