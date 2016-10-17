@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -23,38 +25,27 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.HashMap;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private Estabelecimento[] estabelecimentos = null;
     private double lat;
     private double lng;
-    private TextView txtVinculoSus;
-    private TextView txtnomeFantasia;
-    private TextView txtVinculoTurno;
-    private TextView tipoUnidade;
-    private TextView categoriaUnidade;
-    private LinearLayout adapterEstabelecimento;
     private TextView textoInformativo;
-
+    String clickedMarkerId = null;
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+        /*Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);*/
 
         Bundle extras = getIntent().getExtras();
 
-        adapterEstabelecimento = (LinearLayout)findViewById(R.id.adapter_estabelecimento);
-
-        txtnomeFantasia = (TextView)adapterEstabelecimento.findViewById(R.id.txt_nome_fantasia);
-        txtVinculoSus = (TextView) adapterEstabelecimento.findViewById(R.id.txt_vinculo_sus);
-        txtVinculoTurno = (TextView)adapterEstabelecimento.findViewById(R.id.txt_vinculo_turno);
-        tipoUnidade = (TextView)adapterEstabelecimento.findViewById(R.id.tipo_unidade);
-        categoriaUnidade = (TextView)adapterEstabelecimento.findViewById(R.id.categoria_unidade);
         textoInformativo = (TextView) findViewById(R.id.texto_informativo);
-        adapterEstabelecimento.setBackground(null);
-        adapterEstabelecimento.setVisibility(View.GONE);
 
         Object[] estabelecimentosObj = (Object[]) extras.get("estabelecimentos");
         lat = (double) extras.get("latitudeUsuario");
@@ -92,7 +83,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         for (Estabelecimento estabelecimento : estabelecimentos) {
             LatLng latLng = new LatLng(estabelecimento.getLat(), estabelecimento.getLongitude());
-            Marker marker = mMap.addMarker(new MarkerOptions().position(latLng).title(estabelecimento.getNomeFantasia()).snippet("Vinculo SUS: " + estabelecimento.getVinculoSus()));
+            Marker marker = mMap.addMarker(new MarkerOptions().position(latLng).title(estabelecimento.getNomeFantasia()).snippet("> Mais informações"));
             hashEstabelecimentos.put(marker.getId(), estabelecimento);
             mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
 
@@ -104,17 +95,28 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 String id = marker.getId();
                 Estabelecimento estabelecimento = hashEstabelecimentos.get(id);
                 if(estabelecimento != null) {
-                    /*if(adapterEstabelecimento.getVisibility() == View.VISIBLE) {
+                    if(clickedMarkerId == null || !clickedMarkerId.equals(id)) {
+                        clickedMarkerId = id;
+
+                    }else {
+                        clickedMarkerId = null;
                         startActivityInfo(estabelecimento);
-                    }*/
-                    inicializaEstabelecimento(estabelecimento);
-                }else {
-                    inicializaInfo();
+                    }
                 }
                 return false;
             }
         });
 
+        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+                String id = marker.getId();
+                Estabelecimento estabelecimento = hashEstabelecimentos.get(id);
+                if(estabelecimento != null) {
+                    startActivityInfo(estabelecimento);
+                }
+            }
+        });
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(new LatLng(lat, lng))
                 .zoom(13)
@@ -129,37 +131,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         marker.showInfoWindow();
     }
 
-    public void inicializaEstabelecimento(final Estabelecimento estabelecimento) {
-
-        this.txtnomeFantasia.setText(estabelecimento.getNomeFantasia());
-        this.txtVinculoSus.setText(String.format(this.getString(R.string.vinculo_sus),estabelecimento.getVinculoSus()));
-        this.txtVinculoTurno.setText(String.format(this.getString(R.string.turno_atendimento),estabelecimento.getTurnoAtendimento()));
-
-        this.tipoUnidade.setText(String.format(this.getString(R.string.tipo_unidade),
-                estabelecimento.getTipoUnidade().substring(0,1).toUpperCase()+
-                        estabelecimento.getTipoUnidade().substring(1).toLowerCase()
-        ));
-        this.categoriaUnidade.setText(String.format(this.getString(R.string.categoria_unidade),
-                estabelecimento.getCategoriaUnidade().substring(0,1).toUpperCase()+
-                        estabelecimento.getCategoriaUnidade().substring(1).toLowerCase()
-        ));
-
-        adapterEstabelecimento.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivityInfo(estabelecimento);
-            }
-        });
-
-
-        adapterEstabelecimento.setVisibility(View.VISIBLE);
-        textoInformativo.setVisibility(View.GONE);
-    }
-
-    private void inicializaInfo() {
-        adapterEstabelecimento.setVisibility(View.GONE);
-        textoInformativo.setVisibility(View.VISIBLE);
-    }
 
     private void startActivityInfo(final Estabelecimento estabelecimento) {
         Intent intent = new Intent(MapsActivity.this, InformacoesActivity.class);

@@ -12,6 +12,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.fernando.appcivico.R;
@@ -59,12 +61,23 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onResume() {
+        View headerView = navigationView.getHeaderView(0);
+        TextView txtemail = (TextView)headerView.findViewById(R.id.email_usuario_autenticado);
+        TextView txtNome = (TextView)headerView.findViewById(R.id.nome_app_usuario_autenticado);
+
+        navigationView.getMenu().clear();
+
         if (applicationAppCivico.usuarioAutenticado()) {
-            navigationView.getMenu().clear();
             navigationView.inflateMenu(R.menu.activity_main_drawer_autenticado);
+
+            txtemail.setVisibility(View.VISIBLE);
+            txtemail.setText(applicationAppCivico.getUsuarioAutenticado().getEmail());
+            txtNome.setText(applicationAppCivico.getUsuarioAutenticado().getNomeUsuario());
+
         }else{
-            navigationView.getMenu().clear();
             navigationView.inflateMenu(R.menu.activity_main_drawer);
+            txtemail.setVisibility(View.GONE);
+            txtNome.setText(this.getResources().getString(R.string.app_name));
         }
 
         super.onResume();

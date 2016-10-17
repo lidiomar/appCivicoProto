@@ -176,6 +176,12 @@ public class InformacoesFragment extends Fragment{
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        inicializaCampos();
+    }
+
     public void inicializaCampos() {
         txtViewNomeFantasia.setText(estabelecimento.getNomeFantasia());
         txtViewNatureza.setText(estabelecimento.getNatureza());
