@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -84,7 +85,7 @@ public class InformacoesFragment extends Fragment{
     private ImageView enderecoLess;
     private ImageView informacoesMore;
     private ImageView informacoesLess;
-
+    private ProgressBar progressBarAvaliacao;
 
     @Nullable
     @Override
@@ -96,7 +97,7 @@ public class InformacoesFragment extends Fragment{
         linearlayoutEnderecoWrap = (LinearLayout)view.findViewById(R.id.linearlayout_endereco_wrap);
         linearlayoutEnderecoContent = (LinearLayout)view.findViewById(R.id.linearlayout_endereco_content);
         linearlayoutEnderecoContentHeight = linearlayoutEnderecoContent.getHeight();
-
+        progressBarAvaliacao = (ProgressBar)view.findViewById(R.id.progressBar_avaliacoes);
 
         linearlayoutInformacoesWrap = (LinearLayout)view.findViewById(R.id.linearlayout_informacoes_wrap);
         linearlayoutInformacoesContent = (LinearLayout)view.findViewById(R.id.linearlayout_informacoes_content);
@@ -365,7 +366,7 @@ public class InformacoesFragment extends Fragment{
             }
         };
 
-        avaliacao.buscaMediaAvaliacoes(estabelecimento.getCodUnidade(),respListener, errorListener);
+        avaliacao.buscaMediaAvaliacoes(estabelecimento.getCodUnidade(),respListener, errorListener, progressBarAvaliacao);
     }
 
 }
