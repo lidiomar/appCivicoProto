@@ -36,6 +36,7 @@ import com.example.fernando.appcivico.estrutura.Categoria;
 import com.example.fernando.appcivico.estrutura.Estabelecimento;
 import com.example.fernando.appcivico.servicos.Servicos;
 import com.example.fernando.appcivico.utils.Constants;
+import com.example.fernando.appcivico.utils.MyAlertDialogFragment;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
@@ -217,51 +218,10 @@ public class PesquisaFragment extends Fragment implements GoogleApiClient.Connec
         };
 
         Servicos servicos = new Servicos(PesquisaFragment.this.getActivity());
-        servicos.consultaEstabelecimentoLatLong(respListener, lat, lng, raio, texto, categoriaId);
-
+        MyAlertDialogFragment myAlertDialogFragment = MyAlertDialogFragment.newInstance("", "");
+        myAlertDialogFragment.show(getFragmentManager(),"");
+        servicos.consultaEstabelecimentoLatLong(respListener, lat, lng, raio, texto, categoriaId, myAlertDialogFragment);
     }
 
-    public void onClickOld() {
-        String categoriaId = "";
-        String texto = "";
-        try {
-            categoriaId = URLEncoder.encode((((Categoria) spinnerCategoria.getSelectedItem()).getId()), "UTF-8");
-            texto = URLEncoder.encode(buscaTexto.getText().toString(), "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
 
-        int progress = seekBar.getProgress();
-        final double lat;
-        final double lng;
-
-        LocationManager locationManager = (LocationManager) PesquisaFragment.this.getActivity().getSystemService(Context.LOCATION_SERVICE);
-        Criteria criteria = new Criteria();
-        if (ActivityCompat.checkSelfPermission(PesquisaFragment.this.getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(PesquisaFragment.this.getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(PesquisaFragment.this.getActivity(), "É necessário permitir o envio das informações de localização", Toast.LENGTH_SHORT).show();
-        } else {
-            Location location = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
-            lat = location.getLatitude();
-            lng = location.getLongitude();
-
-            Response.Listener respListener = new Response.Listener<JSONArray>() {
-                @Override
-                public void onResponse(JSONArray response) {
-                    Gson gson = new Gson();
-                    String stringJson = String.valueOf(response).replace("\"long\":", "\"longitude\":");
-                    Estabelecimento[] estabelecimentos = gson.fromJson(stringJson, Estabelecimento[].class);
-                    Intent intent = new Intent(PesquisaFragment.this.getActivity(), MapsActivity.class);
-                    intent.putExtra("estabelecimentos", estabelecimentos);
-                    intent.putExtra("latitudeUsuario", lat);
-                    intent.putExtra("longitudeUsuario", lng);
-
-                    startActivity(intent);
-                }
-            };
-
-            Servicos servicos = new Servicos(PesquisaFragment.this.getActivity());
-            servicos.consultaEstabelecimentoLatLong(respListener, lat, lng, progress, texto, categoriaId);
-
-        }
-    }
 }

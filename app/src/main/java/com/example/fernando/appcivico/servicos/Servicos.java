@@ -18,6 +18,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.fernando.appcivico.R;
 import com.example.fernando.appcivico.application.ApplicationAppCivico;
 import com.example.fernando.appcivico.estrutura.Usuario;
+import com.example.fernando.appcivico.utils.MyAlertDialogFragment;
 import com.example.fernando.appcivico.utils.StaticFunctions;
 import com.google.gson.Gson;
 
@@ -71,7 +72,8 @@ public class Servicos {
         this.requestQueue.add(jsonObjectRequest);
     }
 
-    public void consultaEstabelecimentoLatLong(Response.Listener responseListener, double latitude, double longitude, int raio, final String texto, final String categoria) {
+    public void consultaEstabelecimentoLatLong(Response.Listener responseListener, double latitude, double longitude,
+                                               int raio, final String texto, final String categoria, final MyAlertDialogFragment myAlertDialogFragment) {
 
         String url = "http://mobile-aceite.tcu.gov.br:80/mapa-da-saude/rest/estabelecimentos/latitude/"+latitude+"/longitude/"+longitude+"/raio/"+raio;
         String queryParams = "";
@@ -107,6 +109,12 @@ public class Servicos {
         });
 
         requestQueue.add(jsonArrayRequest);
+        requestQueue.addRequestFinishedListener(new RequestQueue.RequestFinishedListener<Object>() {
+            @Override
+            public void onRequestFinished(Request<Object> request) {
+                myAlertDialogFragment.dismiss();
+            }
+        });
 
     }
 
