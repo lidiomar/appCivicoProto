@@ -12,11 +12,14 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.example.fernando.appcivico.R;
 import com.example.fernando.appcivico.estrutura.Sexo;
 import com.example.fernando.appcivico.estrutura.Usuario;
 import com.example.fernando.appcivico.mask.MaskEditTextChangedListener;
 import com.example.fernando.appcivico.servicos.ServicosCadastro;
+import com.example.fernando.appcivico.utils.MyAlertDialogFragment;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -72,7 +75,17 @@ public class CadastroFragment extends Fragment {
             public void onClick(View view) {
                 if(validaCampos()) {
                     Usuario usuario = getUsuarioPopulado();
+
+                    final MyAlertDialogFragment myAlertDialogFragment = MyAlertDialogFragment.newInstance("", "Enviando os dados...");
+                    myAlertDialogFragment.show(getFragmentManager(),"");
+
                     servicosCadastro.cadastraPessoa(usuario);
+                    servicosCadastro.getRequestQueue().addRequestFinishedListener(new RequestQueue.RequestFinishedListener<Object>() {
+                        @Override
+                        public void onRequestFinished(Request<Object> request) {
+                            myAlertDialogFragment.dismiss();
+                        }
+                    });
                 }
             }
         });

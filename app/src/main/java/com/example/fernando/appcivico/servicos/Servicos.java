@@ -42,7 +42,7 @@ public class Servicos {
         this.requestQueue = Volley.newRequestQueue(context);
     }
 
-    public void autenticarUsuario(final String email, final String senha, Response.Listener<JSONObject> listener) {
+    public void autenticarUsuario(final String email, final String senha, Response.Listener<JSONObject> listener, final MyAlertDialogFragment myAlertDialogFragment) {
         String url = "http://mobile-aceite.tcu.gov.br:80/appCivicoRS/rest/pessoas/autenticar";
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null,listener, new Response.ErrorListener() {
@@ -70,6 +70,14 @@ public class Servicos {
 
 
         this.requestQueue.add(jsonObjectRequest);
+        requestQueue.addRequestFinishedListener(new RequestQueue.RequestFinishedListener<Object>() {
+            @Override
+            public void onRequestFinished(Request<Object> request) {
+                if(myAlertDialogFragment != null) {
+                    myAlertDialogFragment.dismiss();
+                }
+            }
+        });
     }
 
     public void consultaEstabelecimentoLatLong(Response.Listener responseListener, double latitude, double longitude,
@@ -112,13 +120,17 @@ public class Servicos {
         requestQueue.addRequestFinishedListener(new RequestQueue.RequestFinishedListener<Object>() {
             @Override
             public void onRequestFinished(Request<Object> request) {
-                myAlertDialogFragment.dismiss();
+                if(myAlertDialogFragment != null) {
+                    myAlertDialogFragment.dismiss();
+                }
             }
         });
 
     }
 
-    public void consultaEstabelecimentos(String municipio, String uf, String categoria, String especialidade, int quantidade, int pagina, Response.Listener resListener, Response.ErrorListener errorListener) {
+    public void consultaEstabelecimentos(String municipio, String uf, String categoria, String especialidade,
+                                         int quantidade, int pagina, Response.Listener resListener,
+                                         Response.ErrorListener errorListener, final MyAlertDialogFragment myAlertDialogFragment) {
         String url = "http://mobile-aceite.tcu.gov.br:80/mapa-da-saude/rest/estabelecimentos" +
                 "?municipio=" + municipio +
                 "&uf=" + uf +
@@ -140,6 +152,14 @@ public class Servicos {
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         requestQueue.add(jsonArrayRequest);
+        requestQueue.addRequestFinishedListener(new RequestQueue.RequestFinishedListener<Object>() {
+            @Override
+            public void onRequestFinished(Request<Object> request) {
+                if(myAlertDialogFragment != null) {
+                    myAlertDialogFragment.dismiss();
+                }
+            }
+        });
 
     }
 }

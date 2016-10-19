@@ -1,6 +1,5 @@
 package com.example.fernando.appcivico.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -17,19 +16,11 @@ import android.widget.Toast;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.example.fernando.appcivico.R;
-import com.example.fernando.appcivico.activities.ListaEstabelecimentosActivity;
-import com.example.fernando.appcivico.adapters.ComentarioAdapter;
 import com.example.fernando.appcivico.adapters.EstabelecimentoAdapter;
-import com.example.fernando.appcivico.estrutura.Categoria;
-import com.example.fernando.appcivico.estrutura.Comentario;
-import com.example.fernando.appcivico.estrutura.Especialidade;
 import com.example.fernando.appcivico.estrutura.Estabelecimento;
 import com.example.fernando.appcivico.servicos.Servicos;
-import com.example.fernando.appcivico.utils.StaticFunctions;
 import com.google.gson.Gson;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -176,7 +167,7 @@ public class ListaEstabelecimentosFragment extends Fragment {
             }
         };
 
-        servicos.consultaEstabelecimentos(cidade,uf,categoria,especialidade,20,countOffset,respListener,errorListener);
+        servicos.consultaEstabelecimentos(cidade,uf,categoria,especialidade,20,countOffset,respListener,errorListener,null);
     }
 
 

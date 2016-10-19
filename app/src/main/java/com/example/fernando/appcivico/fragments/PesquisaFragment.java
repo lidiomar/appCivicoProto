@@ -208,12 +208,18 @@ public class PesquisaFragment extends Fragment implements GoogleApiClient.Connec
                 Gson gson = new Gson();
                 String stringJson = String.valueOf(response).replace("\"long\":", "\"longitude\":");
                 Estabelecimento[] estabelecimentos = gson.fromJson(stringJson, Estabelecimento[].class);
-                Intent intent = new Intent(PesquisaFragment.this.getActivity(), MapsActivity.class);
-                intent.putExtra("estabelecimentos", estabelecimentos);
-                intent.putExtra("latitudeUsuario", lat);
-                intent.putExtra("longitudeUsuario", lng);
 
-                startActivity(intent);
+                if (estabelecimentos == null || estabelecimentos.length <= 0) {
+                    Toast.makeText(PesquisaFragment.this.getActivity(), "Não há resultados para a busca", Toast.LENGTH_SHORT).show();
+                }else {
+                    Intent intent = new Intent(PesquisaFragment.this.getActivity(), MapsActivity.class);
+
+                    intent.putExtra("estabelecimentos", estabelecimentos);
+                    intent.putExtra("latitudeUsuario", lat);
+                    intent.putExtra("longitudeUsuario", lng);
+
+                    startActivity(intent);
+                }
             }
         };
 

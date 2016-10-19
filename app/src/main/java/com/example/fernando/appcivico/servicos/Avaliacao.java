@@ -224,8 +224,8 @@ public class Avaliacao {
         this.requestQueue.add(stringRequest);
     }
 
-    public void buscaMediaAvaliacoes(String codObjetoDestino, Response.Listener responseListener, Response.ErrorListener responseErrorListener, final ProgressBar progressBarAvaliacao) {
-        progressBarAvaliacao.setVisibility(View.VISIBLE);
+    public void buscaMediaAvaliacoes(String codObjetoDestino, Response.Listener responseListener, Response.ErrorListener responseErrorListener) {
+
         String url = "http://mobile-aceite.tcu.gov.br:80/appCivicoRS/rest/postagens" +
                 "/tipopostagem/"+Constants.CODE_TIPO_POSTAGEM+
                 "/tipoobjeto/"+Constants.CODE_TIPO_OBJETO_DESTINO+
@@ -234,12 +234,7 @@ public class Avaliacao {
         final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, responseListener ,responseErrorListener);
 
         this.requestQueue.add(jsonObjectRequest);
-        this.requestQueue.addRequestFinishedListener(new RequestQueue.RequestFinishedListener<Object>() {
-            @Override
-            public void onRequestFinished(Request<Object> request) {
-                progressBarAvaliacao.setVisibility(View.GONE);
-            }
-        });
+
     }
 
     public JsonObjectRequest buscaConteudoPostagem(final String codPostagem, String codConteudo, Response.Listener respListener, Response.ErrorListener errorListener){

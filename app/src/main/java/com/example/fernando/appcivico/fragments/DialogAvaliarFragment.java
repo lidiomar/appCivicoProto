@@ -19,6 +19,8 @@ import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.example.fernando.appcivico.R;
 import com.example.fernando.appcivico.application.ApplicationAppCivico;
@@ -30,6 +32,7 @@ import com.example.fernando.appcivico.estrutura.Postagem;
 import com.example.fernando.appcivico.estrutura.Tipo;
 import com.example.fernando.appcivico.servicos.Avaliacao;
 import com.example.fernando.appcivico.utils.Constants;
+import com.example.fernando.appcivico.utils.MyAlertDialogFragment;
 import com.google.gson.Gson;
 
 import java.text.SimpleDateFormat;
@@ -104,8 +107,16 @@ public class DialogAvaliarFragment extends Fragment {
                             avaliacao.atribuirConteudoPostagem(conteudoPostagem);
                         }
                     };
-
+                    final MyAlertDialogFragment myAlertDialogFragment = MyAlertDialogFragment.newInstance("", "Enviando avaliação...");
+                    myAlertDialogFragment.show(getFragmentManager(),"");
                     avaliacao.criarPostagem(postagem, conteudoPostagem, responseListenerCriarPostagem);
+
+                    avaliacao.getRequestQueue().addRequestFinishedListener(new RequestQueue.RequestFinishedListener<Object>() {
+                        @Override
+                        public void onRequestFinished(Request<Object> request) {
+                            myAlertDialogFragment.dismiss();
+                        }
+                    });
 
                 } else {
                     Toast.makeText(DialogAvaliarFragment.this.getActivity(),DialogAvaliarFragment.this.getActivity().getString(R.string.preencha_os_dados_da_avaliacao) ,Toast.LENGTH_SHORT).show();

@@ -68,12 +68,14 @@
                 android:layout_height="wrap_content"
                 android:text="@string/sem_avaliacoes"
                 android:layout_width="wrap_content"
+                android:visibility="gone"
                 android:layout_gravity="center_horizontal"
                 android:textAlignment="center" />
 
             <Button android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/visualizar_avaliacoes"
+                android:visibility="gone"
                 android:id="@+id/button_deixe_sua_avaliacao"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="15dp" />
@@ -82,9 +84,8 @@
                 android:id="@+id/progressBar_avaliacoes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:layout_gravity="center_horizontal" />
-
-
 
         </LinearLayout>
 

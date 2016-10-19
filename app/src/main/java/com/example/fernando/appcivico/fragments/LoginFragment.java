@@ -16,6 +16,7 @@ import com.example.fernando.appcivico.application.ApplicationAppCivico;
 import com.example.fernando.appcivico.servicos.Servicos;
 import com.example.fernando.appcivico.servicos.ServicosCadastro;
 import com.example.fernando.appcivico.utils.Constants;
+import com.example.fernando.appcivico.utils.MyAlertDialogFragment;
 import com.example.fernando.appcivico.utils.StaticFunctions;
 
 import org.json.JSONObject;
@@ -57,7 +58,10 @@ public class LoginFragment extends Fragment {
                 if(validaCampos()) {
                     String email = edtEmailUsuarioLogin.getText().toString();
                     String senha = edtSenhaLogin.getText().toString();
-                    servicos.autenticarUsuario(email, senha, listener);
+
+                    MyAlertDialogFragment myAlertDialogFragment = MyAlertDialogFragment.newInstance("", "Autenticando...");
+                    myAlertDialogFragment.show(getFragmentManager(),"");
+                    servicos.autenticarUsuario(email, senha, listener,myAlertDialogFragment);
                 }
             }
         });

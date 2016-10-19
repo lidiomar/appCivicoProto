@@ -23,6 +23,7 @@ import com.example.fernando.appcivico.estrutura.Estabelecimento;
 import com.example.fernando.appcivico.estrutura.Estado;
 import com.example.fernando.appcivico.servicos.Servicos;
 import com.example.fernando.appcivico.utils.Constants;
+import com.example.fernando.appcivico.utils.MyAlertDialogFragment;
 import com.example.fernando.appcivico.utils.StaticFunctions;
 import com.google.gson.Gson;
 
@@ -140,7 +141,9 @@ public class BuscaAvancadaFragment extends Fragment  {
                 }
 
 
-                servicos.consultaEstabelecimentos(cidade,uf,categoria,especialidade,20,0,respListener,errorListener);
+                MyAlertDialogFragment myAlertDialogFragment = MyAlertDialogFragment.newInstance("", "");
+                myAlertDialogFragment.show(getFragmentManager(),"");
+                servicos.consultaEstabelecimentos(cidade,uf,categoria,especialidade,20,0,respListener,errorListener, myAlertDialogFragment);
             }
         });
 

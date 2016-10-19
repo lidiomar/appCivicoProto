@@ -55,15 +55,10 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
             System.arraycopy(estabelecimentosObj, 0, estabelecimentos, 0, estabelecimentos.length);
         }
 
+        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        SupportMapFragment mapFragment = (SupportMapFragment)getChildFragmentManager().findFragmentById(R.id.map);
 
-        if (estabelecimentos == null || estabelecimentos.length <= 0) {
-            Toast.makeText(MapsFragment.this.getActivity(), "Não há resultados para a busca", Toast.LENGTH_SHORT).show();
-        } else {
-            // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-            SupportMapFragment mapFragment = (SupportMapFragment)getChildFragmentManager().findFragmentById(R.id.map);
-
-            mapFragment.getMapAsync(this);
-        }
+        mapFragment.getMapAsync(this);
 
         return view;
     }

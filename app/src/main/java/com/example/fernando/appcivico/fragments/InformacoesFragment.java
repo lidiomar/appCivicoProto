@@ -20,6 +20,8 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.example.fernando.appcivico.R;
@@ -335,6 +337,7 @@ public class InformacoesFragment extends Fragment{
         }
 
         ratingBarReadonly.setRating(media);
+
         if(contagem <= 0) {
             txtNumeroAvaliacoes.setText(this.getActivity().getString(R.string.sem_avaliacoes));
         }else {
@@ -365,8 +368,16 @@ public class InformacoesFragment extends Fragment{
                 Log.i("logError",new String(error.networkResponse.data));
             }
         };
-
-        avaliacao.buscaMediaAvaliacoes(estabelecimento.getCodUnidade(),respListener, errorListener, progressBarAvaliacao);
+        progressBarAvaliacao.setVisibility(View.VISIBLE);
+        avaliacao.buscaMediaAvaliacoes(estabelecimento.getCodUnidade(),respListener, errorListener);
+        avaliacao.getRequestQueue().addRequestFinishedListener(new RequestQueue.RequestFinishedListener<Object>() {
+            @Override
+            public void onRequestFinished(Request<Object> request) {
+                progressBarAvaliacao.setVisibility(View.GONE);
+                buttonVisualizarAvaliacoes.setVisibility(View.VISIBLE);
+                txtNumeroAvaliacoes.setVisibility(View.VISIBLE);
+            }
+        });
     }
 
 }

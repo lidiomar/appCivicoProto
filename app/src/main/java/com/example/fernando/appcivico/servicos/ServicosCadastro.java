@@ -60,7 +60,7 @@ public class ServicosCadastro {
                 @Override
                 public void onResponse(String response) {
                     int statusCode = Integer.parseInt(response);
-                    if(statusCode == 201){
+                    if (statusCode == 201) {
                         autenticarUsuario();
                     }
                 }
@@ -68,10 +68,10 @@ public class ServicosCadastro {
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     try {
-                        String errorMessage = new String(error.networkResponse.data,"UTF-8");
-                        Toast.makeText(fragmentActivity,errorMessage,Toast.LENGTH_SHORT).show();
+                        String errorMessage = new String(error.networkResponse.data, "UTF-8");
+                        Toast.makeText(fragmentActivity, errorMessage, Toast.LENGTH_SHORT).show();
                     } catch (Exception e) {
-                        Toast.makeText(fragmentActivity,fragmentActivity.getString(R.string.algo_deu_errado),Toast.LENGTH_SHORT).show();
+                        Toast.makeText(fragmentActivity, fragmentActivity.getString(R.string.algo_deu_errado), Toast.LENGTH_SHORT).show();
                         e.printStackTrace();
                     }
                     Log.e("VOLLEY", error.toString());
@@ -109,10 +109,10 @@ public class ServicosCadastro {
         }
     }
 
-    public void cadastrarPerfil(){
+    public void cadastrarPerfil() {
 
         try {
-            int codUsuario = ((ApplicationAppCivico)fragmentActivity.getApplication()).getUsuarioAutenticado().getCod();
+            int codUsuario = ((ApplicationAppCivico) fragmentActivity.getApplication()).getUsuarioAutenticado().getCod();
             String url = "http://mobile-aceite.tcu.gov.br:80/appCivicoRS/rest/pessoas/" + codUsuario + "/perfil";
 
             JSONObject jsonBody = new JSONObject();
@@ -125,14 +125,14 @@ public class ServicosCadastro {
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, null, new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
-                    StaticFunctions.exibeMensagemEFecha(fragmentActivity.getString(R.string.cadastro_concluido_com_sucesso),fragmentActivity);
+                    StaticFunctions.exibeMensagemEFecha(fragmentActivity.getString(R.string.cadastro_concluido_com_sucesso), fragmentActivity);
                 }
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(fragmentActivity,fragmentActivity.getString(R.string.algo_deu_errado),Toast.LENGTH_SHORT).show();
+                    Toast.makeText(fragmentActivity, fragmentActivity.getString(R.string.algo_deu_errado), Toast.LENGTH_SHORT).show();
                 }
-            }){
+            }) {
                 @Override
                 protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
                     return super.parseNetworkResponse(response);
@@ -150,8 +150,8 @@ public class ServicosCadastro {
 
                 @Override
                 public Map<String, String> getHeaders() throws AuthFailureError {
-                    Map<String,String> params = new HashMap<String, String>();
-                    params.put("appToken",((ApplicationAppCivico)fragmentActivity.getApplication()).getApptoken());
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("appToken", ((ApplicationAppCivico) fragmentActivity.getApplication()).getApptoken());
 
                     return params;
                 }
@@ -163,31 +163,31 @@ public class ServicosCadastro {
             };
 
             this.requestQueue.add(jsonObjectRequest);
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     public void getPerfil() {
-        int codUsuario = ((ApplicationAppCivico)fragmentActivity.getApplication()).getUsuarioAutenticado().getCod();
-        String url = "http://mobile-aceite.tcu.gov.br:80/appCivicoRS/rest/pessoas/"+codUsuario+"/perfil";
+        int codUsuario = ((ApplicationAppCivico) fragmentActivity.getApplication()).getUsuarioAutenticado().getCod();
+        String url = "http://mobile-aceite.tcu.gov.br:80/appCivicoRS/rest/pessoas/" + codUsuario + "/perfil";
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null , new Response.Listener<JSONObject>() {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {/*Provavelmente nunca entrará aqui*/}
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                if(error.networkResponse.statusCode == 404) {
+                if (error.networkResponse.statusCode == 404) {
                     cadastrarPerfil();
-                }else {
-                    Toast.makeText(fragmentActivity,fragmentActivity.getString(R.string.algo_deu_errado),Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(fragmentActivity, fragmentActivity.getString(R.string.algo_deu_errado), Toast.LENGTH_SHORT).show();
                 }
             }
-        }){
+        }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String,String> params = new HashMap<String, String>();
+                Map<String, String> params = new HashMap<String, String>();
                 params.put("appIdentifier", Constants.CODE_APP);
                 return params;
             }
@@ -206,24 +206,24 @@ public class ServicosCadastro {
     public void autenticarUsuario() {
         String url = "http://mobile-aceite.tcu.gov.br:80/appCivicoRS/rest/pessoas/autenticar";
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null , new Response.Listener<JSONObject>() {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 Gson gson = new Gson();
-                ((ApplicationAppCivico)fragmentActivity.getApplication()).setUsuarioAutenticado(response.toString());
+                ((ApplicationAppCivico) fragmentActivity.getApplication()).setUsuarioAutenticado(response.toString());
                 getPerfil();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(fragmentActivity,fragmentActivity.getString(R.string.algo_deu_errado),Toast.LENGTH_SHORT).show();
+                Toast.makeText(fragmentActivity, fragmentActivity.getString(R.string.algo_deu_errado), Toast.LENGTH_SHORT).show();
             }
-        }){
+        }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String,String> params = new HashMap<String, String>();
-                params.put("email",(getUsuario().getEmail()));
-                params.put("senha",(getUsuario().getSenha()));
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("email", (getUsuario().getEmail()));
+                params.put("senha", (getUsuario().getSenha()));
                 return params;
             }
 
@@ -232,7 +232,7 @@ public class ServicosCadastro {
                 setResponseStatusCode(response.statusCode);
                 Map<String, String> headers = response.headers;
 
-                ((ApplicationAppCivico)fragmentActivity.getApplication()).setApptoken(headers.get("apptoken"));
+                ((ApplicationAppCivico) fragmentActivity.getApplication()).setApptoken(headers.get("apptoken"));
                 return super.parseNetworkResponse(response);
             }
         };
@@ -241,6 +241,9 @@ public class ServicosCadastro {
         this.requestQueue.add(jsonObjectRequest);
     }
 
+    public RequestQueue getRequestQueue() {
+        return requestQueue;
+    }
 
     public Usuario getUsuario() {
         return usuario;
@@ -257,49 +260,4 @@ public class ServicosCadastro {
     public void setResponseStatusCode(int responseStatusCode) {
         this.responseStatusCode = responseStatusCode;
     }
-
-
-
-    /*public void getPessoas()  {
-        String url = "http://mobile-aceite.tcu.gov.br:80/appCivicoRS/rest/pessoas?quantidadeDeItens=1";
-
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                int statusCode = getResponseStatusCode();
-                if( statusCode == 204) {
-                    cadastraPessoa();
-                }else if(statusCode == 200) {
-                    autenticarUsuario();
-                }
-            }
-        }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(fragmentActivity,fragmentActivity.getString(R.string.algo_deu_errado),Toast.LENGTH_SHORT).show();
-
-                    Log.e("VOLLEY", error.toString());
-                }
-            }){
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String,String> params = new HashMap<String, String>();
-                params.put("email",((MainActivity)fragmentActivity).getEmail());
-                return params;
-            }
-
-            @Override
-            protected Response<String> parseNetworkResponse(NetworkResponse response) {
-                setResponseStatusCode(response.statusCode);
-                return super.parseNetworkResponse(response);
-            }
-        };
-
-
-        this.requestQueue.add(stringRequest);
-    }*/
 }
-/*
-aqwed34@gmail.com
-
-*/

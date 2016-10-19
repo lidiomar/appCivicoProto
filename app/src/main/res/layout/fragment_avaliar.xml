@@ -5,7 +5,7 @@
     android:id="@+id/main_layout">
 
     <Button android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:text="@string/deixe_a_sua_avaliacao"
         android:id="@+id/button_avaliar_dialog"
         android:layout_gravity="center_horizontal" />
@@ -20,35 +20,57 @@
         android:layout_marginRight="5dp"
         android:layout_marginLeft="5dp">
 
-        <TextView
-            android:id="@+id/texto_informativo_comentarios"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/nao_ha_comentarios"
-            android:layout_marginBottom="25dp"
-            android:layout_gravity="center_horizontal"
-            android:gravity="center|center_horizontal"
-            android:layout_marginTop="15dp" />
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/comentarios_recyclerview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="40dp"
-            android:cacheColorHint="@android:color/transparent"
-            android:clipToPadding="false"
-            android:divider="@null"
-            android:listSelector="@android:color/transparent"
-            android:scrollbarStyle="outsideOverlay"
-            android:scrollbars="vertical" />
-
         <ProgressBar
-            android:id="@+id/progressBar"
+            android:id="@+id/progressBar_comentarios_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="gone"
-            android:indeterminate="true" />
+            android:indeterminate="true"
+            android:layout_gravity="center_horizontal" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/texto_informativo_comentarios"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_marginBottom="25dp"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center|center_horizontal"
+                android:layout_marginTop="15dp" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/comentarios_recyclerview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="40dp"
+                    android:cacheColorHint="@android:color/transparent"
+                    android:clipToPadding="false"
+                    android:divider="@null"
+                    android:listSelector="@android:color/transparent"
+                    android:scrollbarStyle="outsideOverlay"
+                    android:scrollbars="vertical" />
+
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:indeterminate="true"
+                    android:layout_gravity="bottom|center_horizontal"
+                    android:paddingBottom="40dp" />
+            </FrameLayout>
+
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>
 

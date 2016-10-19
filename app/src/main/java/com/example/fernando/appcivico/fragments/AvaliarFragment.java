@@ -34,6 +34,7 @@ import com.example.fernando.appcivico.estrutura.Estabelecimento;
 import com.example.fernando.appcivico.estrutura.JsonComentario;
 import com.example.fernando.appcivico.estrutura.PostagemRetorno;
 import com.example.fernando.appcivico.servicos.Avaliacao;
+import com.example.fernando.appcivico.utils.MyAlertDialogFragment;
 import com.google.gson.Gson;
 
 import org.json.JSONObject;
@@ -59,9 +60,9 @@ public class AvaliarFragment extends Fragment {
     private Boolean inicializar = true;
     private ArrayList<Comentario> comentariosList = new ArrayList<>();
     private ProgressBar progressBar;
+    private ProgressBar progressBarComentariosContainer;
     private Boolean carregando = false;
     private Button buttonAvaliarDialog;
-    private LinearLayout linearLayoutComentarios;
     private TextView textoInformativoComentarios;
     private ApplicationAppCivico applicationAppCivico;
 
@@ -71,7 +72,10 @@ public class AvaliarFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_avaliar, container, false);
         Bundle extras = getActivity().getIntent().getExtras();
         estabelecimento = (Estabelecimento)extras.get("estabelecimento");
+
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
+        progressBarComentariosContainer = (ProgressBar) view.findViewById(R.id.progressBar_comentarios_container);
+
         applicationAppCivico = (ApplicationAppCivico)this.getActivity().getApplication();
         textoInformativoComentarios = (TextView)view.findViewById(R.id.texto_informativo_comentarios);
 
@@ -83,7 +87,6 @@ public class AvaliarFragment extends Fragment {
         recyclerViewComentarios.setItemAnimator(new DefaultItemAnimator());
         recyclerViewComentarios.setHasFixedSize(true);
 
-        linearLayoutComentarios = (LinearLayout)view.findViewById(R.id.linearlayout_comentarios);
 
         recyclerViewComentarios.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
@@ -113,7 +116,7 @@ public class AvaliarFragment extends Fragment {
                 startActivity(intent);
             }
         });
-
+        progressBarComentariosContainer.setVisibility(View.VISIBLE);
         buscarComentarios();
 
         return view;
@@ -123,6 +126,7 @@ public class AvaliarFragment extends Fragment {
         final Avaliacao avaliacao = new Avaliacao(AvaliarFragment.this.getActivity());
         final RequestQueue requestQueue = Volley.newRequestQueue(AvaliarFragment.this.getActivity());
         requestCount = 0;
+
         Response.Listener responseListener = new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -152,11 +156,19 @@ public class AvaliarFragment extends Fragment {
                         @Override
                         public void onRequestFinished(Request<Object> request) {
                             requestCount = requestCount + 1;
+
+                            progressBarComentariosContainer.setVisibility(View.GONE);
+                            textoInformativoComentarios.setVisibility(View.VISIBLE);
+
                             if(requestCount == postagemRetornos.length) {
                                 atribuiValoresRecyclerView();
                             }
                         }
                     });
+                }else {
+                    progressBarComentariosContainer.setVisibility(View.GONE);
+                    textoInformativoComentarios.setVisibility(View.VISIBLE);
+                    textoInformativoComentarios.setText(AvaliarFragment.this.getActivity().getString(R.string.nao_ha_comentarios));
                 }
             }
         };
@@ -180,7 +192,6 @@ public class AvaliarFragment extends Fragment {
         if(inicializar) {
             comentarioAdapter = new ComentarioAdapter(AvaliarFragment.this.getActivity(), this.comentariosList);
             recyclerViewComentarios.setAdapter(comentarioAdapter);
-            linearLayoutComentarios.setVisibility(View.VISIBLE);
             textoInformativoComentarios.setText(this.getActivity().getString(R.string.comentarios_de_outros_usuarios));
         } else {
             ReceiverThread receiverThread = new ReceiverThread();
