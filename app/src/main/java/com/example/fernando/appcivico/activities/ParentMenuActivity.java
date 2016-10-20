@@ -129,8 +129,10 @@ public class ParentMenuActivity extends AppCompatActivity implements NavigationV
         }
 
         if (id == R.id.nav_busca_minhas_avaliacoes) {
-            Intent i = new Intent(this,BuscaAvancadaActivity.class);
+            Intent i = new Intent(this,MinhasAvaliacoesActivity.class);
+            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(i);
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
         }
 
         if (id == R.id.nav_logout) {

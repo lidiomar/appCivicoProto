@@ -164,7 +164,8 @@ public class Avaliacao {
         this.requestQueue.add(stringRequest);
     }
 
-    public void buscaPostagem(int pagina, int quantidadeItens, String codObjetoDestino, int codAutor, Response.Listener<String> responseListener, Response.ErrorListener responseErrorListener) {
+    public void buscaPostagem(int pagina, int quantidadeItens, String codObjetoDestino, int codAutor,
+                              Response.Listener<String> responseListener, Response.ErrorListener responseErrorListener) {
 
         String url = "http://mobile-aceite.tcu.gov.br:80/appCivicoRS/rest/postagens" +
                 "?codAplicativo="+Constants.CODE_APP+"" +
@@ -249,6 +250,34 @@ public class Avaliacao {
             }
         };
         return jsonObjectRequest;
+    }
+
+    public StringRequest buscaPostagensPorAutor(int pagina, int quantidadeItens, String codObjetoDestino,
+                                       Response.Listener<String> responseListener, String codAutor, Response.ErrorListener responseErrorListener) {
+
+        String url = "http://mobile-aceite.tcu.gov.br:80/appCivicoRS/rest/postagens" +
+                "?codAplicativo="+Constants.CODE_APP+"" +
+                "&codTiposPostagem="+Constants.CODE_TIPO_POSTAGEM+"" +
+                "&codTipoObjetoDestino="+Constants.CODE_TIPO_OBJETO_DESTINO+"" +
+                "&codAutor="+codAutor+
+                "&quantidadeDeItens="+quantidadeItens+
+                "&pagina="+pagina;
+
+        if(!codObjetoDestino.isEmpty()) {
+            url += "&codObjetoDestino="+codObjetoDestino;
+        }
+
+        final StringRequest stringRequest = new StringRequest(Request.Method.GET, url, responseListener , responseErrorListener){
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String,String> params = new HashMap<String, String>();
+                params.put("appToken",((ApplicationAppCivico)fragmentActivity.getApplication()).getApptoken());
+                return params;
+            }
+        };
+        return stringRequest;
+
     }
 
     public String getUrlResponse() {
