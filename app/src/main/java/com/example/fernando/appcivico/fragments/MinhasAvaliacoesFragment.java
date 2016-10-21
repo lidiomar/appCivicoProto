@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -21,7 +20,6 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.fernando.appcivico.R;
-import com.example.fernando.appcivico.adapters.ComentarioAdapter;
 import com.example.fernando.appcivico.adapters.MinhasAvaliacoesAdapter;
 import com.example.fernando.appcivico.application.ApplicationAppCivico;
 import com.example.fernando.appcivico.estrutura.Comentario;
@@ -56,6 +54,7 @@ public class MinhasAvaliacoesFragment extends Fragment {
     private ProgressBar progressBar;
     private ProgressBar progressBarComentariosContainer;
     private LinearLayoutManager linearLayoutManager;
+    private Boolean buscarDoServidor = true;
     int pastVisiblesItems, visibleItemCount, totalItemCount;
     private int countOffset = 0;
 
@@ -89,7 +88,7 @@ public class MinhasAvaliacoesFragment extends Fragment {
                     visibleItemCount = linearLayoutManager.getChildCount();
                     totalItemCount = linearLayoutManager.getItemCount();
                     pastVisiblesItems = linearLayoutManager.findFirstVisibleItemPosition();
-                    if (((visibleItemCount + pastVisiblesItems) >= totalItemCount) && !carregando) {
+                    if (((visibleItemCount + pastVisiblesItems) >= totalItemCount) && !carregando && buscarDoServidor) {
                         carregando = true;
                         loadMoreRecyclerView();
                     }
@@ -127,6 +126,9 @@ public class MinhasAvaliacoesFragment extends Fragment {
                 MinhasAvaliacoesFragment.this.getConteudoPostagemHash().clear();
                 if(postagemRetornos != null) {
                     buscaConteudoPostagens(postagemRetornos);
+                }else {
+                    buscarDoServidor = false;
+                    hideProgressBar();
                 }
             }
         };
@@ -230,7 +232,7 @@ public class MinhasAvaliacoesFragment extends Fragment {
             ConteudoPostagem conteudo = conteudoPostagemHash.get(codigoPostagem);
             String json = conteudo.getJSON();
             JsonComentario jsonComentario = gson.fromJson(json, JsonComentario.class);
-
+            String codConteudoPost = conteudo.getCodConteudoPost();
             String nomeUsuario = jsonComentario.getNomeAutorComentario();
             String nomeFantasia = jsonComentario.getNomeFantasiaEstabelecimento();
             String texto = conteudo.getTexto();
@@ -245,6 +247,7 @@ public class MinhasAvaliacoesFragment extends Fragment {
             comentario.setNomeUsuario(nomeUsuario);
             comentario.setTexto(texto);
             comentario.setDataComentario(dataComentario);
+            comentario.setCodConteudoPost(codConteudoPost);
 
             comentariosList.add(comentario);
         }

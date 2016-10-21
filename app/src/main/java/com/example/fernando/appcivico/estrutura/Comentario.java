@@ -8,6 +8,7 @@ public class Comentario {
     private String texto;
     private int valor;
     private String codigoPostagem;
+    private String codConteudoPost;
     private String dataComentario;
     private String nomeFantasiaEstabelecimento;
 
@@ -57,5 +58,13 @@ public class Comentario {
 
     public void setNomeFantasiaEstabelecimento(String nomeFantasiaEstabelecimento) {
         this.nomeFantasiaEstabelecimento = nomeFantasiaEstabelecimento;
+    }
+
+    public String getCodConteudoPost() {
+        return codConteudoPost;
+    }
+
+    public void setCodConteudoPost(String codConteudoPost) {
+        this.codConteudoPost = codConteudoPost;
     }
 }

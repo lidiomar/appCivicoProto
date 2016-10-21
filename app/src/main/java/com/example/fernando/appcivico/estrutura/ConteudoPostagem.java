@@ -4,6 +4,7 @@ package com.example.fernando.appcivico.estrutura;
  * Created by fernando on 07/10/16.
  */
 public class ConteudoPostagem {
+    private String codConteudoPost;
     private String JSON;
     private String texto;
     private int valor;
@@ -32,4 +33,11 @@ public class ConteudoPostagem {
         this.valor = valor;
     }
 
+    public String getCodConteudoPost() {
+        return codConteudoPost;
+    }
+
+    public void setCodConteudoPost(String codConteudoPost) {
+        this.codConteudoPost = codConteudoPost;
+    }
 }

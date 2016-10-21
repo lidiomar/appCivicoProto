@@ -56,24 +56,49 @@ public class DialogAvaliarFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_avaliar_dialog, container, false);
        
         Bundle extras = getActivity().getIntent().getExtras();
+        buttonAvaliar = (Button)view.findViewById(R.id.button_avaliar);
+
         estabelecimento = (Estabelecimento)extras.get("estabelecimento");
+        if(estabelecimento != null) {
+            buttonAvaliar.setOnClickListener(clickAvaliar());
+        }else {
+            String codigoPostagem = (String)extras.get("codigoPostagem");
+            String codConteudoPost = (String)extras.get("codConteudoPost");
+            buttonAvaliar.setOnClickListener(clickAtualizarAvaliacao(codigoPostagem,codConteudoPost));
+        }
 
         ratingBar = (RatingBar)view.findViewById(R.id.rating_avaliacao);
         Drawable progress = ratingBar.getProgressDrawable();
         DrawableCompat.setTint(progress, Color.rgb(11111111,01011010,00000000));
 
-        
+
         editTextComentario = (EditText)view.findViewById(R.id.comentario_avaliacao);
 
-        buttonAvaliar = (Button)view.findViewById(R.id.button_avaliar);
+        return view;
+    }
 
-        buttonAvaliar.setOnClickListener(new View.OnClickListener() {
+    private View.OnClickListener clickAtualizarAvaliacao(String codigoPostagem, String  codConteudoPost) {
+        Toast.makeText(this.getActivity(), "UHUUUU "+codigoPostagem+" "+codConteudoPost,Toast.LENGTH_SHORT).show();
+        return null;
+    }
+
+    public Boolean validarEnvio(EditText comentario) {
+        if(comentario.getText().toString().isEmpty()) {
+            comentario.setError(this.getActivity().getResources().getString(R.string.campo_obrigatorio));
+            return false;
+        }
+        return true;
+    }
+
+
+    public View.OnClickListener clickAvaliar() {
+        View.OnClickListener onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int notaAvaliacao = (int)ratingBar.getRating();
+                int notaAvaliacao = (int) ratingBar.getRating();
                 String comentario = editTextComentario.getText().toString();
 
-                if(validarEnvio(editTextComentario)) {
+                if (validarEnvio(editTextComentario)) {
                     final Avaliacao avaliacao = new Avaliacao(DialogAvaliarFragment.this.getActivity());
                     Tipo tipo = new Tipo();
                     tipo.setCodTipoPostagem(Constants.CODE_TIPO_POSTAGEM);
@@ -108,7 +133,7 @@ public class DialogAvaliarFragment extends Fragment {
                         }
                     };
                     final MyAlertDialogFragment myAlertDialogFragment = MyAlertDialogFragment.newInstance("", "Enviando avaliação...");
-                    myAlertDialogFragment.show(getFragmentManager(),"");
+                    myAlertDialogFragment.show(getFragmentManager(), "");
                     avaliacao.criarPostagem(postagem, conteudoPostagem, responseListenerCriarPostagem);
 
                     avaliacao.getRequestQueue().addRequestFinishedListener(new RequestQueue.RequestFinishedListener<Object>() {
@@ -119,19 +144,11 @@ public class DialogAvaliarFragment extends Fragment {
                     });
 
                 } else {
-                    Toast.makeText(DialogAvaliarFragment.this.getActivity(),DialogAvaliarFragment.this.getActivity().getString(R.string.preencha_os_dados_da_avaliacao) ,Toast.LENGTH_SHORT).show();
+                    Toast.makeText(DialogAvaliarFragment.this.getActivity(), DialogAvaliarFragment.this.getActivity().getString(R.string.preencha_os_dados_da_avaliacao), Toast.LENGTH_SHORT).show();
                 }
             }
-        });
+        };
 
-        return view;
-    }
-
-    public Boolean validarEnvio(EditText comentario) {
-        if(comentario.getText().toString().isEmpty()) {
-            comentario.setError(this.getActivity().getResources().getString(R.string.campo_obrigatorio));
-            return false;
-        }
-        return true;
+        return onClickListener;
     }
 }

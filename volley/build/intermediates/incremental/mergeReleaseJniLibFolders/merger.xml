@@ -1,2 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merger version="3"><dataSet config="main"><source path="/home/fernando/dev/appCivicoProto/volley/src/main/jniLibs"/></dataSet><dataSet config="release"><source path="/home/fernando/dev/appCivicoProto/volley/src/release/jniLibs"/></dataSet></merger>
+<merger version="3"><dataSet config="main"><source path="/home/fernando/dev2/appCivicoProto/volley/src/main/jniLibs"/></dataSet><dataSet config="release"><source path="/home/fernando/dev2/appCivicoProto/volley/src/release/jniLibs"/></dataSet></merger>
