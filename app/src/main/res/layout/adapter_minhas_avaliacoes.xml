@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    card_view:cardCornerRadius="2dp"
+    card_view:contentPadding="10dp"
+    android:layout_margin="5dp">
+
+    <LinearLayout android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:orientation="horizontal">
+
+            <LinearLayout android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:orientation="horizontal"
+                android:layout_weight="1"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="NOME FANTASIA"
+                    android:id="@+id/text_nome_fantasia"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:orientation="vertical"
+                android:layout_weight="1">
+
+                <RatingBar
+                    android:id="@+id/ratingbar_nota"
+                    android:layout_width="wrap_content"
+                    android:isIndicator="true"
+                    style="?android:attr/ratingBarStyleSmall"
+                    android:layout_height="wrap_content"
+                    android:numStars="5"
+                    android:stepSize="1.0"
+                    android:rating="3"
+                    android:layout_gravity="right" />
+
+                <TextView
+                    android:id="@+id/txt_data_hora"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="16/10/2016"
+                    android:textAlignment="textStart"
+                    android:layout_gravity="right" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:orientation="vertical">
+
+
+            <LinearLayout android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/txt_comentario"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="bla"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:textStyle="italic" />
+
+            </LinearLayout>
+
+            <View android:layout_height="1dp"
+                android:layout_width="match_parent"
+                android:background="@color/borda_cinza"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp" />
+
+            <LinearLayout android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:id="@+id/linearlayout_editar_avaliacao"
+                android:orientation="vertical">
+
+
+
+                <TextView
+                    android:id="@+id/text_editar_avaliacao"
+                    android:text="@string/editar_avaliacao"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="fill_vertical|right"
+                    android:layout_gravity="right" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+</android.support.v7.widget.CardView>

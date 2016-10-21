@@ -9,6 +9,7 @@ public class Comentario {
     private int valor;
     private String codigoPostagem;
     private String dataComentario;
+    private String nomeFantasiaEstabelecimento;
 
     public String getNomeUsuario() {
         return nomeUsuario;
@@ -48,5 +49,13 @@ public class Comentario {
 
     public void setDataComentario(String dataComentario) {
         this.dataComentario = dataComentario;
+    }
+
+    public String getNomeFantasiaEstabelecimento() {
+        return nomeFantasiaEstabelecimento;
+    }
+
+    public void setNomeFantasiaEstabelecimento(String nomeFantasiaEstabelecimento) {
+        this.nomeFantasiaEstabelecimento = nomeFantasiaEstabelecimento;
     }
 }

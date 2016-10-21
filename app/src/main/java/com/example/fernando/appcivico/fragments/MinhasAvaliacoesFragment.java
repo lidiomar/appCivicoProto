@@ -22,6 +22,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.fernando.appcivico.R;
 import com.example.fernando.appcivico.adapters.ComentarioAdapter;
+import com.example.fernando.appcivico.adapters.MinhasAvaliacoesAdapter;
 import com.example.fernando.appcivico.application.ApplicationAppCivico;
 import com.example.fernando.appcivico.estrutura.Comentario;
 import com.example.fernando.appcivico.estrutura.ConteudoPostagem;
@@ -41,7 +42,6 @@ import java.util.Set;
  * Created by fernando on 20/10/16.
  */
 public class MinhasAvaliacoesFragment extends Fragment {
-    private TextView txt;
     private Avaliacao avaliacao;
     private ApplicationAppCivico applicationAppCivico;
     private Gson gson = new Gson();
@@ -50,7 +50,7 @@ public class MinhasAvaliacoesFragment extends Fragment {
     private final String TAG = "TAG_MINHAS_AVALIACOES_CONTEUDO";
     private ArrayList<Comentario> comentariosList = new ArrayList<>();
     private Boolean inicializar = true;
-    private ComentarioAdapter comentarioAdapter;
+    private MinhasAvaliacoesAdapter comentarioAdapter;
     private RecyclerView recyclerViewComentarios;
     private Boolean carregando = false;
     private ProgressBar progressBar;
@@ -211,7 +211,7 @@ public class MinhasAvaliacoesFragment extends Fragment {
 
         if(inicializar) {
             progressBarComentariosContainer.setVisibility(View.GONE);
-            comentarioAdapter = new ComentarioAdapter(MinhasAvaliacoesFragment.this.getActivity(), this.comentariosList);
+            comentarioAdapter = new MinhasAvaliacoesAdapter(MinhasAvaliacoesFragment.this.getActivity(), this.comentariosList);
             recyclerViewComentarios.setAdapter(comentarioAdapter);
         } else {
             ReceiverThread receiverThread = new ReceiverThread();
@@ -232,6 +232,7 @@ public class MinhasAvaliacoesFragment extends Fragment {
             JsonComentario jsonComentario = gson.fromJson(json, JsonComentario.class);
 
             String nomeUsuario = jsonComentario.getNomeAutorComentario();
+            String nomeFantasia = jsonComentario.getNomeFantasiaEstabelecimento();
             String texto = conteudo.getTexto();
             int valor = conteudo.getValor();
             String dataComentario = jsonComentario.getDataComentario();
@@ -239,6 +240,7 @@ public class MinhasAvaliacoesFragment extends Fragment {
 
             Comentario comentario = new Comentario();
             comentario.setCodigoPostagem(codigoPostagem);
+            comentario.setNomeFantasiaEstabelecimento(nomeFantasia);
             comentario.setValor(valor);
             comentario.setNomeUsuario(nomeUsuario);
             comentario.setTexto(texto);
