@@ -252,7 +252,7 @@ public class Avaliacao {
         return jsonObjectRequest;
     }
 
-    public StringRequest buscaPostagensPorAutor(int pagina, int quantidadeItens, String codObjetoDestino,
+    public StringRequest buscaPostagensPorAutor(int pagina, int quantidadeItens,
                                        Response.Listener<String> responseListener, String codAutor, Response.ErrorListener responseErrorListener) {
 
         String url = "http://mobile-aceite.tcu.gov.br:80/appCivicoRS/rest/postagens" +
@@ -263,9 +263,6 @@ public class Avaliacao {
                 "&quantidadeDeItens="+quantidadeItens+
                 "&pagina="+pagina;
 
-        if(!codObjetoDestino.isEmpty()) {
-            url += "&codObjetoDestino="+codObjetoDestino;
-        }
 
         final StringRequest stringRequest = new StringRequest(Request.Method.GET, url, responseListener , responseErrorListener){
 
