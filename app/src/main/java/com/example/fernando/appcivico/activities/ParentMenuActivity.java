@@ -143,8 +143,12 @@ public class ParentMenuActivity extends AppCompatActivity implements NavigationV
                     .setPositiveButton(this.getString(R.string.confirmar),new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog,int id) {
                             applicationAppCivico.removeDadosDeSessao();
-                            ParentMenuActivity.this.onResume();
                             Toast.makeText(ParentMenuActivity.this, "Sessão encerrada com sucesso",Toast.LENGTH_SHORT).show();
+
+                            Intent refresh = new Intent(ParentMenuActivity.this, MainActivity.class);
+                            startActivity(refresh);
+                            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
+
                         }
                     })
                     .setNegativeButton(this.getString(R.string.cancelar),null);

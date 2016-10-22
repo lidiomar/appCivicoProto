@@ -3,7 +3,11 @@ package com.example.fernando.appcivico.utils;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 /**
  * Created by fernando on 17/10/16.
@@ -33,8 +37,11 @@ public class MyAlertDialogFragment extends DialogFragment {
         dialog.setMessage(getArguments().getString("message"));
         dialog.setIndeterminate(true);
         dialog.setCancelable(false);
-        return dialog;
 
+        this.setCancelable(false);
+
+        return dialog;
     }
+
 
 }

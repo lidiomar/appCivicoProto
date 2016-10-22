@@ -2,6 +2,7 @@ package com.example.fernando.appcivico.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,6 +14,8 @@ import android.widget.TextView;
 
 import com.example.fernando.appcivico.R;
 import com.example.fernando.appcivico.activities.DialogAvaliarActivity;
+import com.example.fernando.appcivico.activities.MinhasAvaliacoesActivity;
+import com.example.fernando.appcivico.application.ApplicationAppCivico;
 import com.example.fernando.appcivico.estrutura.Comentario;
 
 import java.util.ArrayList;
@@ -72,13 +75,18 @@ public class MinhasAvaliacoesAdapter extends RecyclerView.Adapter<MinhasAvaliaco
             linearlayout_editar_avaliacao.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
                     String codigoPostagem = getComentario().getCodigoPostagem();
                     String codConteudoPost = getComentario().getCodConteudoPost();
+                    String nomeFantasiaEstabelecimento = getComentario().getNomeFantasiaEstabelecimento();
+                    String nomeAutorComentario = getComentario().getNomeUsuario();
 
                     Intent intent = new Intent(context, DialogAvaliarActivity.class);
                     intent.putExtra("codigoPostagem",codigoPostagem);
                     intent.putExtra("codConteudoPost",codConteudoPost);
-                    context.startActivity(intent);
+                    intent.putExtra("nomeFantasiaEstabelecimento",nomeFantasiaEstabelecimento);
+                    intent.putExtra("nomeAutorComentario",nomeAutorComentario);
+                    ((MinhasAvaliacoesActivity)context).startActivityForResult(intent,8);
 
                 }
             });

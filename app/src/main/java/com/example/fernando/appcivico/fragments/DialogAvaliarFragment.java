@@ -22,6 +22,8 @@ import android.widget.Toast;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.example.fernando.appcivico.R;
 import com.example.fernando.appcivico.application.ApplicationAppCivico;
 import com.example.fernando.appcivico.estrutura.Autor;
@@ -33,6 +35,7 @@ import com.example.fernando.appcivico.estrutura.Tipo;
 import com.example.fernando.appcivico.servicos.Avaliacao;
 import com.example.fernando.appcivico.utils.Constants;
 import com.example.fernando.appcivico.utils.MyAlertDialogFragment;
+import com.example.fernando.appcivico.utils.StaticFunctions;
 import com.google.gson.Gson;
 
 import java.text.SimpleDateFormat;
@@ -64,7 +67,10 @@ public class DialogAvaliarFragment extends Fragment {
         }else {
             String codigoPostagem = (String)extras.get("codigoPostagem");
             String codConteudoPost = (String)extras.get("codConteudoPost");
-            buttonAvaliar.setOnClickListener(clickAtualizarAvaliacao(codigoPostagem,codConteudoPost));
+            String nomeFantasiaEstabelecimento = (String)extras.get("nomeFantasiaEstabelecimento");
+            String nomeAutorComentario = (String)extras.get("nomeAutorComentario");
+
+            buttonAvaliar.setOnClickListener(clickAtualizarAvaliacao(codigoPostagem,codConteudoPost, nomeFantasiaEstabelecimento, nomeAutorComentario));
         }
 
         ratingBar = (RatingBar)view.findViewById(R.id.rating_avaliacao);
@@ -77,9 +83,70 @@ public class DialogAvaliarFragment extends Fragment {
         return view;
     }
 
-    private View.OnClickListener clickAtualizarAvaliacao(String codigoPostagem, String  codConteudoPost) {
-        Toast.makeText(this.getActivity(), "UHUUUU "+codigoPostagem+" "+codConteudoPost,Toast.LENGTH_SHORT).show();
-        return null;
+    private View.OnClickListener clickAtualizarAvaliacao(final String codigoPostagem, final String  codConteudoPost, final String nomeFantasiaEstabelecimento, final String nomeAutorComentario) {
+        View.OnClickListener onClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (validarEnvio(editTextComentario)) {
+                    int notaAvaliacao = (int) ratingBar.getRating();
+                    String comentario = editTextComentario.getText().toString();
+
+                    ConteudoPostagem conteudoPostagem = new ConteudoPostagem();
+                    conteudoPostagem.setValor(notaAvaliacao);
+                    conteudoPostagem.setTexto(comentario);
+
+                    JsonComentario jsonComentario = new JsonComentario();
+                    jsonComentario.setNomeFantasiaEstabelecimento(nomeFantasiaEstabelecimento);
+                    jsonComentario.setNomeAutorComentario(nomeAutorComentario);
+
+                    Calendar c = Calendar.getInstance();
+                    Date data = c.getTime();
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyyy");
+                    String dataFormatada = sdf.format(data);
+                    jsonComentario.setDataComentario(dataFormatada);
+
+                    conteudoPostagem.setJSON(gson.toJson(jsonComentario));
+
+                    final Avaliacao avaliacao = new Avaliacao(DialogAvaliarFragment.this.getActivity());
+
+                    Response.Listener<String> responseListener = new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+
+                        }
+                    };
+
+                    Response.ErrorListener errorListener = new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Toast.makeText(DialogAvaliarFragment.this.getActivity(),DialogAvaliarFragment.this.getActivity().getString(R.string.algo_deu_errado),
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    };
+
+
+                    StringRequest stringRequest = avaliacao.atualizaComentario(codigoPostagem, codConteudoPost,conteudoPostagem, responseListener, errorListener);
+                    RequestQueue requestQueue = avaliacao.getRequestQueue();
+
+                    final MyAlertDialogFragment myAlertDialogFragment = MyAlertDialogFragment.newInstance("", "Enviando avaliação...");
+                    myAlertDialogFragment.show(getFragmentManager(), "");
+
+                    requestQueue.add(stringRequest);
+                    requestQueue.addRequestFinishedListener(new RequestQueue.RequestFinishedListener<Object>() {
+                        @Override
+                        public void onRequestFinished(Request<Object> request) {
+                            myAlertDialogFragment.dismiss();
+                            DialogAvaliarFragment.this.getActivity().setResult(Constants.COMENTARIO_MODIFICADO);
+                            StaticFunctions.exibeMensagemEFecha(DialogAvaliarFragment.this.getActivity().getString(R.string.avaliacao_enviada_com_sucesso),DialogAvaliarFragment.this.getActivity());
+                        }
+                    });
+
+                }else {
+                    Toast.makeText(DialogAvaliarFragment.this.getActivity(), DialogAvaliarFragment.this.getActivity().getString(R.string.preencha_os_dados_da_avaliacao), Toast.LENGTH_SHORT).show();
+                }
+            }
+        };
+        return onClickListener;
     }
 
     public Boolean validarEnvio(EditText comentario) {

@@ -16,6 +16,7 @@ public class Constants {
     public static final String FILE_APP_TOKEN = "file_app_token";
     public static final int LOGIN_AUTENTICADO = 11;
     public static final int CADASTRO_EFETUADO = 12;
+    public static final int COMENTARIO_MODIFICADO = 13;
 
     public static final Categoria[] CATEGORIAS = new Categoria[]{
             new Categoria("", "Buscar em todas"),

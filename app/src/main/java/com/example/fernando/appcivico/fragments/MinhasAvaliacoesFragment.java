@@ -1,5 +1,6 @@
 package com.example.fernando.appcivico.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -28,6 +29,8 @@ import com.example.fernando.appcivico.estrutura.ConteudoPostagemRetorno;
 import com.example.fernando.appcivico.estrutura.JsonComentario;
 import com.example.fernando.appcivico.estrutura.PostagemRetorno;
 import com.example.fernando.appcivico.servicos.Avaliacao;
+import com.example.fernando.appcivico.utils.Constants;
+import com.example.fernando.appcivico.utils.MyAlertDialogFragment;
 import com.google.gson.Gson;
 
 import org.json.JSONObject;
@@ -52,11 +55,12 @@ public class MinhasAvaliacoesFragment extends Fragment {
     private RecyclerView recyclerViewComentarios;
     private Boolean carregando = false;
     private ProgressBar progressBar;
-    private ProgressBar progressBarComentariosContainer;
     private LinearLayoutManager linearLayoutManager;
     private Boolean buscarDoServidor = true;
     int pastVisiblesItems, visibleItemCount, totalItemCount;
     private int countOffset = 0;
+    MyAlertDialogFragment myAlertDialogFragment;
+
 
     @Nullable
     @Override
@@ -65,7 +69,7 @@ public class MinhasAvaliacoesFragment extends Fragment {
         avaliacao = new Avaliacao(this.getActivity());
         applicationAppCivico = (ApplicationAppCivico) this.getActivity().getApplication();
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
-        progressBarComentariosContainer = (ProgressBar) view.findViewById(R.id.progressBar_comentarios_container);
+        myAlertDialogFragment = MyAlertDialogFragment.newInstance("",this.getActivity().getString(R.string.buscando_avaliacoes));
 
         applicationAppCivico = (ApplicationAppCivico)this.getActivity().getApplication();
 
@@ -96,7 +100,7 @@ public class MinhasAvaliacoesFragment extends Fragment {
             }
 
         });
-        progressBarComentariosContainer.setVisibility(View.VISIBLE);
+        myAlertDialogFragment.show(this.getFragmentManager(),"");
         buscaPostagens();
 
         return view;
@@ -141,7 +145,7 @@ public class MinhasAvaliacoesFragment extends Fragment {
                 }
 
                 if(inicializar) {
-                    progressBarComentariosContainer.setVisibility(View.GONE);
+                    myAlertDialogFragment.dismiss();
                 }
 
                 Toast.makeText(MinhasAvaliacoesFragment.this.getActivity(),
@@ -193,7 +197,7 @@ public class MinhasAvaliacoesFragment extends Fragment {
                     }
 
                     if(inicializar) {
-                        progressBarComentariosContainer.setVisibility(View.GONE);
+                        myAlertDialogFragment.dismiss();
                     }
 
                     Toast.makeText(MinhasAvaliacoesFragment.this.getActivity(),
@@ -212,7 +216,7 @@ public class MinhasAvaliacoesFragment extends Fragment {
         this.comentariosList.addAll(comentarios);
 
         if(inicializar) {
-            progressBarComentariosContainer.setVisibility(View.GONE);
+            myAlertDialogFragment.dismiss();
             comentarioAdapter = new MinhasAvaliacoesAdapter(MinhasAvaliacoesFragment.this.getActivity(), this.comentariosList);
             recyclerViewComentarios.setAdapter(comentarioAdapter);
         } else {
@@ -284,6 +288,16 @@ public class MinhasAvaliacoesFragment extends Fragment {
         return true;
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(resultCode == Constants.COMENTARIO_MODIFICADO) {
+            inicializar = true;
+            buscarDoServidor = true;
+            countOffset = 0;
+            buscaPostagens();
+        }
+    }
+
     private class ReceiverThread extends Thread {
         @Override
         public void run() {
@@ -299,3 +313,5 @@ public class MinhasAvaliacoesFragment extends Fragment {
     }
 
 }
+
+

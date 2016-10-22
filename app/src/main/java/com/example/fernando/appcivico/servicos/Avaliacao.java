@@ -2,8 +2,6 @@ package com.example.fernando.appcivico.servicos;
 
 import android.content.Context;
 import android.support.v4.app.FragmentActivity;
-import android.view.View;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -13,7 +11,6 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -25,11 +22,7 @@ import com.example.fernando.appcivico.utils.Constants;
 import com.example.fernando.appcivico.utils.StaticFunctions;
 import com.google.gson.Gson;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -276,6 +269,40 @@ public class Avaliacao {
         return stringRequest;
 
     }
+
+    public StringRequest atualizaComentario(String codPostagem, String codConteudoPostagem, ConteudoPostagem conteudoPostagem,
+                                            Response.Listener responseListener, Response.ErrorListener responseErrorListener) {
+        String url = "http://mobile-aceite.tcu.gov.br:80/appCivicoRS/rest/postagens/"+codPostagem+"/conteudos/"+ codConteudoPostagem;
+        Gson gson = new Gson();
+        final String mRequestBody = gson.toJson(conteudoPostagem);
+
+        final StringRequest stringRequest = new StringRequest(Request.Method.PUT, url, responseListener , responseErrorListener){
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String,String> params = new HashMap<String, String>();
+                params.put("appToken",((ApplicationAppCivico)fragmentActivity.getApplication()).getApptoken());
+                return params;
+            }
+
+            @Override
+            public byte[] getBody() {
+                try {
+                    return mRequestBody == null ? null : mRequestBody.getBytes("utf-8");
+                } catch (UnsupportedEncodingException uee) {
+                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", mRequestBody, "utf-8");
+                    return null;
+                }
+            }
+            @Override
+            public String getBodyContentType() {
+                return "application/json; charset=utf-8";
+            }
+
+        };
+        return stringRequest;
+    }
+
 
     public String getUrlResponse() {
         return urlResponse;
