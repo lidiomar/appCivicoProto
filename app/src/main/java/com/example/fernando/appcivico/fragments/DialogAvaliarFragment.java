@@ -61,6 +61,13 @@ public class DialogAvaliarFragment extends Fragment {
         Bundle extras = getActivity().getIntent().getExtras();
         buttonAvaliar = (Button)view.findViewById(R.id.button_avaliar);
 
+        ratingBar = (RatingBar)view.findViewById(R.id.rating_avaliacao);
+        Drawable progress = ratingBar.getProgressDrawable();
+        DrawableCompat.setTint(progress, Color.rgb(11111111,01011010,00000000));
+
+
+        editTextComentario = (EditText)view.findViewById(R.id.comentario_avaliacao);
+
         estabelecimento = (Estabelecimento)extras.get("estabelecimento");
         if(estabelecimento != null) {
             buttonAvaliar.setOnClickListener(clickAvaliar());
@@ -70,15 +77,16 @@ public class DialogAvaliarFragment extends Fragment {
             String nomeFantasiaEstabelecimento = (String)extras.get("nomeFantasiaEstabelecimento");
             String nomeAutorComentario = (String)extras.get("nomeAutorComentario");
 
+            String comentario = (String)extras.get("comentario");
+            int valor = (int)extras.get("valor");
+
+            editTextComentario.setText(comentario);
+            ratingBar.setRating(valor);
+
             buttonAvaliar.setOnClickListener(clickAtualizarAvaliacao(codigoPostagem,codConteudoPost, nomeFantasiaEstabelecimento, nomeAutorComentario));
         }
 
-        ratingBar = (RatingBar)view.findViewById(R.id.rating_avaliacao);
-        Drawable progress = ratingBar.getProgressDrawable();
-        DrawableCompat.setTint(progress, Color.rgb(11111111,01011010,00000000));
 
-
-        editTextComentario = (EditText)view.findViewById(R.id.comentario_avaliacao);
 
         return view;
     }

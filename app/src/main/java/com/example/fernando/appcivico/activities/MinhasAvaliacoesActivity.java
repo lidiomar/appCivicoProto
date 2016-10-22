@@ -6,6 +6,7 @@ import android.os.Bundle;
 import com.example.fernando.appcivico.R;
 import com.example.fernando.appcivico.fragments.BuscaAvancadaFragment;
 import com.example.fernando.appcivico.fragments.MinhasAvaliacoesFragment;
+import com.example.fernando.appcivico.utils.Constants;
 
 /**
  * Created by fernando on 20/10/16.
@@ -28,9 +29,11 @@ public class MinhasAvaliacoesActivity extends ParentMenuActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Intent refresh = new Intent(this, MinhasAvaliacoesActivity.class);
-        startActivity(refresh);
-        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
-        finish();
+        if(resultCode == Constants.COMENTARIO_MODIFICADO) {
+            Intent refresh = new Intent(this, MinhasAvaliacoesActivity.class);
+            startActivity(refresh);
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
+            finish();
+        }
     }
 }

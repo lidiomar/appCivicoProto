@@ -80,12 +80,20 @@ public class MinhasAvaliacoesAdapter extends RecyclerView.Adapter<MinhasAvaliaco
                     String codConteudoPost = getComentario().getCodConteudoPost();
                     String nomeFantasiaEstabelecimento = getComentario().getNomeFantasiaEstabelecimento();
                     String nomeAutorComentario = getComentario().getNomeUsuario();
+                    String comentario = getComentario().getTexto();
+                    int valor = getComentario().getValor();
 
                     Intent intent = new Intent(context, DialogAvaliarActivity.class);
                     intent.putExtra("codigoPostagem",codigoPostagem);
                     intent.putExtra("codConteudoPost",codConteudoPost);
                     intent.putExtra("nomeFantasiaEstabelecimento",nomeFantasiaEstabelecimento);
                     intent.putExtra("nomeAutorComentario",nomeAutorComentario);
+                    intent.putExtra("nomeAutorComentario",nomeAutorComentario);
+
+                    intent.putExtra("comentario",comentario);
+                    intent.putExtra("valor",valor);
+
+
                     ((MinhasAvaliacoesActivity)context).startActivityForResult(intent,8);
 
                 }
