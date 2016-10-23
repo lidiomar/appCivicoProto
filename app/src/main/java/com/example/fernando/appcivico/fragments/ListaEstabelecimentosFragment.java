@@ -13,8 +13,11 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.example.fernando.appcivico.R;
 import com.example.fernando.appcivico.adapters.EstabelecimentoAdapter;
 import com.example.fernando.appcivico.estrutura.Estabelecimento;
@@ -43,6 +46,7 @@ public class ListaEstabelecimentosFragment extends Fragment {
     private String categoria;
     private String especialidade;
     private Servicos servicos;
+    private Boolean buscarDoServidor = true;
     private ArrayList<Estabelecimento> estabelecimentosListLoadMoreReturn;
 
     @Nullable
@@ -88,7 +92,7 @@ public class ListaEstabelecimentosFragment extends Fragment {
                     visibleItemCount = linearLayoutManager.getChildCount();
                     totalItemCount = linearLayoutManager.getItemCount();
                     pastVisiblesItems = linearLayoutManager.findFirstVisibleItemPosition();
-                    if (((visibleItemCount + pastVisiblesItems) >= totalItemCount) && !carregando) {
+                    if (((visibleItemCount + pastVisiblesItems) >= totalItemCount) && !carregando && buscarDoServidor) {
                         carregando = true;
                         carregaEstabelecimentos();
                     }
@@ -155,8 +159,12 @@ public class ListaEstabelecimentosFragment extends Fragment {
             public void onResponse(Object response) {
                 Gson gson = new Gson();
                 Estabelecimento[] estabelecimentos = gson.fromJson(String.valueOf(response), Estabelecimento[].class);
-                estabelecimentosListLoadMoreReturn = new ArrayList<>(Arrays.asList(estabelecimentos));
-                loadMoreRecyclerView();
+                if(estabelecimentos != null) {
+                    estabelecimentosListLoadMoreReturn = new ArrayList<>(Arrays.asList(estabelecimentos));
+                    loadMoreRecyclerView();
+                }else {
+                    buscarDoServidor = false;
+                }
             }
         };
 
@@ -166,8 +174,11 @@ public class ListaEstabelecimentosFragment extends Fragment {
                 Toast.makeText(ListaEstabelecimentosFragment.this.getActivity(),ListaEstabelecimentosFragment.this.getActivity().getString(R.string.algo_deu_errado),Toast.LENGTH_SHORT).show();
             }
         };
+        RequestQueue requestQueue = servicos.getRequestQueue();
 
-        servicos.consultaEstabelecimentos(cidade,uf,categoria,especialidade,20,countOffset,respListener,errorListener,null);
+        JsonArrayRequest jsonArrayRequest = servicos.consultaEstabelecimentos(cidade, uf, categoria, especialidade, 20, countOffset, respListener, errorListener);
+        requestQueue.add(jsonArrayRequest);
+
     }
 
 

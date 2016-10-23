@@ -62,6 +62,8 @@ public class AvaliarFragment extends Fragment {
     private Button buttonAvaliarDialog;
     private TextView textoInformativoComentarios;
     private ApplicationAppCivico applicationAppCivico;
+    private Boolean buscarDoServidor = true;
+    private Avaliacao avaliacao;
 
     @Nullable
     @Override
@@ -69,7 +71,7 @@ public class AvaliarFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_avaliar, container, false);
         Bundle extras = getActivity().getIntent().getExtras();
         estabelecimento = (Estabelecimento)extras.get("estabelecimento");
-
+        avaliacao =  new Avaliacao(AvaliarFragment.this.getActivity());
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
         progressBarComentariosContainer = (ProgressBar) view.findViewById(R.id.progressBar_comentarios_container);
 
@@ -95,7 +97,7 @@ public class AvaliarFragment extends Fragment {
                     visibleItemCount = linearLayoutManager.getChildCount();
                     totalItemCount = linearLayoutManager.getItemCount();
                     pastVisiblesItems = linearLayoutManager.findFirstVisibleItemPosition();
-                    if (((visibleItemCount + pastVisiblesItems) >= totalItemCount) && !carregando) {
+                    if (((visibleItemCount + pastVisiblesItems) >= totalItemCount) && !carregando  && buscarDoServidor) {
                         carregando = true;
                         carregaComentarios();
                     }
@@ -120,8 +122,6 @@ public class AvaliarFragment extends Fragment {
     }
 
     public void buscarComentarios() {
-        final Avaliacao avaliacao = new Avaliacao(AvaliarFragment.this.getActivity());
-        final RequestQueue requestQueue = Volley.newRequestQueue(AvaliarFragment.this.getActivity());
         requestCount = 0;
 
         Response.Listener responseListener = new Response.Listener<String>() {
@@ -130,39 +130,9 @@ public class AvaliarFragment extends Fragment {
                 final PostagemRetorno[] postagemRetornos = gson.fromJson(response, PostagemRetorno[].class);
                 AvaliarFragment.this.getConteudoPostagemHash().clear();
                 if(postagemRetornos != null) {
-                    for(PostagemRetorno postagemRetorno : postagemRetornos) {
-
-                        ConteudoPostagemRetorno[] conteudos = postagemRetorno.getConteudos();
-                        String codConteudoPostagem = conteudos[0].getCodConteudoPostagem();
-                        final String codPostagem = postagemRetorno.getCodPostagem();
-                        autoresPostagemHash.put(codPostagem,postagemRetorno.getCodAutor());
-
-                        Response.Listener<JSONObject> listener = new Response.Listener<JSONObject>() {
-                            @Override
-                            public void onResponse(JSONObject response) {
-                                ConteudoPostagem conteudoPostagem = gson.fromJson(String.valueOf(response), ConteudoPostagem.class);
-                                AvaliarFragment.this.getConteudoPostagemHash().put(codPostagem, conteudoPostagem);
-                            }
-                        };
-
-
-                        JsonObjectRequest jsonObjectRequest = avaliacao.buscaConteudoPostagem(codPostagem, codConteudoPostagem, listener, null);
-                        requestQueue.add(jsonObjectRequest);
-                    }
-                    requestQueue.addRequestFinishedListener(new RequestQueue.RequestFinishedListener<Object>() {
-                        @Override
-                        public void onRequestFinished(Request<Object> request) {
-                            requestCount = requestCount + 1;
-
-                            progressBarComentariosContainer.setVisibility(View.GONE);
-                            textoInformativoComentarios.setVisibility(View.VISIBLE);
-
-                            if(requestCount == postagemRetornos.length) {
-                                atribuiValoresRecyclerView();
-                            }
-                        }
-                    });
+                    buscaConteudoPostagens(postagemRetornos);
                 }else {
+                    buscarDoServidor =false;
                     progressBarComentariosContainer.setVisibility(View.GONE);
                     textoInformativoComentarios.setVisibility(View.VISIBLE);
                     textoInformativoComentarios.setText(AvaliarFragment.this.getActivity().getString(R.string.nao_ha_comentarios));
@@ -180,7 +150,41 @@ public class AvaliarFragment extends Fragment {
         avaliacao.buscaPostagens(countOffset,5,estabelecimento.getCodUnidade(),responseListener,responseErrorListener);
     }
 
+    private void buscaConteudoPostagens(final PostagemRetorno[] postagemRetornos) {
+        final RequestQueue requestQueue = Volley.newRequestQueue(AvaliarFragment.this.getActivity());
+        for (PostagemRetorno postagemRetorno : postagemRetornos) {
 
+            ConteudoPostagemRetorno[] conteudos = postagemRetorno.getConteudos();
+            String codConteudoPostagem = conteudos[0].getCodConteudoPostagem();
+            final String codPostagem = postagemRetorno.getCodPostagem();
+            autoresPostagemHash.put(codPostagem, postagemRetorno.getCodAutor());
+
+            Response.Listener<JSONObject> listener = new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    ConteudoPostagem conteudoPostagem = gson.fromJson(String.valueOf(response), ConteudoPostagem.class);
+                    AvaliarFragment.this.getConteudoPostagemHash().put(codPostagem, conteudoPostagem);
+                }
+            };
+
+
+            JsonObjectRequest jsonObjectRequest = avaliacao.buscaConteudoPostagem(codPostagem, codConteudoPostagem, listener, null);
+            requestQueue.add(jsonObjectRequest);
+        }
+        requestQueue.addRequestFinishedListener(new RequestQueue.RequestFinishedListener<Object>() {
+            @Override
+            public void onRequestFinished(Request<Object> request) {
+                requestCount = requestCount + 1;
+
+                progressBarComentariosContainer.setVisibility(View.GONE);
+                textoInformativoComentarios.setVisibility(View.VISIBLE);
+
+                if (requestCount == postagemRetornos.length) {
+                    atribuiValoresRecyclerView();
+                }
+            }
+        });
+    }
 
     public void atribuiValoresRecyclerView() {
         ArrayList<Comentario> comentarios = montaListaComentarios();

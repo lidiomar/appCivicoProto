@@ -26,7 +26,11 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.daasuu.bl.ArrowDirection;
 import com.daasuu.bl.BubbleLayout;
 import com.daasuu.bl.BubblePopupHelper;
@@ -129,6 +133,12 @@ public class PesquisaFragment extends Fragment implements GoogleApiClient.Connec
         super.onStop();
     }
 
+    @Override
+    public void onResume() {
+        buttonPesquisar.setEnabled(true);
+        super.onResume();
+    }
+
     private void inicializaCategoria() {
         ArrayAdapter arrayAdapter = new ArrayAdapter(this.getActivity(), android.R.layout.simple_spinner_item, Arrays.asList(Constants.CATEGORIAS));
         spinnerCategoria.setAdapter(arrayAdapter);
@@ -210,23 +220,45 @@ public class PesquisaFragment extends Fragment implements GoogleApiClient.Connec
                 Estabelecimento[] estabelecimentos = gson.fromJson(stringJson, Estabelecimento[].class);
 
                 if (estabelecimentos == null || estabelecimentos.length <= 0) {
-                    Toast.makeText(PesquisaFragment.this.getActivity(), "Não há resultados para a busca", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(PesquisaFragment.this.getActivity(), PesquisaFragment.this.getString(R.string.nao_ha_resultados), Toast.LENGTH_SHORT).show();
                 }else {
                     Intent intent = new Intent(PesquisaFragment.this.getActivity(), MapsActivity.class);
 
                     intent.putExtra("estabelecimentos", estabelecimentos);
                     intent.putExtra("latitudeUsuario", lat);
                     intent.putExtra("longitudeUsuario", lng);
-
+                    buttonPesquisar.setEnabled(false);
                     startActivity(intent);
+                    PesquisaFragment.this.getActivity().overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
+
                 }
             }
         };
 
+        Response.ErrorListener errorListener = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(PesquisaFragment.this.getActivity(), PesquisaFragment.this.getActivity().getString(R.string.algo_deu_errado), Toast.LENGTH_LONG).show();
+            }
+        };
+
         Servicos servicos = new Servicos(PesquisaFragment.this.getActivity());
-        MyAlertDialogFragment myAlertDialogFragment = MyAlertDialogFragment.newInstance("", "");
+
+        final MyAlertDialogFragment myAlertDialogFragment = MyAlertDialogFragment.newInstance("", "");
         myAlertDialogFragment.show(getFragmentManager(),"");
-        servicos.consultaEstabelecimentoLatLong(respListener, lat, lng, raio, texto, categoriaId, myAlertDialogFragment);
+
+        JsonArrayRequest jsonArrayRequest = servicos.consultaEstabelecimentoLatLong(lat, lng, raio, texto, categoriaId, respListener, errorListener);
+        RequestQueue requestQueue = servicos.getRequestQueue();
+        requestQueue.add(jsonArrayRequest);
+
+        requestQueue.addRequestFinishedListener(new RequestQueue.RequestFinishedListener<Object>() {
+            @Override
+            public void onRequestFinished(Request<Object> request) {
+                if(myAlertDialogFragment != null) {
+                    myAlertDialogFragment.dismiss();
+                }
+            }
+        });
     }
 
 

@@ -1,6 +1,5 @@
 package com.example.fernando.appcivico.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -29,7 +28,6 @@ import com.example.fernando.appcivico.estrutura.ConteudoPostagemRetorno;
 import com.example.fernando.appcivico.estrutura.JsonComentario;
 import com.example.fernando.appcivico.estrutura.PostagemRetorno;
 import com.example.fernando.appcivico.servicos.Avaliacao;
-import com.example.fernando.appcivico.utils.Constants;
 import com.example.fernando.appcivico.utils.MyAlertDialogFragment;
 import com.google.gson.Gson;
 
@@ -288,15 +286,6 @@ public class MinhasAvaliacoesFragment extends Fragment {
         return true;
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(resultCode == Constants.COMENTARIO_MODIFICADO) {
-            inicializar = true;
-            buscarDoServidor = true;
-            countOffset = 0;
-            buscaPostagens();
-        }
-    }
 
     private class ReceiverThread extends Thread {
         @Override

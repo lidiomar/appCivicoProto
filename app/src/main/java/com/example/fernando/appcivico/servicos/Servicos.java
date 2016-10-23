@@ -80,8 +80,8 @@ public class Servicos {
         });
     }
 
-    public void consultaEstabelecimentoLatLong(Response.Listener responseListener, double latitude, double longitude,
-                                               int raio, final String texto, final String categoria, final MyAlertDialogFragment myAlertDialogFragment) {
+    public JsonArrayRequest consultaEstabelecimentoLatLong(double latitude, double longitude,
+                                                           int raio, final String texto, final String categoria, Response.Listener responseListener, Response.ErrorListener errorListener) {
 
         String url = "http://mobile-aceite.tcu.gov.br:80/mapa-da-saude/rest/estabelecimentos/latitude/"+latitude+"/longitude/"+longitude+"/raio/"+raio;
         String queryParams = "";
@@ -109,28 +109,16 @@ public class Servicos {
 
         url += queryParams;
 
-        final JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, responseListener , new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(context,fragmentActivity.getString(R.string.algo_deu_errado),Toast.LENGTH_LONG).show();
-            }
-        });
+        final JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, responseListener , errorListener);
 
-        requestQueue.add(jsonArrayRequest);
-        requestQueue.addRequestFinishedListener(new RequestQueue.RequestFinishedListener<Object>() {
-            @Override
-            public void onRequestFinished(Request<Object> request) {
-                if(myAlertDialogFragment != null) {
-                    myAlertDialogFragment.dismiss();
-                }
-            }
-        });
+
+        return jsonArrayRequest;
 
     }
 
-    public void consultaEstabelecimentos(String municipio, String uf, String categoria, String especialidade,
+    public JsonArrayRequest consultaEstabelecimentos(String municipio, String uf, String categoria, String especialidade,
                                          int quantidade, int pagina, Response.Listener resListener,
-                                         Response.ErrorListener errorListener, final MyAlertDialogFragment myAlertDialogFragment) {
+                                         Response.ErrorListener errorListener) {
         String url = "http://mobile-aceite.tcu.gov.br:80/mapa-da-saude/rest/estabelecimentos" +
                 "?municipio=" + municipio +
                 "&uf=" + uf +
@@ -151,15 +139,11 @@ public class Servicos {
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
-        requestQueue.add(jsonArrayRequest);
-        requestQueue.addRequestFinishedListener(new RequestQueue.RequestFinishedListener<Object>() {
-            @Override
-            public void onRequestFinished(Request<Object> request) {
-                if(myAlertDialogFragment != null) {
-                    myAlertDialogFragment.dismiss();
-                }
-            }
-        });
+        return jsonArrayRequest;
 
+    }
+
+    public RequestQueue getRequestQueue() {
+        return requestQueue;
     }
 }

@@ -95,7 +95,9 @@
     <string name="deixe_a_sua_avaliacao">Deixe a sua avaliação</string>
     <string name="visualizar_avaliacoes">Visualizar avaliações</string>
     <string name="editar_avaliacao">Editar avaliação</string>
-    <string name="buscando_avaliacoes">Buscando avaliações</string>
+    <string name="buscando_avaliacoes">Buscando avaliações...</string>
+
+    <string name="preparando_os_dados">Preparando os dados...</string>
 
 </resources>
 

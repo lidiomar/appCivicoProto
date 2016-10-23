@@ -13,9 +13,13 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.example.fernando.appcivico.R;
+import com.example.fernando.appcivico.activities.BuscaAvancadaActivity;
 import com.example.fernando.appcivico.activities.ListaEstabelecimentosActivity;
 import com.example.fernando.appcivico.estrutura.Categoria;
 import com.example.fernando.appcivico.estrutura.Especialidade;
@@ -62,7 +66,7 @@ public class BuscaAvancadaFragment extends Fragment  {
         spinnerBuscaEspecialidades = (Spinner)view.findViewById(R.id.spinner_busca_especialiadade);
         buttonPesquisar = (Button)view.findViewById(R.id.button_busca_enviar);
         servicos = new Servicos(this.getActivity());
-        String json = carregaEstadosCidades();
+        final String json = carregaEstadosCidades();
         Gson gson = new Gson();
         Estado[] estados = gson.fromJson(json, Estado[].class);
 
@@ -113,14 +117,20 @@ public class BuscaAvancadaFragment extends Fragment  {
                     public void onResponse(Object response) {
                         Gson gson = new Gson();
                         Estabelecimento[] estabelecimentos = gson.fromJson(String.valueOf(response), Estabelecimento[].class);
-                        Intent intent = new Intent(BuscaAvancadaFragment.this.getActivity(), ListaEstabelecimentosActivity.class);
-                        intent.putExtra("estabelecimentos",estabelecimentos);
-                        intent.putExtra("uf",uf);
-                        intent.putExtra("cidade",cidade);
-                        intent.putExtra("categoria",categoria);
-                        intent.putExtra("especialidade",especialidade);
-                        startActivity(intent);
 
+                        if (estabelecimentos == null || estabelecimentos.length <= 0) {
+                            Toast.makeText(BuscaAvancadaFragment.this.getActivity(), BuscaAvancadaFragment.this.getString(R.string.nao_ha_resultados), Toast.LENGTH_SHORT).show();
+                        }else {
+                            Intent intent = new Intent(BuscaAvancadaFragment.this.getActivity(), ListaEstabelecimentosActivity.class);
+                            intent.putExtra("estabelecimentos", estabelecimentos);
+                            intent.putExtra("uf", uf);
+                            intent.putExtra("cidade", cidade);
+                            intent.putExtra("categoria", categoria);
+                            intent.putExtra("especialidade", especialidade);
+                            startActivity(intent);
+                            BuscaAvancadaFragment.this.getActivity().overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
+
+                        }
                     }
                 };
 
@@ -141,9 +151,19 @@ public class BuscaAvancadaFragment extends Fragment  {
                 }
 
 
-                MyAlertDialogFragment myAlertDialogFragment = MyAlertDialogFragment.newInstance("", "");
+                final MyAlertDialogFragment myAlertDialogFragment = MyAlertDialogFragment.newInstance("", "");
                 myAlertDialogFragment.show(getFragmentManager(),"");
-                servicos.consultaEstabelecimentos(cidade,uf,categoria,especialidade,20,0,respListener,errorListener, myAlertDialogFragment);
+
+                JsonArrayRequest jsonArrayRequest = servicos.consultaEstabelecimentos(cidade, uf, categoria, especialidade, 20, 0, respListener, errorListener);
+                RequestQueue requestQueue = servicos.getRequestQueue();
+                requestQueue.add(jsonArrayRequest);
+
+                requestQueue.addRequestFinishedListener(new RequestQueue.RequestFinishedListener<Object>() {
+                    @Override
+                    public void onRequestFinished(Request<Object> request) {
+                        myAlertDialogFragment.dismiss();
+                    }
+                });
             }
         });
 

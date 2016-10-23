@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.example.fernando.appcivico.R;
 import com.example.fernando.appcivico.activities.InformacoesActivity;
 import com.example.fernando.appcivico.estrutura.Estabelecimento;
+import com.example.fernando.appcivico.utils.MyAlertDialogFragment;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -35,12 +36,12 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     private double lng;
     private TextView textoInformativo;
     String clickedMarkerId = null;
+    private MyAlertDialogFragment myAlertDialogFragment;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_maps,container,false);
-
 
         Bundle extras = getActivity().getIntent().getExtras();
 
@@ -58,6 +59,8 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment)getChildFragmentManager().findFragmentById(R.id.map);
 
+        myAlertDialogFragment = MyAlertDialogFragment.newInstance("", this.getString(R.string.preparando_os_dados));
+        myAlertDialogFragment.show(getFragmentManager(),"");
         mapFragment.getMapAsync(this);
 
         return view;
@@ -119,6 +122,8 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.ic_action_user));
 
         marker.showInfoWindow();
+
+        myAlertDialogFragment.dismiss();
     }
 
 
@@ -126,5 +131,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         Intent intent = new Intent(MapsFragment.this.getActivity(), InformacoesActivity.class);
         intent.putExtra("estabelecimento", estabelecimento);
         startActivity(intent);
+        this.getActivity().overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
     }
 }
