@@ -4,29 +4,75 @@
     android:layout_height="match_parent"
     android:id="@+id/main_layout">
 
-    <Button android:layout_height="wrap_content"
+    <LinearLayout android:layout_height="0dp"
         android:layout_width="match_parent"
-        android:text="@string/deixe_a_sua_avaliacao"
-        android:id="@+id/button_avaliar_dialog"
-        android:layout_gravity="center_horizontal" />
+        android:orientation="vertical"
+        android:layout_weight="3"
+        android:visibility="visible">
+
+        <android.support.v7.widget.CardView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            card_view:cardCornerRadius="2dp"
+            card_view:contentPadding="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp">
+
+            <LinearLayout android:layout_height="match_parent"
+                android:id="@+id/media_container"
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:gravity="center_vertical"
+                android:layout_gravity="center_vertical"
+                android:visibility="visible"
+                android:paddingTop="10dp">
+
+                <TextView
+                    android:id="@+id/text_media_avaliacoes"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:visibility="visible"
+                    android:layout_gravity="center_horizontal" />
+
+                <RatingBar
+                    android:id="@+id/rating_avaliacao_readonly"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:numStars="5"
+                    android:rating="0"
+                    android:visibility="visible"
+                    android:isIndicator="true"
+                    android:layout_marginBottom="5dp"
+                    android:layout_gravity="center_horizontal" />
+
+                <TextView
+                    android:id="@+id/text_numero_avaliacoes"
+                    android:layout_height="match_parent"
+                    android:text="@string/sem_avaliacoes"
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:textAlignment="center"
+                    android:gravity="center_vertical"
+                    android:visibility="visible" />
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:id="@+id/linearlayout_comentarios"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:visibility="visible"
         android:orientation="vertical"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginLeft="5dp">
-
-        <ProgressBar
-            android:id="@+id/progressBar_comentarios_container"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:indeterminate="true"
-            android:layout_gravity="center_horizontal" />
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_weight="6"
+        android:paddingBottom="10dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -39,7 +85,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
-                android:layout_marginBottom="25dp"
+                android:layout_marginBottom="15dp"
                 android:layout_gravity="center_horizontal"
                 android:gravity="center|center_horizontal"
                 android:layout_marginTop="15dp" />
@@ -52,10 +98,10 @@
                     android:id="@+id/comentarios_recyclerview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="40dp"
                     android:cacheColorHint="@android:color/transparent"
                     android:clipToPadding="false"
                     android:divider="@null"
+                    android:fadeScrollbars="false"
                     android:listSelector="@android:color/transparent"
                     android:scrollbarStyle="outsideOverlay"
                     android:scrollbars="vertical" />
@@ -66,11 +112,18 @@
                     android:layout_height="wrap_content"
                     android:visibility="gone"
                     android:indeterminate="true"
-                    android:layout_gravity="bottom|center_horizontal"
-                    android:paddingBottom="40dp" />
+                    android:paddingBottom="10dp"
+                    android:layout_gravity="bottom|center_horizontal" />
             </FrameLayout>
 
         </LinearLayout>
     </LinearLayout>
+
+    <Button android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:text="@string/deixe_a_sua_avaliacao"
+        android:id="@+id/button_avaliar_dialog"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="1" />
 </LinearLayout>
 

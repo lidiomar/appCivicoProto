@@ -32,10 +32,10 @@ public class InformacoesFragmentTab extends Fragment {
         viewPager = (ViewPager)view.findViewById(R.id.avaliacaoViewPager);
 
         viewPager.setAdapter(new InformacoesTabAdapter(getContext(),getChildFragmentManager()));
-
+        viewPager.setOffscreenPageLimit(0);
         tab.setSelectedTabIndicatorColor(Color.WHITE);
         tab.setTabTextColors(Color.WHITE, Color.WHITE);
-        tab.setBackgroundColor(getActivity().getResources().getColor(R.color.colorPrimaryDark));
+        tab.setBackgroundColor(getActivity().getResources().getColor(R.color.colorPrimary));
         tab.setupWithViewPager(viewPager);
 
         return view;

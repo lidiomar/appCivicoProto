@@ -28,7 +28,7 @@ public class InformacoesTabAdapter extends FragmentStatePagerAdapter
             fragment = new InformacoesFragment();
 
         }else if(position == 1) {
-            fragment = new InformacoesFragment();
+            fragment = new AvaliarFragment();
         }
 
         return fragment;
