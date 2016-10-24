@@ -1,13 +1,9 @@
 package com.example.fernando.appcivico.fragments;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.location.Criteria;
 import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -49,15 +45,14 @@ import com.google.gson.Gson;
 import org.json.JSONArray;
 
 import java.io.UnsupportedEncodingException;
-import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Arrays;
-import java.util.Random;
 
 /**
  * Created by fernando on 11/10/16.
  */
 public class PesquisaFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+    private static final int MY_PERMISSION_REQUEST = 1;
     private Spinner spinnerCategoria;
     private SeekBar seekBar;
     private TextView seekBarValue;
@@ -169,16 +164,14 @@ public class PesquisaFragment extends Fragment implements GoogleApiClient.Connec
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-        if (ActivityCompat.checkSelfPermission(this.getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this.getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(PesquisaFragment.this.getActivity(), "É necessário permitir o envio das informações de localização", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        lastLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
-        if (lastLocation != null) {
-            latitude = lastLocation.getLatitude();
-            longitude = lastLocation.getLongitude();
+
+        if (ActivityCompat.checkSelfPermission(this.getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this.getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this.getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION}, MY_PERMISSION_REQUEST);
         }else {
-            fail = true;
+            getCoordinates();
         }
     }
 
@@ -194,7 +187,7 @@ public class PesquisaFragment extends Fragment implements GoogleApiClient.Connec
 
     public void onClickButtonPesquisar() {
 
-        if(fail) {
+        if (fail) {
             Toast.makeText(PesquisaFragment.this.getActivity(), this.getActivity().getString(R.string.algo_deu_errado), Toast.LENGTH_SHORT).show();
             return;
         }
@@ -221,7 +214,7 @@ public class PesquisaFragment extends Fragment implements GoogleApiClient.Connec
 
                 if (estabelecimentos == null || estabelecimentos.length <= 0) {
                     Toast.makeText(PesquisaFragment.this.getActivity(), PesquisaFragment.this.getString(R.string.nao_ha_resultados), Toast.LENGTH_SHORT).show();
-                }else {
+                } else {
                     Intent intent = new Intent(PesquisaFragment.this.getActivity(), MapsActivity.class);
 
                     intent.putExtra("estabelecimentos", estabelecimentos);
@@ -245,7 +238,7 @@ public class PesquisaFragment extends Fragment implements GoogleApiClient.Connec
         Servicos servicos = new Servicos(PesquisaFragment.this.getActivity());
 
         final MyAlertDialogFragment myAlertDialogFragment = MyAlertDialogFragment.newInstance("", "");
-        myAlertDialogFragment.show(getFragmentManager(),"");
+        myAlertDialogFragment.show(getFragmentManager(), "");
 
         JsonArrayRequest jsonArrayRequest = servicos.consultaEstabelecimentoLatLong(lat, lng, raio, texto, categoriaId, respListener, errorListener);
         RequestQueue requestQueue = servicos.getRequestQueue();
@@ -254,12 +247,52 @@ public class PesquisaFragment extends Fragment implements GoogleApiClient.Connec
         requestQueue.addRequestFinishedListener(new RequestQueue.RequestFinishedListener<Object>() {
             @Override
             public void onRequestFinished(Request<Object> request) {
-                if(myAlertDialogFragment != null) {
+                if (myAlertDialogFragment != null) {
                     myAlertDialogFragment.dismiss();
                 }
             }
         });
     }
 
+    public void getCoordinates() {
 
+        if (ActivityCompat.checkSelfPermission(this.getActivity(),
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this.getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+
+        lastLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
+        if (lastLocation != null) {
+            latitude = lastLocation.getLatitude();
+            longitude = lastLocation.getLongitude();
+        } else {
+            fail = true;
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSION_REQUEST: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    getCoordinates();
+                } else {
+                    Toast.makeText(PesquisaFragment.this.getActivity(), "Sem permissão", Toast.LENGTH_SHORT).show();
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
+            }
+        }
+    }
 }
+

@@ -19,7 +19,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.example.fernando.appcivico.R;
-import com.example.fernando.appcivico.activities.BuscaAvancadaActivity;
 import com.example.fernando.appcivico.activities.ListaEstabelecimentosActivity;
 import com.example.fernando.appcivico.estrutura.Categoria;
 import com.example.fernando.appcivico.estrutura.Especialidade;
@@ -28,7 +27,6 @@ import com.example.fernando.appcivico.estrutura.Estado;
 import com.example.fernando.appcivico.servicos.Servicos;
 import com.example.fernando.appcivico.utils.Constants;
 import com.example.fernando.appcivico.utils.MyAlertDialogFragment;
-import com.example.fernando.appcivico.utils.StaticFunctions;
 import com.google.gson.Gson;
 
 import java.io.IOException;
