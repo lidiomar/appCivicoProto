@@ -12,6 +12,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.SurfaceHolder;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -26,6 +27,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.fernando.appcivico.R;
 import com.example.fernando.appcivico.activities.DialogAvaliarActivity;
@@ -77,16 +79,32 @@ public class AvaliarFragment extends Fragment {
     private TextView txtMediaAvaliacoes;
     private MyAlertDialogFragment myAlertDialogFragment;
     private LinearLayout linearLayoutMediaContainer;
+    private RequestQueue requestQueue;
+    private PostagemRetorno[] postagemRetornos = null;
+    private final String TAG = "TAG_AVALIAR";
+    private View view = null;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_avaliar, container, false);
+
         Bundle extras = getActivity().getIntent().getExtras();
         estabelecimento = (Estabelecimento)extras.get("estabelecimento");
         avaliacao =  new Avaliacao(AvaliarFragment.this.getActivity());
+        requestQueue = avaliacao.getRequestQueue();
+        applicationAppCivico = (ApplicationAppCivico)this.getActivity().getApplication();
+
+        if(applicationAppCivico.usuarioAutenticado()) {
+            view = inflater.inflate(R.layout.fragment_avaliar, container, false);
+            buscarComentarios();
+        }else {
+            view = inflater.inflate(R.layout.fragment_avaliar_disconnected, container, false);
+            buscaMedia();
+        }
+
+        buttonAvaliarDialog = (Button)view.findViewById(R.id.button_avaliar_dialog);
+
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
-
-
         linearLayoutMediaContainer = (LinearLayout)view.findViewById(R.id.media_container);
 
         ratingBarReadonly = (RatingBar)view.findViewById(R.id.rating_avaliacao_readonly);
@@ -95,9 +113,6 @@ public class AvaliarFragment extends Fragment {
         txtNumeroAvaliacoes = (TextView) view.findViewById(R.id.text_numero_avaliacoes);
         txtMediaAvaliacoes = (TextView) view.findViewById(R.id.text_media_avaliacoes);
 
-        applicationAppCivico = (ApplicationAppCivico)this.getActivity().getApplication();
-        textoInformativoComentarios = (TextView)view.findViewById(R.id.texto_informativo_comentarios);
-
         linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
@@ -105,7 +120,6 @@ public class AvaliarFragment extends Fragment {
         recyclerViewComentarios.setLayoutManager(linearLayoutManager);
         recyclerViewComentarios.setItemAnimator(new DefaultItemAnimator());
         recyclerViewComentarios.setHasFixedSize(true);
-
 
         recyclerViewComentarios.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
@@ -126,7 +140,8 @@ public class AvaliarFragment extends Fragment {
 
         });
 
-        buttonAvaliarDialog = (Button)view.findViewById(R.id.button_avaliar_dialog);
+        textoInformativoComentarios = (TextView)view.findViewById(R.id.texto_informativo_comentarios);
+
         buttonAvaliarDialog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -138,7 +153,8 @@ public class AvaliarFragment extends Fragment {
 
         myAlertDialogFragment = MyAlertDialogFragment.newInstance("","");
         myAlertDialogFragment.show(this.getFragmentManager(),"");
-        buscarComentarios();
+
+
 
         return view;
     }
@@ -149,69 +165,84 @@ public class AvaliarFragment extends Fragment {
         Response.Listener responseListener = new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                final PostagemRetorno[] postagemRetornos = gson.fromJson(response, PostagemRetorno[].class);
+                postagemRetornos = gson.fromJson(response, PostagemRetorno[].class);
                 AvaliarFragment.this.getConteudoPostagemHash().clear();
-                if(postagemRetornos != null) {
-                    buscaConteudoPostagens(postagemRetornos);
-                }else {
-                    buscarDoServidor =false;
-                    textoInformativoComentarios.setVisibility(View.VISIBLE);
-                    textoInformativoComentarios.setText(AvaliarFragment.this.getActivity().getString(R.string.nao_ha_comentarios));
-                    buscaMedia();
-                }
+                setPostagemRetornos(postagemRetornos);
             }
         };
 
         Response.ErrorListener responseErrorListener = new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(AvaliarFragment.this.getActivity(),AvaliarFragment.this.getString(R.string.nao_foi_possivel_carregar_os_comentarios),Toast.LENGTH_SHORT).show();
-                buscaMedia();
+                Log.i("erro: ", AvaliarFragment.this.getString(R.string.nao_foi_possivel_carregar_os_comentarios));
             }
         };
 
-        avaliacao.buscaPostagens(countOffset,5,estabelecimento.getCodUnidade(),responseListener,responseErrorListener);
-    }
-
-    private void buscaConteudoPostagens(final PostagemRetorno[] postagemRetornos) {
-        final RequestQueue requestQueue = Volley.newRequestQueue(AvaliarFragment.this.getActivity());
-        for (PostagemRetorno postagemRetorno : postagemRetornos) {
-
-            ConteudoPostagemRetorno[] conteudos = postagemRetorno.getConteudos();
-            String codConteudoPostagem = conteudos[0].getCodConteudoPostagem();
-            final String codPostagem = postagemRetorno.getCodPostagem();
-            autoresPostagemHash.put(codPostagem, postagemRetorno.getCodAutor());
-
-            Response.Listener<JSONObject> listener = new Response.Listener<JSONObject>() {
-                @Override
-                public void onResponse(JSONObject response) {
-                    ConteudoPostagem conteudoPostagem = gson.fromJson(String.valueOf(response), ConteudoPostagem.class);
-                    AvaliarFragment.this.getConteudoPostagemHash().put(codPostagem, conteudoPostagem);
-                }
-            };
-
-            Response.ErrorListener errorListener = new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(AvaliarFragment.this.getActivity(),AvaliarFragment.this.getString(R.string.nao_foi_possivel_carregar_os_comentarios),Toast.LENGTH_SHORT).show();
-                    buscaMedia();
-                }
-            };
-
-            JsonObjectRequest jsonObjectRequest = avaliacao.buscaConteudoPostagem(codPostagem, codConteudoPostagem, listener, errorListener);
-            requestQueue.add(jsonObjectRequest);
-        }
+        StringRequest stringRequest = avaliacao.buscaPostagens(countOffset, 5, estabelecimento.getCodUnidade(), responseListener, responseErrorListener);
+        requestQueue.add(stringRequest);
         requestQueue.addRequestFinishedListener(new RequestQueue.RequestFinishedListener<Object>() {
             @Override
             public void onRequestFinished(Request<Object> request) {
-                requestCount = requestCount + 1;
-                textoInformativoComentarios.setVisibility(View.VISIBLE);
-
-                if (requestCount == postagemRetornos.length) {
-                    atribuiValoresRecyclerView();
-                }
+                buscaConteudoPostagens();
             }
         });
+    }
+
+    private void buscaConteudoPostagens() {
+        if(postagemRetornos != null) {
+
+            final RequestQueue requestQueue = Volley.newRequestQueue(this.getActivity());
+            requestQueue.addRequestFinishedListener(new RequestQueue.RequestFinishedListener<Object>() {
+                @Override
+                public void onRequestFinished(Request<Object> request) {
+                    requestCount = requestCount + 1;
+                    textoInformativoComentarios.setVisibility(View.VISIBLE);
+
+                    if (requestCount == postagemRetornos.length) {
+                        atribuiValoresRecyclerView();
+                    }
+                }
+            });
+
+            for (PostagemRetorno postagemRetorno : postagemRetornos) {
+                ConteudoPostagemRetorno[] conteudos = postagemRetorno.getConteudos();
+                String codConteudoPostagem = conteudos[0].getCodConteudoPostagem();
+                final String codPostagem = postagemRetorno.getCodPostagem();
+                autoresPostagemHash.put(codPostagem, postagemRetorno.getCodAutor());
+
+                Response.Listener<JSONObject> listener = new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        ConteudoPostagem conteudoPostagem = gson.fromJson(String.valueOf(response), ConteudoPostagem.class);
+                        AvaliarFragment.this.getConteudoPostagemHash().put(codPostagem, conteudoPostagem);
+                    }
+                };
+
+                Response.ErrorListener errorListener = new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        requestQueue.cancelAll(TAG);
+                        Log.i("erro: ", AvaliarFragment.this.getString(R.string.nao_foi_possivel_carregar_os_comentarios));
+                    }
+                };
+
+                JsonObjectRequest jsonObjectRequest = avaliacao.buscaConteudoPostagem(codPostagem, codConteudoPostagem, listener, errorListener);
+                jsonObjectRequest.setTag(TAG);
+                requestQueue.add(jsonObjectRequest);
+            }
+
+        }else {
+            Toast.makeText(this.getActivity(),AvaliarFragment.this.getString(R.string.nao_foi_possivel_carregar_os_comentarios), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void atribuiValoresSemRecyclerView() {
+        LinearLayout linearLayoutComentarios = (LinearLayout) view.findViewById(R.id.linearlayout_comentarios);
+        linearLayoutComentarios.setVisibility(View.GONE);
+        LinearLayout linearLayoutMedia = (LinearLayout) view.findViewById(R.id.linearlayout_media);
+        linearLayoutMedia.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT,0));
+        buttonAvaliarDialog.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT,0));
+        buscaMedia();
     }
 
     public void atribuiValoresRecyclerView() {
@@ -363,5 +394,7 @@ public class AvaliarFragment extends Fragment {
     }
 
 
-
+    public void setPostagemRetornos(PostagemRetorno[] postagemRetornos) {
+        this.postagemRetornos = postagemRetornos;
+    }
 }

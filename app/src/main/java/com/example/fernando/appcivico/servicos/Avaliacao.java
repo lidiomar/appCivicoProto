@@ -195,7 +195,7 @@ public class Avaliacao {
         });
     }
 
-    public void buscaPostagens(int pagina, int quantidadeItens, String codObjetoDestino, Response.Listener<String> responseListener, Response.ErrorListener responseErrorListener) {
+    public StringRequest buscaPostagens(int pagina, int quantidadeItens, String codObjetoDestino, Response.Listener<String> responseListener, Response.ErrorListener responseErrorListener) {
 
         String url = "http://mobile-aceite.tcu.gov.br:80/appCivicoRS/rest/postagens" +
                 "?codAplicativo="+Constants.CODE_APP+"" +
@@ -215,7 +215,8 @@ public class Avaliacao {
             }
         };
 
-        this.requestQueue.add(stringRequest);
+
+        return stringRequest;
     }
 
     public void buscaMediaAvaliacoes(String codObjetoDestino, Response.Listener responseListener, Response.ErrorListener responseErrorListener) {

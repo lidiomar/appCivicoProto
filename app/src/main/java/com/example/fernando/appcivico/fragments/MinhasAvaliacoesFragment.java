@@ -205,6 +205,7 @@ public class MinhasAvaliacoesFragment extends Fragment {
             };
 
             JsonObjectRequest jsonObjectRequest = avaliacao.buscaConteudoPostagem(codPostagem, codConteudoPostagem, listener, errorListener);
+            jsonObjectRequest.setTag(TAG);
             requestQueue.add(jsonObjectRequest);
         }
     }
