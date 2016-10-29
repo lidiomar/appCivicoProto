@@ -112,6 +112,7 @@ public class ParentMenuActivity extends AppCompatActivity implements NavigationV
         if (id == R.id.nav_login) {
             Intent i = new Intent(this,EscolherAcessoActivity.class);
             startActivity(i);
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
         }
 
         if (id == R.id.nav_busca_avancada) {

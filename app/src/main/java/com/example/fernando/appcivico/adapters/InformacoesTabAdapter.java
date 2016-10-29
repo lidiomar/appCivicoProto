@@ -25,10 +25,9 @@ public class InformacoesTabAdapter extends FragmentStatePagerAdapter
     public Fragment getItem(int position) {
         Fragment fragment = null;
         if(position == 0) {
-            fragment = new InformacoesFragment();
-
-        }else if(position == 1) {
             fragment = new AvaliarFragment();
+        }else if(position == 1) {
+            fragment = new InformacoesFragment();
         }
 
         return fragment;
@@ -38,9 +37,9 @@ public class InformacoesTabAdapter extends FragmentStatePagerAdapter
     public CharSequence getPageTitle(int position) {
         String title = "";
         if(position == 0) {
-            title = "Informações";
-        }else if (position == 1) {
             title = "Avaliações";
+        }else if (position == 1) {
+            title = "Informações";
         }
 
         return title;
