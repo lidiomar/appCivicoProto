@@ -142,7 +142,7 @@ public class PesquisaFragment extends Fragment implements GoogleApiClient.Connec
     private void configuraSeekBar() {
         seekBar.setProgress(1);
         seekBar.incrementProgressBy(10);
-        seekBar.setMax(500);
+        seekBar.setMax(100);
         seekBarValue.setText(String.format(this.getActivity().getResources().getString(R.string.x_km), String.valueOf(seekBar.getProgress())));
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
