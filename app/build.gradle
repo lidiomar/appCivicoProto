@@ -31,5 +31,6 @@ dependencies {
     compile 'com.google.android.gms:play-services-maps:9.6.1'
     compile 'com.google.android.gms:play-services-location:9.6.1'
     compile 'com.daasuu:BubbleLayout:1.1.1'
+    compile 'com.squareup.picasso:picasso:2.5.2'
 
 }

@@ -12,15 +12,26 @@
         android:layout_gravity="center"
         android:layout_width="match_parent"
         card_view:cardCornerRadius="2dp"
-        card_view:contentPadding="10dp"
+        card_view:contentPaddingBottom="10dp"
         android:layout_marginTop="15dp"
         android:layout_marginBottom="30dp">
 
-        <TextView
+        <LinearLayout android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Texto informartivo" />
+            android:orientation="vertical">
 
+            <ImageView
+                android:id="@+id/image_cidade"
+                android:layout_width="match_parent"
+                android:layout_height="170dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_marginTop="5dp"
+                android:layout_height="wrap_content"
+                android:text="Encontre estabelecimentos de saúde próximos a você!"
+                android:textAlignment="center" />
+        </LinearLayout>
     </android.support.v7.widget.CardView>
 
     <TextView android:layout_width="wrap_content"

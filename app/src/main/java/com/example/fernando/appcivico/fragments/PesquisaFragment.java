@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.SeekBar;
 import android.widget.Spinner;
@@ -41,6 +42,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 
@@ -63,12 +65,16 @@ public class PesquisaFragment extends Fragment implements GoogleApiClient.Connec
     private double latitude;
     private double longitude;
     private Boolean fail = false;
-
+    private ImageView imageCidade;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_pesquisa, container, false);
         spinnerCategoria = (Spinner) view.findViewById(R.id.spinner_pesquisa_categoria);
+        imageCidade = (ImageView) view.findViewById(R.id.image_cidade);
+
+        Picasso.with(this.getActivity()).load(R.drawable.localizacao).fit().into(imageCidade);
+
         this.inicializaCategoria();
         seekBar = (SeekBar) view.findViewById(R.id.seekbar_pesquisa_km);
         seekBarValue = (TextView) view.findViewById(R.id.seekbar_value);

@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -28,6 +29,7 @@ import com.example.fernando.appcivico.servicos.Servicos;
 import com.example.fernando.appcivico.utils.Constants;
 import com.example.fernando.appcivico.utils.MyAlertDialogFragment;
 import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -53,6 +55,7 @@ public class BuscaAvancadaFragment extends Fragment  {
     private ArrayAdapter arrayAdapterCidades;
     private Button buttonPesquisar;
     private Servicos servicos;
+    private ImageView imageMaps;
 
     @Nullable
     @Override
@@ -63,6 +66,11 @@ public class BuscaAvancadaFragment extends Fragment  {
         spinnerBuscaCategoria = (Spinner)view.findViewById(R.id.spinner_busca_categoria);
         spinnerBuscaEspecialidades = (Spinner)view.findViewById(R.id.spinner_busca_especialiadade);
         buttonPesquisar = (Button)view.findViewById(R.id.button_busca_enviar);
+
+        imageMaps = (ImageView) view.findViewById(R.id.image_localizacao);
+
+        Picasso.with(this.getActivity()).load(R.drawable.city).fit().into(imageMaps);
+
         servicos = new Servicos(this.getActivity());
         final String json = carregaEstadosCidades();
         Gson gson = new Gson();
