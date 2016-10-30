@@ -86,7 +86,6 @@ public class AvaliarFragment extends Fragment {
     private final String TAG = "TAG_AVALIAR";
     private View view = null;
     private int requestCount;
-    private Boolean exibeLoading = false;
 
     @Nullable
     @Override
@@ -160,16 +159,11 @@ public class AvaliarFragment extends Fragment {
         buttonAvaliarDialog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent;
+
                 if(applicationAppCivico.usuarioAutenticado()) {
-                    intent = new Intent(AvaliarFragment.this.getActivity(), DialogAvaliarActivity.class);
-                    intent.putExtra("estabelecimento", estabelecimento);
-                    startActivityForResult(intent, 8);
-                    AvaliarFragment.this.getActivity().overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
+                    loadDialogAvaliar();
                 }else {
-                    intent = new Intent(AvaliarFragment.this.getActivity(), EscolherAcessoActivity.class);
-                    startActivity(intent);
-                    AvaliarFragment.this.getActivity().overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
+                    loadEscolherAcesso();
                 }
             }
         });
@@ -178,13 +172,12 @@ public class AvaliarFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode,resultCode,data);
-        /*if(resultCode == Constants.COMENTARIO_MODIFICADO) {*/
-            Intent refresh = new Intent(this.getActivity(), InformacoesActivity.class);
-            refresh.putExtra("estabelecimento",estabelecimento);
-            startActivity(refresh);
-            this.getActivity().overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
-            this.getActivity().finish();
-        /*}*/
+
+        Intent refresh = new Intent(this.getActivity(), InformacoesActivity.class);
+        refresh.putExtra("estabelecimento",estabelecimento);
+        startActivity(refresh);
+        this.getActivity().overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
+        this.getActivity().finish();
 
     }
 
@@ -433,6 +426,21 @@ public class AvaliarFragment extends Fragment {
 
     public void setPostagemRetornos(PostagemRetorno[] postagemRetornos) {
         this.postagemRetornos = postagemRetornos;
+    }
+
+    public void loadDialogAvaliar() {
+        Intent intent;
+        intent = new Intent(AvaliarFragment.this.getActivity(), DialogAvaliarActivity.class);
+        intent.putExtra("estabelecimento", estabelecimento);
+        startActivityForResult(intent, 8);
+        AvaliarFragment.this.getActivity().overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
+    }
+
+    public void loadEscolherAcesso() {
+        Intent intent;
+        intent = new Intent(AvaliarFragment.this.getActivity(), EscolherAcessoActivity.class);
+        startActivityForResult(intent, 9);
+        AvaliarFragment.this.getActivity().overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
     }
 }
 

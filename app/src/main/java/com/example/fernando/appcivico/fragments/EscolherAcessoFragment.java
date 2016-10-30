@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.NavUtils;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -50,7 +52,10 @@ public class EscolherAcessoFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(resultCode == Constants.LOGIN_AUTENTICADO) {
+            this.getActivity().setResult(Constants.LOGIN_AUTENTICADO);
             this.getActivity().finish();
         }
     }
+
+
 }

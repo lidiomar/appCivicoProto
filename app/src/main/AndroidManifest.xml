@@ -43,7 +43,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:parentActivityName=".activities.EscolherAcessoActivity"
-            android:windowSoftInputMode="stateHidden|adjustResize">
+            android:windowSoftInputMode="stateVisible|adjustResize">
         </activity>
 
         <activity
@@ -52,7 +52,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:parentActivityName=".activities.EscolherAcessoActivity"
-            android:windowSoftInputMode="stateVisible|adjustPan">
+            android:windowSoftInputMode="stateVisible|adjustResize">
         </activity>
 
         <activity
