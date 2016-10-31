@@ -19,7 +19,7 @@ public class Constants {
     public static final int COMENTARIO_MODIFICADO = 13;
 
     public static final Categoria[] CATEGORIAS = new Categoria[]{
-            new Categoria("", "Buscar em todas"),
+            /*new Categoria("", "Buscar em todas"),*/
             new Categoria("HOSPITAL", "Hospital"),
             new Categoria("POSTO DE SAÚDE", "Posto de Saúde"),
             new Categoria("URGÊNCIA", "Urgência"),
@@ -34,7 +34,7 @@ public class Constants {
             new Categoria("ATENDIMENTO DOMICILIAR", "Atendimento domiciliar")
     };
     public static final Especialidade[] ESPECIALIDADES = new Especialidade[]{
-            new Especialidade("", "Buscar em todas"),
+            /*new Especialidade("", "Buscar em todas"),*/
             new Especialidade("DST/AIDS", "DST/AIDS"),
             new Especialidade("NEFROLOGIA", "Nefrologia"),
             new Especialidade("OSTEOGENESIS IMPERFECTA", "Osteogenesis imperfecta"),

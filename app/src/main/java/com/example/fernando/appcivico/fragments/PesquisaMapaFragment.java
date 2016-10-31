@@ -53,7 +53,7 @@ import java.util.Arrays;
 /**
  * Created by fernando on 11/10/16.
  */
-public class PesquisaFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public class PesquisaMapaFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
     private static final int MY_PERMISSION_REQUEST = 1;
     private Spinner spinnerCategoria;
     private SeekBar seekBar;
@@ -69,7 +69,7 @@ public class PesquisaFragment extends Fragment implements GoogleApiClient.Connec
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_pesquisa, container, false);
+        View view = inflater.inflate(R.layout.fragment_pesquisa_mapa, container, false);
         spinnerCategoria = (Spinner) view.findViewById(R.id.spinner_pesquisa_categoria);
         imageCidade = (ImageView) view.findViewById(R.id.image_cidade);
 
@@ -153,7 +153,7 @@ public class PesquisaFragment extends Fragment implements GoogleApiClient.Connec
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                seekBarValue.setText(String.format(PesquisaFragment.this.getActivity().getResources().getString(R.string.x_km), String.valueOf(progress)));
+                seekBarValue.setText(String.format(PesquisaMapaFragment.this.getActivity().getResources().getString(R.string.x_km), String.valueOf(progress)));
             }
 
             @Override
@@ -194,7 +194,7 @@ public class PesquisaFragment extends Fragment implements GoogleApiClient.Connec
     public void onClickButtonPesquisar() {
 
         if (fail) {
-            Toast.makeText(PesquisaFragment.this.getActivity(), this.getActivity().getString(R.string.algo_deu_errado), Toast.LENGTH_SHORT).show();
+            Toast.makeText(PesquisaMapaFragment.this.getActivity(), this.getActivity().getString(R.string.algo_deu_errado), Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -219,16 +219,16 @@ public class PesquisaFragment extends Fragment implements GoogleApiClient.Connec
                 Estabelecimento[] estabelecimentos = gson.fromJson(stringJson, Estabelecimento[].class);
 
                 if (estabelecimentos == null || estabelecimentos.length <= 0) {
-                    Toast.makeText(PesquisaFragment.this.getActivity(), PesquisaFragment.this.getString(R.string.nao_ha_resultados), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(PesquisaMapaFragment.this.getActivity(), PesquisaMapaFragment.this.getString(R.string.nao_ha_resultados), Toast.LENGTH_SHORT).show();
                 } else {
-                    Intent intent = new Intent(PesquisaFragment.this.getActivity(), MapsActivity.class);
+                    Intent intent = new Intent(PesquisaMapaFragment.this.getActivity(), MapsActivity.class);
 
                     intent.putExtra("estabelecimentos", estabelecimentos);
                     intent.putExtra("latitudeUsuario", lat);
                     intent.putExtra("longitudeUsuario", lng);
                     buttonPesquisar.setEnabled(false);
                     startActivity(intent);
-                    PesquisaFragment.this.getActivity().overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
+                    PesquisaMapaFragment.this.getActivity().overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
 
                 }
             }
@@ -237,11 +237,11 @@ public class PesquisaFragment extends Fragment implements GoogleApiClient.Connec
         Response.ErrorListener errorListener = new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(PesquisaFragment.this.getActivity(), PesquisaFragment.this.getActivity().getString(R.string.algo_deu_errado), Toast.LENGTH_LONG).show();
+                Toast.makeText(PesquisaMapaFragment.this.getActivity(), PesquisaMapaFragment.this.getActivity().getString(R.string.algo_deu_errado), Toast.LENGTH_LONG).show();
             }
         };
 
-        Servicos servicos = new Servicos(PesquisaFragment.this.getActivity());
+        Servicos servicos = new Servicos(PesquisaMapaFragment.this.getActivity());
 
         final MyAlertDialogFragment myAlertDialogFragment = MyAlertDialogFragment.newInstance("", "");
         myAlertDialogFragment.show(getFragmentManager(), "");
@@ -292,7 +292,7 @@ public class PesquisaFragment extends Fragment implements GoogleApiClient.Connec
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     getCoordinates();
                 } else {
-                    Toast.makeText(PesquisaFragment.this.getActivity(), "Sem permissão", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(PesquisaMapaFragment.this.getActivity(), "Sem permissão", Toast.LENGTH_SHORT).show();
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
                 }

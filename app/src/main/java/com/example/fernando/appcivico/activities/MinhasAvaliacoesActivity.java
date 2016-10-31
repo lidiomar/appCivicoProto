@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.fernando.appcivico.R;
-import com.example.fernando.appcivico.fragments.BuscaAvancadaFragment;
 import com.example.fernando.appcivico.fragments.MinhasAvaliacoesFragment;
 import com.example.fernando.appcivico.utils.Constants;
 

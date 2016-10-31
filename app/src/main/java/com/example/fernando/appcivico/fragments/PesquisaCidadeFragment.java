@@ -43,7 +43,7 @@ import java.util.List;
 /**
  * Created by fernando on 14/10/16.
  */
-public class BuscaAvancadaFragment extends Fragment  {
+public class PesquisaCidadeFragment extends Fragment  {
 
     private HashMap<String,String[]> hashMapEstadoCidade = new HashMap<>();
     private ArrayList<String> arrayListEstados = new ArrayList<>();
@@ -60,7 +60,7 @@ public class BuscaAvancadaFragment extends Fragment  {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_busca_avancada, container, false);
+        View view = inflater.inflate(R.layout.fragment_pesquisa_cidade, container, false);
         spinnerBuscaUf = (Spinner)view.findViewById(R.id.spinner_busca_uf);
         spinnerBuscaCidade = (Spinner)view.findViewById(R.id.spinner_busca_cidade);
         spinnerBuscaCategoria = (Spinner)view.findViewById(R.id.spinner_busca_categoria);
@@ -125,16 +125,16 @@ public class BuscaAvancadaFragment extends Fragment  {
                         Estabelecimento[] estabelecimentos = gson.fromJson(String.valueOf(response), Estabelecimento[].class);
 
                         if (estabelecimentos == null || estabelecimentos.length <= 0) {
-                            Toast.makeText(BuscaAvancadaFragment.this.getActivity(), BuscaAvancadaFragment.this.getString(R.string.nao_ha_resultados), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(PesquisaCidadeFragment.this.getActivity(), PesquisaCidadeFragment.this.getString(R.string.nao_ha_resultados), Toast.LENGTH_SHORT).show();
                         }else {
-                            Intent intent = new Intent(BuscaAvancadaFragment.this.getActivity(), ListaEstabelecimentosActivity.class);
+                            Intent intent = new Intent(PesquisaCidadeFragment.this.getActivity(), ListaEstabelecimentosActivity.class);
                             intent.putExtra("estabelecimentos", estabelecimentos);
                             intent.putExtra("uf", uf);
                             intent.putExtra("cidade", cidade);
                             intent.putExtra("categoria", categoria);
                             intent.putExtra("especialidade", especialidade);
                             startActivity(intent);
-                            BuscaAvancadaFragment.this.getActivity().overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
+                            PesquisaCidadeFragment.this.getActivity().overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
 
                         }
                     }
@@ -143,7 +143,7 @@ public class BuscaAvancadaFragment extends Fragment  {
                 Response.ErrorListener errorListener = new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(BuscaAvancadaFragment.this.getActivity(),BuscaAvancadaFragment.this.getActivity().getString(R.string.algo_deu_errado),Toast.LENGTH_SHORT).show();
+                        Toast.makeText(PesquisaCidadeFragment.this.getActivity(),PesquisaCidadeFragment.this.getActivity().getString(R.string.algo_deu_errado),Toast.LENGTH_SHORT).show();
                     }
                 };
 

@@ -1,12 +1,9 @@
 package com.example.fernando.appcivico.activities;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 
 import com.example.fernando.appcivico.R;
-import com.example.fernando.appcivico.fragments.AvaliarFragment;
-import com.example.fernando.appcivico.fragments.BuscaAvancadaFragment;
+import com.example.fernando.appcivico.fragments.PesquisaCidadeFragment;
 
 /**
  * Created by fernando on 06/10/16.
@@ -16,7 +13,7 @@ public class BuscaAvancadaActivity extends ParentMenuActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportFragmentManager().beginTransaction().replace(R.id.main_container,new BuscaAvancadaFragment()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_container,new PesquisaCidadeFragment()).commit();
     }
 
     @Override
