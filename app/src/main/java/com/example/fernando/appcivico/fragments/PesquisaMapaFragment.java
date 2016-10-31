@@ -1,6 +1,7 @@
 package com.example.fernando.appcivico.fragments;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
@@ -10,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,6 +36,7 @@ import com.daasuu.bl.BubbleLayout;
 import com.daasuu.bl.BubblePopupHelper;
 import com.example.fernando.appcivico.R;
 import com.example.fernando.appcivico.activities.MapsActivity;
+import com.example.fernando.appcivico.activities.PesquisaMapaActivity;
 import com.example.fernando.appcivico.estrutura.Categoria;
 import com.example.fernando.appcivico.estrutura.Estabelecimento;
 import com.example.fernando.appcivico.servicos.Servicos;
@@ -47,9 +50,7 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
-
 import com.google.android.gms.location.LocationSettingsResult;
-import com.google.android.gms.location.LocationSettingsStates;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
@@ -77,6 +78,7 @@ public class PesquisaMapaFragment extends Fragment implements GoogleApiClient.Co
     private Boolean fail = false;
     private ImageView imageCidade;
     private LocationRequest locationRequest;
+    private MyAlertDialogFragment myAlertDialogFragment;
 
     @Nullable
     @Override
@@ -136,6 +138,7 @@ public class PesquisaMapaFragment extends Fragment implements GoogleApiClient.Co
 
     @Override
     public void onStart() {
+        Log.i("teste","1");
         googleApiClient.connect();
         super.onStart();
     }
@@ -160,7 +163,7 @@ public class PesquisaMapaFragment extends Fragment implements GoogleApiClient.Co
     private void configuraSeekBar() {
         seekBar.setProgress(1);
         seekBar.incrementProgressBy(10);
-        seekBar.setMax(100);
+        seekBar.setMax(200);
         seekBarValue.setText(String.format(this.getActivity().getResources().getString(R.string.x_km), String.valueOf(seekBar.getProgress())));
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -184,6 +187,7 @@ public class PesquisaMapaFragment extends Fragment implements GoogleApiClient.Co
     public void onConnected(@Nullable Bundle bundle) {
 
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
+                .setAlwaysShow(true)
                 .addLocationRequest(this.locationRequest);
 
         final PendingResult<LocationSettingsResult> result =
@@ -195,24 +199,20 @@ public class PesquisaMapaFragment extends Fragment implements GoogleApiClient.Co
             @Override
             public void onResult(@NonNull LocationSettingsResult locationSettingsResult) {
                 final Status status = locationSettingsResult.getStatus();
-                final LocationSettingsStates locationSettingsStates = locationSettingsResult.getLocationSettingsStates();
                 switch (status.getStatusCode()){
                     case LocationSettingsStatusCodes.SUCCESS:
+                        getCoordinates();
                         break;
 
                     case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
-                        // Location settings are not satisfied, but this can be fixed
-                        // by showing the user a dialog.
                         try {
-                            // Show the dialog by calling startResolutionForResult(),
-                            // and check the result in onActivityResult().
-                            status.startResolutionForResult(PesquisaMapaFragment.this.getActivity(), 42);
+                            status.startResolutionForResult(PesquisaMapaFragment.this.getActivity(), Constants.TURN_LOCATION_ON);
                         } catch (IntentSender.SendIntentException e) {
                             // Ignore the error.
                         }
                         break;
                     case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
-
+                        Toast.makeText(PesquisaMapaFragment.this.getActivity(),PesquisaMapaFragment.this.getString(R.string.sem_permissao_de_localizacao),Toast.LENGTH_SHORT).show();
                         break;
                 }
 
@@ -220,14 +220,7 @@ public class PesquisaMapaFragment extends Fragment implements GoogleApiClient.Co
         });
 
 
-        /*if (ActivityCompat.checkSelfPermission(this.getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(this.getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
-            ActivityCompat.requestPermissions(this.getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.ACCESS_COARSE_LOCATION}, MY_PERMISSION_REQUEST);
-        }else {
-            getCoordinates();
-        }*/
     }
 
     @Override
@@ -243,6 +236,7 @@ public class PesquisaMapaFragment extends Fragment implements GoogleApiClient.Co
     public void onClickButtonPesquisar() {
 
         if (fail) {
+            Log.i("teste","fail");
             Toast.makeText(PesquisaMapaFragment.this.getActivity(), this.getActivity().getString(R.string.algo_deu_errado), Toast.LENGTH_SHORT).show();
             return;
         }
@@ -286,6 +280,7 @@ public class PesquisaMapaFragment extends Fragment implements GoogleApiClient.Co
         Response.ErrorListener errorListener = new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                Log.i("teste","faonErrorResponseil");
                 Toast.makeText(PesquisaMapaFragment.this.getActivity(), PesquisaMapaFragment.this.getActivity().getString(R.string.algo_deu_errado), Toast.LENGTH_LONG).show();
             }
         };
@@ -314,39 +309,20 @@ public class PesquisaMapaFragment extends Fragment implements GoogleApiClient.Co
         if (ActivityCompat.checkSelfPermission(this.getActivity(),
                 Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(this.getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
+
+            ActivityCompat.requestPermissions(this.getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION}, MY_PERMISSION_REQUEST);
             return;
         }
 
         lastLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
         if (lastLocation != null) {
+            Log.i("teste","lastLocation != null");
             latitude = lastLocation.getLatitude();
             longitude = lastLocation.getLongitude();
         } else {
+            Log.i("teste","fail = true");
             fail = true;
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case MY_PERMISSION_REQUEST: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    getCoordinates();
-                } else {
-                    Toast.makeText(PesquisaMapaFragment.this.getActivity(), "Sem permissão", Toast.LENGTH_SHORT).show();
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
-                }
-                return;
-            }
         }
     }
 
@@ -355,6 +331,36 @@ public class PesquisaMapaFragment extends Fragment implements GoogleApiClient.Co
         locationRequest.setInterval(10000);
         locationRequest.setFastestInterval(5000);
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+    }
+
+
+    /*@Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == Constants.TURN_LOCATION_ON && resultCode == Activity.RESULT_OK) {
+
+            googleApiClient.connect();
+        }
+    }*/
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSION_REQUEST: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    this.getActivity().finish();
+                    Intent i = new Intent(this.getActivity(),PesquisaMapaActivity.class);
+                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(i);
+                    this.getActivity().overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
+                } else {
+                    Toast.makeText(PesquisaMapaFragment.this.getActivity(), "Sem permissão", Toast.LENGTH_SHORT).show();
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
+            }
+        }
     }
 }
 

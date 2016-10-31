@@ -123,7 +123,7 @@ public class ParentMenuActivity extends AppCompatActivity implements NavigationV
         }
 
         if (id == R.id.nav_busca_por_localizacao) {
-            Intent i = new Intent(this,MainActivity.class);
+            Intent i = new Intent(this,PesquisaMapaActivity.class);
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(i);
             overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
@@ -146,7 +146,7 @@ public class ParentMenuActivity extends AppCompatActivity implements NavigationV
                             applicationAppCivico.removeDadosDeSessao();
                             Toast.makeText(ParentMenuActivity.this, "Sessão encerrada com sucesso",Toast.LENGTH_SHORT).show();
 
-                            Intent refresh = new Intent(ParentMenuActivity.this, MainActivity.class);
+                            Intent refresh = new Intent(ParentMenuActivity.this, PesquisaMapaActivity.class);
                             startActivity(refresh);
                             overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
 

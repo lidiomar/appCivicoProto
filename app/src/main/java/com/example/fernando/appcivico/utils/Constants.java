@@ -18,6 +18,8 @@ public class Constants {
     public static final int CADASTRO_EFETUADO = 12;
     public static final int COMENTARIO_MODIFICADO = 13;
 
+    public static final int TURN_LOCATION_ON = 42;
+
     public static final Categoria[] CATEGORIAS = new Categoria[]{
             /*new Categoria("", "Buscar em todas"),*/
             new Categoria("HOSPITAL", "Hospital"),
