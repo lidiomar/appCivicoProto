@@ -151,7 +151,7 @@ public class PesquisaCidadeFragment extends Fragment  {
                     uf = URLEncoder.encode((String) spinnerBuscaUf.getSelectedItem(),"UTF-8");
                     cidade = URLEncoder.encode((String)spinnerBuscaCidade.getSelectedItem(),"UTF-8");
                     categoria = URLEncoder.encode(((Categoria)spinnerBuscaCategoria.getSelectedItem()).getId(),"UTF-8");
-                    especialidade = URLEncoder.encode(((Especialidade)spinnerBuscaEspecialidades.getSelectedItem()).getId(),"UTF-8");
+                    /*especialidade = URLEncoder.encode(((Especialidade)spinnerBuscaEspecialidades.getSelectedItem()).getId(),"UTF-8");*/
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
