@@ -7,11 +7,11 @@ import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -78,7 +78,7 @@ public class PesquisaMapaFragment extends Fragment implements GoogleApiClient.Co
     private Boolean fail = false;
     private ImageView imageCidade;
     private LocationRequest locationRequest;
-    private MyAlertDialogFragment myAlertDialogFragment;
+    private Boolean reconnect = false;
 
     @Nullable
     @Override
@@ -138,7 +138,6 @@ public class PesquisaMapaFragment extends Fragment implements GoogleApiClient.Co
 
     @Override
     public void onStart() {
-        Log.i("teste","1");
         googleApiClient.connect();
         super.onStart();
     }
@@ -236,7 +235,6 @@ public class PesquisaMapaFragment extends Fragment implements GoogleApiClient.Co
     public void onClickButtonPesquisar() {
 
         if (fail) {
-            Log.i("teste","fail");
             Toast.makeText(PesquisaMapaFragment.this.getActivity(), this.getActivity().getString(R.string.algo_deu_errado), Toast.LENGTH_SHORT).show();
             return;
         }
@@ -280,7 +278,6 @@ public class PesquisaMapaFragment extends Fragment implements GoogleApiClient.Co
         Response.ErrorListener errorListener = new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.i("teste","faonErrorResponseil");
                 Toast.makeText(PesquisaMapaFragment.this.getActivity(), PesquisaMapaFragment.this.getActivity().getString(R.string.algo_deu_errado), Toast.LENGTH_LONG).show();
             }
         };
@@ -315,14 +312,40 @@ public class PesquisaMapaFragment extends Fragment implements GoogleApiClient.Co
             return;
         }
 
-        lastLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
-        if (lastLocation != null) {
-            Log.i("teste","lastLocation != null");
-            latitude = lastLocation.getLatitude();
-            longitude = lastLocation.getLongitude();
-        } else {
-            Log.i("teste","fail = true");
-            fail = true;
+        if(reconnect) {
+            final MyAlertDialogFragment myAlertDialogFragmentUhuu = MyAlertDialogFragment.newInstance("", "");
+            myAlertDialogFragmentUhuu.show(this.getFragmentManager(),"");
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (ActivityCompat.checkSelfPermission(PesquisaMapaFragment.this.getActivity(),
+                            Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                            ActivityCompat.checkSelfPermission(PesquisaMapaFragment.this.getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+                        ActivityCompat.requestPermissions(PesquisaMapaFragment.this.getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
+                                Manifest.permission.ACCESS_COARSE_LOCATION}, MY_PERMISSION_REQUEST);
+                        return;
+                    }
+
+                    lastLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
+                    if (lastLocation != null) {
+                        latitude = lastLocation.getLatitude();
+                        longitude = lastLocation.getLongitude();
+                    } else {
+                        fail = true;
+                    }
+                    myAlertDialogFragmentUhuu.dismiss();
+                }
+            }, 3000);
+        }else {
+            lastLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
+            if (lastLocation != null) {
+                latitude = lastLocation.getLatitude();
+                longitude = lastLocation.getLongitude();
+            } else {
+                fail = true;
+            }
         }
     }
 
@@ -334,13 +357,20 @@ public class PesquisaMapaFragment extends Fragment implements GoogleApiClient.Co
     }
 
 
-    /*@Override
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == Constants.TURN_LOCATION_ON && resultCode == Activity.RESULT_OK) {
+            reconnect = true;
+
+            googleApiClient = new GoogleApiClient.Builder(this.getActivity())
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
+                    .addApi(LocationServices.API)
+                    .build();
 
             googleApiClient.connect();
         }
-    }*/
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {

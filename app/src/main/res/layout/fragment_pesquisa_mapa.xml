@@ -30,7 +30,9 @@
                 android:layout_marginTop="5dp"
                 android:layout_height="wrap_content"
                 android:text="Encontre estabelecimentos de saúde próximos a você!"
-                android:textAlignment="center" />
+                android:textAlignment="center"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp" />
         </LinearLayout>
     </android.support.v7.widget.CardView>
 

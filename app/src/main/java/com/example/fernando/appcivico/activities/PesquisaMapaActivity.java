@@ -30,10 +30,10 @@ public class PesquisaMapaActivity extends ParentMenuActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == Constants.TURN_LOCATION_ON && resultCode == Activity.RESULT_OK) {
-            Intent i = new Intent(this,PesquisaMapaActivity.class);
+            /*Intent i = new Intent(this,PesquisaMapaActivity.class);
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(i);
-            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
+            startActivity(i);*/
+            pesquisaMapaFragment.onActivityResult(requestCode,resultCode,data);
         }
     }
 }
