@@ -18,12 +18,16 @@
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:id="@+id/button_possuo_uma_conta"
+            android:background="@color/colorPrimary"
+            android:textColor="@android:color/white"
             android:text="@string/ja_possuo_uma_conta"
             android:layout_marginBottom="30dp" />
 
         <Button
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
+            android:background="@color/colorPrimary"
+            android:textColor="@android:color/white"
             android:id="@+id/button_primeiro_acesso"
             android:text="@string/meu_primeiro_acesso" />
 

@@ -24,6 +24,8 @@ import com.example.fernando.appcivico.utils.MyAlertDialogFragment;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by fernando on 03/10/16.
@@ -59,7 +61,7 @@ public class CadastroFragment extends Fragment {
 
         Sexo sexo = new Sexo();
 
-        ArrayAdapter<Sexo> arrayAdapter = new ArrayAdapter(this.getActivity(),android.R.layout.simple_spinner_item,sexo.getArraylistSexo());
+        ArrayAdapter<Sexo> arrayAdapter = new ArrayAdapter(this.getActivity(),R.layout.simple_spinner_item_custom,sexo.getArraylistSexo());
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerSexo.setAdapter(arrayAdapter);
 
@@ -97,10 +99,20 @@ public class CadastroFragment extends Fragment {
 
     private Boolean validaCampos() {
         Boolean valid = true;
+
+        final String EMAIL_PATTERN = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+        Pattern pattern = Pattern.compile(EMAIL_PATTERN);
+        Matcher matcher = pattern.matcher(editEmailUsuario.getText().toString());
+
         if(editEmailUsuario.getText().toString().isEmpty()) {
             editEmailUsuario.setError(this.getString(R.string.campo_obrigatorio));
             valid = false;
+        }else if(!matcher.matches()) {
+            editEmailUsuario.setError(this.getString(R.string.email_invalido));
+            valid = false;
         }
+
+
 
         if(editSenha.getText().toString().isEmpty()) {
             editSenha.setError(this.getString(R.string.campo_obrigatorio));

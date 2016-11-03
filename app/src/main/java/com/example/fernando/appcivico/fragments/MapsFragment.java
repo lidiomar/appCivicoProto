@@ -110,7 +110,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(new LatLng(lat, lng))
                 .zoom(13)
-                .bearing(90)                // Sets the orientation of the camera to east
+                /*.bearing(90)                // Sets the orientation of the camera to east*/
                 .tilt(40)                   // Sets the tilt of the camera to 30 degrees
                 .build();
 

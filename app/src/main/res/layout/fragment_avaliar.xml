@@ -91,7 +91,8 @@
                 android:layout_marginBottom="10dp"
                 android:layout_gravity="center_horizontal"
                 android:gravity="center|center_horizontal"
-                android:layout_marginTop="10dp" />
+                android:layout_marginTop="10dp"
+                android:textStyle="bold" />
 
             <FrameLayout
                 android:layout_width="match_parent"
@@ -124,8 +125,11 @@
     <Button android:layout_height="0dp"
         android:layout_width="match_parent"
         android:text="@string/deixe_a_sua_avaliacao"
+        android:background="@color/colorPrimary"
+        android:textColor="@android:color/white"
         android:id="@+id/button_avaliar_dialog"
         android:layout_gravity="center_horizontal"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:layout_margin="5dp" />
 </LinearLayout>
 

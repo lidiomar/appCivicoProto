@@ -10,6 +10,7 @@
 
     <LinearLayout android:layout_height="wrap_content"
         android:layout_width="match_parent"
+        android:padding="10dp"
         android:orientation="vertical">
 
         <LinearLayout android:layout_height="wrap_content"
@@ -41,6 +42,8 @@
                     android:layout_width="wrap_content"
                     android:isIndicator="true"
                     style="?android:attr/ratingBarStyleSmall"
+                    android:progressTint="@color/colorPrimary"
+                    android:secondaryProgressTint="@android:color/transparent"
                     android:layout_height="wrap_content"
                     android:numStars="5"
                     android:stepSize="1.0"
@@ -84,19 +87,23 @@
                 android:layout_marginBottom="10dp" />
 
             <LinearLayout android:layout_height="wrap_content"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:id="@+id/linearlayout_editar_avaliacao"
-                android:orientation="vertical">
+                android:layout_gravity="center_horizontal"
+                android:orientation="horizontal">
 
-
+                <ImageView android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:src="@drawable/ic_edit_black_18dp"
+                    android:layout_marginRight="5dp" />
 
                 <TextView
                     android:id="@+id/text_editar_avaliacao"
                     android:text="@string/editar_avaliacao"
+                    android:layout_height="match_parent"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="fill_vertical|right"
-                    android:layout_gravity="right" />
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical" />
 
             </LinearLayout>
 

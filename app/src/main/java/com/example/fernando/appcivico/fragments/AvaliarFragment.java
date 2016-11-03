@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -144,6 +145,14 @@ public class AvaliarFragment extends Fragment {
 
     public void inicializaCampos() {
         buttonAvaliarDialog = (Button)view.findViewById(R.id.button_avaliar_dialog);
+
+        LinearLayout.LayoutParams l = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0);
+        l.setMargins(5,5,5,5);
+        buttonAvaliarDialog.setLayoutParams(l);
+
+        buttonAvaliarDialog.setBackgroundResource(R.color.colorPrimary);
+        buttonAvaliarDialog.setTextColor(ContextCompat.getColor(this.getActivity(),android.R.color.white));
+
         linearLayoutMediaContainer = (LinearLayout)view.findViewById(R.id.media_container);
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
 
@@ -270,7 +279,11 @@ public class AvaliarFragment extends Fragment {
             linearLayoutComentarios.setVisibility(View.GONE);
             LinearLayout linearLayoutMedia = (LinearLayout) view.findViewById(R.id.linearlayout_media);
             linearLayoutMedia.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0));
-            buttonAvaliarDialog.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0));
+            LinearLayout.LayoutParams l = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0);
+            l.setMargins(5,5,5,5);
+            buttonAvaliarDialog.setLayoutParams(l);
+            buttonAvaliarDialog.setBackgroundResource(R.color.colorPrimary);
+            buttonAvaliarDialog.setTextColor(ContextCompat.getColor(this.getActivity(),android.R.color.white));
             buscaMedia();
         }
     }
@@ -408,7 +421,7 @@ public class AvaliarFragment extends Fragment {
         Response.ErrorListener errorListener = new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.i("logError",new String(error.networkResponse.data));
+                /*Log.i("logError",new String(error.networkResponse.data));*/
             }
         };
 

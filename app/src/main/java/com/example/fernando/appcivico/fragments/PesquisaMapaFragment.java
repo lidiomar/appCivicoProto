@@ -155,7 +155,7 @@ public class PesquisaMapaFragment extends Fragment implements GoogleApiClient.Co
     }
 
     private void inicializaCategoria() {
-        ArrayAdapter arrayAdapter = new ArrayAdapter(this.getActivity(), android.R.layout.simple_spinner_item, Arrays.asList(Constants.CATEGORIAS));
+        ArrayAdapter arrayAdapter = new ArrayAdapter(this.getActivity(), R.layout.simple_spinner_item_custom, Arrays.asList(Constants.CATEGORIAS));
         spinnerCategoria.setAdapter(arrayAdapter);
     }
 
@@ -337,7 +337,7 @@ public class PesquisaMapaFragment extends Fragment implements GoogleApiClient.Co
                     }
                     myAlertDialogFragmentUhuu.dismiss();
                 }
-            }, 3000);
+            }, 5000);
         }else {
             lastLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
             if (lastLocation != null) {

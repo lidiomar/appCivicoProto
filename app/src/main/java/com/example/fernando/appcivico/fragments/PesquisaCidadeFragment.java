@@ -81,16 +81,16 @@ public class PesquisaCidadeFragment extends Fragment  {
             arrayListEstados.add(estado.getSigla());
         }
 
-        ArrayAdapter arrayAdapterUf = new ArrayAdapter(this.getActivity(),android.R.layout.simple_spinner_item, arrayListEstados);
+        ArrayAdapter arrayAdapterUf = new ArrayAdapter(this.getActivity(),R.layout.simple_spinner_item_custom, arrayListEstados);
         spinnerBuscaUf.setAdapter(arrayAdapterUf);
 
-        arrayAdapterCidades = new ArrayAdapter(this.getActivity(),android.R.layout.simple_spinner_item, arrayListCidades);
+        arrayAdapterCidades = new ArrayAdapter(this.getActivity(),R.layout.simple_spinner_item_custom, arrayListCidades);
         spinnerBuscaCidade.setAdapter(arrayAdapterCidades);
 
-        ArrayAdapter arrayAdapterCategoria = new ArrayAdapter(this.getActivity(),android.R.layout.simple_spinner_item, Arrays.asList(Constants.CATEGORIAS));
+        ArrayAdapter arrayAdapterCategoria = new ArrayAdapter(this.getActivity(),R.layout.simple_spinner_item_custom, Arrays.asList(Constants.CATEGORIAS));
         spinnerBuscaCategoria.setAdapter(arrayAdapterCategoria);
 
-        ArrayAdapter arrayAdapterEspecialidade = new ArrayAdapter(this.getActivity(),android.R.layout.simple_spinner_item, Arrays.asList(Constants.ESPECIALIDADES));
+        ArrayAdapter arrayAdapterEspecialidade = new ArrayAdapter(this.getActivity(),R.layout.simple_spinner_item_custom, Arrays.asList(Constants.ESPECIALIDADES));
         spinnerBuscaEspecialidades.setAdapter(arrayAdapterEspecialidade);
 
         spinnerBuscaUf.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

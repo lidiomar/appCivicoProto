@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -57,6 +58,7 @@ public class MinhasAvaliacoesFragment extends Fragment {
     private Boolean buscarDoServidor = true;
     int pastVisiblesItems, visibleItemCount, totalItemCount;
     private int countOffset = 0;
+    private LinearLayout emptyView;
     MyAlertDialogFragment myAlertDialogFragment;
 
 
@@ -75,6 +77,8 @@ public class MinhasAvaliacoesFragment extends Fragment {
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
         recyclerViewComentarios = (RecyclerView)view.findViewById(R.id.comentarios_recyclerview);
+        emptyView = (LinearLayout)view.findViewById(R.id.empty_view);
+
         recyclerViewComentarios.setLayoutManager(linearLayoutManager);
         recyclerViewComentarios.setItemAnimator(new DefaultItemAnimator());
         recyclerViewComentarios.setHasFixedSize(true);
@@ -129,8 +133,13 @@ public class MinhasAvaliacoesFragment extends Fragment {
                 if(postagemRetornos != null) {
                     buscaConteudoPostagens(postagemRetornos);
                 }else {
-                    buscarDoServidor = false;
-                    hideProgressBar();
+                    if(inicializar) {
+                        myAlertDialogFragment.dismiss();
+                        showEmptyView();
+                    }else {
+                        buscarDoServidor = false;
+                        hideProgressBar();
+                    }
                 }
             }
         };
@@ -144,6 +153,7 @@ public class MinhasAvaliacoesFragment extends Fragment {
 
                 if(inicializar) {
                     myAlertDialogFragment.dismiss();
+                    showEmptyView();
                 }
 
                 Toast.makeText(MinhasAvaliacoesFragment.this.getActivity(),
@@ -300,6 +310,10 @@ public class MinhasAvaliacoesFragment extends Fragment {
                 }
             });
         }
+    }
+
+    private void showEmptyView() {
+        emptyView.setVisibility(View.VISIBLE);
     }
 
 }
