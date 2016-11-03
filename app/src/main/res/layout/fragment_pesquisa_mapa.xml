@@ -1,100 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="wrap_content"
     android:layout_width="match_parent"
-    android:paddingLeft="10dp"
-    android:paddingRight="10dp"
-    android:layout_height="match_parent">
-
-    <android.support.v7.widget.CardView
-        xmlns:card_view="http://schemas.android.com/apk/res-auto"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        card_view:cardCornerRadius="2dp"
-        card_view:contentPaddingBottom="10dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginBottom="30dp">
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:layout_height="wrap_content">
 
-        <LinearLayout android:layout_height="wrap_content"
+        <android.support.v7.widget.CardView
+            xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_width="match_parent"
-            android:orientation="vertical">
+            card_view:cardCornerRadius="2dp"
+            card_view:contentPaddingBottom="10dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="30dp">
 
-            <ImageView
-                android:id="@+id/image_cidade"
+            <LinearLayout android:layout_height="wrap_content"
                 android:layout_width="match_parent"
-                android:layout_height="200dp" />
+                android:orientation="vertical">
 
-            <TextView
+                <ImageView
+                    android:id="@+id/image_cidade"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="5dp"
+                    android:layout_height="wrap_content"
+                    android:text="Encontre estabelecimentos de saúde próximos a você!"
+                    android:textAlignment="center"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+        <TextView android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/busca_categoria" />
+
+        <LinearLayout android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/border_default"
+            android:orientation="vertical"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="5dp">
+
+            <Spinner android:layout_height="50dp"
                 android:layout_width="match_parent"
-                android:layout_marginTop="5dp"
-                android:layout_height="wrap_content"
-                android:text="Encontre estabelecimentos de saúde próximos a você!"
-                android:textAlignment="center"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:textStyle="bold" />
+                android:id="@+id/spinner_pesquisa_categoria"
+                android:gravity="center_vertical"
+                android:layout_gravity="top|center_vertical"
+                android:paddingBottom="9dp"
+                android:paddingTop="9dp" />
+
         </LinearLayout>
-    </android.support.v7.widget.CardView>
 
-    <TextView android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/busca_categoria" />
+        <TextView android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pesquisar:"
+            android:visibility="gone" />
 
-    <LinearLayout android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/border_default"
-        android:orientation="vertical"
-        android:layout_marginBottom="20dp"
-        android:layout_marginTop="5dp">
+        <LinearLayout android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/border_default"
+            android:orientation="vertical"
+            android:id="@+id/linearLayout_busca_texto"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="5dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:visibility="gone">
 
-        <Spinner android:layout_height="50dp"
+            <EditText android:layout_width="match_parent"
+                android:id="@+id/edt_busca_texto"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:id="@+id/seekbar_value"
+            android:layout_marginBottom="20dp" />
+        <SeekBar
             android:layout_width="match_parent"
-            android:id="@+id/spinner_pesquisa_categoria"
-            android:gravity="center_vertical"
-            android:layout_gravity="top|center_vertical"
-            android:paddingBottom="9dp"
-            android:paddingTop="9dp" />
+            android:layout_height="wrap_content"
+            android:id="@+id/seekbar_pesquisa_km"
+            android:max="100" />
 
+        <Button android:id="@+id/buscar_pesquisa"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:background="@color/colorPrimary"
+            android:textColor="@android:color/white"
+            android:text="@string/pesquisar"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp" />
     </LinearLayout>
-
-    <TextView android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Pesquisar:"
-        android:visibility="gone" />
-
-    <LinearLayout android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/border_default"
-        android:orientation="vertical"
-        android:id="@+id/linearLayout_busca_texto"
-        android:layout_marginBottom="20dp"
-        android:layout_marginTop="5dp"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp"
-        android:visibility="gone">
-
-        <EditText android:layout_width="match_parent"
-            android:id="@+id/edt_busca_texto"
-            android:layout_height="wrap_content" />
-
-    </LinearLayout>
-
-    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-        android:id="@+id/seekbar_value"
-        android:layout_marginBottom="20dp" />
-    <SeekBar
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/seekbar_pesquisa_km"
-        android:max="100" />
-
-    <Button android:id="@+id/buscar_pesquisa"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:background="@color/colorPrimary"
-        android:textColor="@android:color/white"
-        android:text="@string/pesquisar"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="20dp" />
-</LinearLayout>
+</ScrollView>

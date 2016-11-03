@@ -1,13 +1,10 @@
 package com.example.fernando.appcivico.fragments;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -44,7 +41,6 @@ import com.example.fernando.appcivico.estrutura.JsonComentario;
 import com.example.fernando.appcivico.estrutura.PostagemMedia;
 import com.example.fernando.appcivico.estrutura.PostagemRetorno;
 import com.example.fernando.appcivico.servicos.Avaliacao;
-import com.example.fernando.appcivico.utils.Constants;
 import com.example.fernando.appcivico.utils.MyAlertDialogFragment;
 import com.google.gson.Gson;
 
@@ -157,8 +153,8 @@ public class AvaliarFragment extends Fragment {
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
 
         ratingBarReadonly = (RatingBar)view.findViewById(R.id.rating_avaliacao_readonly);
-        Drawable progress = ratingBarReadonly.getProgressDrawable();
-        DrawableCompat.setTint(progress, Color.rgb(11111111,01011010,00000000));
+        /*Drawable progress = ratingBarReadonly.getProgressDrawable();
+        DrawableCompat.setTint(progress, Color.rgb(11111111,01011010,00000000));*/
         txtNumeroAvaliacoes = (TextView) view.findViewById(R.id.text_numero_avaliacoes);
         txtMediaAvaliacoes = (TextView) view.findViewById(R.id.text_media_avaliacoes);
 
@@ -442,11 +438,45 @@ public class AvaliarFragment extends Fragment {
     }
 
     public void loadDialogAvaliar() {
-        Intent intent;
-        intent = new Intent(AvaliarFragment.this.getActivity(), DialogAvaliarActivity.class);
-        intent.putExtra("estabelecimento", estabelecimento);
-        startActivityForResult(intent, 8);
-        AvaliarFragment.this.getActivity().overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
+        final Avaliacao avaliacaoValida = new Avaliacao(AvaliarFragment.this.getActivity());
+
+        Response.Listener respListener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                if(avaliacaoValida.getBuscaPostagemStatusCode() == 200) {
+                    Toast.makeText(AvaliarFragment.this.getActivity(),AvaliarFragment.this.getActivity().getString(R.string.ja_existe_avaliacao),Toast.LENGTH_LONG).show();
+                }
+            }
+        };
+
+        Response.ErrorListener responseErrorListener = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(AvaliarFragment.this.getActivity(),AvaliarFragment.this.getActivity().getString(R.string.algo_deu_errado),Toast.LENGTH_LONG).show();
+            }
+        };
+
+        final StringRequest stringRequest = avaliacaoValida.buscaPostagem(0, 1, estabelecimento.getCodUnidade(), applicationAppCivico.getUsuarioAutenticado().getCod(), respListener, responseErrorListener);
+        RequestQueue requestQueue = avaliacaoValida.getRequestQueue();
+
+        myAlertDialogFragment = MyAlertDialogFragment.newInstance("","");
+        myAlertDialogFragment.show(this.getFragmentManager(),"");
+        requestQueue.add(stringRequest);
+
+
+        requestQueue.addRequestFinishedListener(new RequestQueue.RequestFinishedListener<Object>() {
+            @Override
+            public void onRequestFinished(Request<Object> request) {
+                myAlertDialogFragment.dismiss();
+                if(avaliacaoValida.getBuscaPostagemStatusCode() != 200) {
+                    Intent intent;
+                    intent = new Intent(AvaliarFragment.this.getActivity(), DialogAvaliarActivity.class);
+                    intent.putExtra("estabelecimento", estabelecimento);
+                    startActivityForResult(intent, 8);
+                    AvaliarFragment.this.getActivity().overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
+                }
+            }
+        });
     }
 
     public void loadEscolherAcesso() {
@@ -455,6 +485,7 @@ public class AvaliarFragment extends Fragment {
         startActivityForResult(intent, 9);
         AvaliarFragment.this.getActivity().overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
     }
+
 }
 
 /*

@@ -157,7 +157,7 @@ public class Avaliacao {
         this.requestQueue.add(stringRequest);
     }
 
-    public void buscaPostagem(int pagina, int quantidadeItens, String codObjetoDestino, int codAutor,
+    public StringRequest buscaPostagem(int pagina, int quantidadeItens, String codObjetoDestino, int codAutor,
                               Response.Listener<String> responseListener, Response.ErrorListener responseErrorListener) {
 
         String url = "http://mobile-aceite.tcu.gov.br:80/appCivicoRS/rest/postagens" +
@@ -170,7 +170,6 @@ public class Avaliacao {
                 "&codObjetoDestino="+codObjetoDestino;
 
         final StringRequest stringRequest = new StringRequest(Request.Method.GET, url, responseListener , responseErrorListener){
-
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String,String> params = new HashMap<String, String>();
@@ -186,13 +185,7 @@ public class Avaliacao {
             }
         };
 
-        this.requestQueue.add(stringRequest);
-        requestQueue.addRequestFinishedListener(new RequestQueue.RequestFinishedListener<Object>() {
-            @Override
-            public void onRequestFinished(Request<Object> request) {
-
-            }
-        });
+        return stringRequest;
     }
 
     public StringRequest buscaPostagens(int pagina, int quantidadeItens, String codObjetoDestino, Response.Listener<String> responseListener, Response.ErrorListener responseErrorListener) {

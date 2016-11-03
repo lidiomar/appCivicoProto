@@ -1,21 +1,13 @@
 package com.example.fernando.appcivico.fragments;
 
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.graphics.drawable.DrawableCompat;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.Toast;
 
@@ -52,6 +44,8 @@ public class DialogAvaliarFragment extends Fragment {
     private EditText editTextComentario;
     private Button buttonAvaliar;
     private Gson gson = new Gson();
+    private ApplicationAppCivico applicationAppCivico;
+
 
     @Nullable
     @Override
@@ -62,9 +56,9 @@ public class DialogAvaliarFragment extends Fragment {
         buttonAvaliar = (Button)view.findViewById(R.id.button_avaliar);
 
         ratingBar = (RatingBar)view.findViewById(R.id.rating_avaliacao);
-        Drawable progress = ratingBar.getProgressDrawable();
-        DrawableCompat.setTint(progress, Color.rgb(11111111,01011010,00000000));
-
+        /*Drawable progress = ratingBar.getProgressDrawable();
+        DrawableCompat.setTint(progress, Color.rgb(11111111,01011010,00000000));*/
+        applicationAppCivico = (ApplicationAppCivico) this.getActivity().getApplication();
 
         editTextComentario = (EditText)view.findViewById(R.id.comentario_avaliacao);
 
