@@ -74,7 +74,7 @@
     <string name="deixe_o_seu_comentario">Deixe o seu comentário:</string>
     <string name="preencha_os_dados_da_avaliacao">Preencha os dados da avaliação</string>
 
-    <string name="ja_existe_avaliacao">Já foi registrada uma avaliação para esse estabelecimento.</string>
+    <string name="ja_existe_avaliacao">Já  existe uma avaliação do usuário para o estabelecimento.</string>
 
     <string name="nao_ha_comentarios">Não há comentários para serem exibidos.</string>
     <string name="nao_ha_avaliacoes">Não há avaliações para serem exibidas.</string>
@@ -105,6 +105,8 @@
     <string name="nao_foi_possivel_carregar_os_comentarios">Não foi possível carregar os comentários</string>
 
     <string name="sem_permissao_de_localizacao">Não foi possível obter as permissões necessárias para obter a localização.</string>
+
+    <string name="creditos">Créditos</string>
 </resources>
 
 

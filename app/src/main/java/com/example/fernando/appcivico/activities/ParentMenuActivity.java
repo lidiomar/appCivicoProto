@@ -96,8 +96,10 @@ public class ParentMenuActivity extends AppCompatActivity implements NavigationV
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        if (id == R.id.action_creditos) {
+            Intent i = new Intent(this,DialogCreditosActivity.class);
+            startActivity(i);
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
         }
 
         return super.onOptionsItemSelected(item);
