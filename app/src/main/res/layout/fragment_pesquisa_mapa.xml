@@ -18,7 +18,7 @@
             card_view:cardCornerRadius="2dp"
             card_view:contentPaddingBottom="10dp"
             android:layout_marginTop="15dp"
-            android:layout_marginBottom="30dp">
+            android:layout_marginBottom="20dp">
 
             <LinearLayout android:layout_height="wrap_content"
                 android:layout_width="match_parent"
@@ -27,7 +27,7 @@
                 <ImageView
                     android:id="@+id/image_cidade"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp" />
+                    android:layout_height="220dp" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -100,6 +100,7 @@
             android:textColor="@android:color/white"
             android:text="@string/pesquisar"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp" />
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp" />
     </LinearLayout>
 </ScrollView>

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">AppCivico</string>
+    <string name="app_name">Busca Est. de Saúde</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -108,6 +108,8 @@
 
     <string name="creditos">Créditos</string>
     <string name="desafio_de_aplicativos">DESAFIO DE APLICATIVOS CÍVICOS: CONTROLE SOCIAL DIGITAL-2016</string>
+
+    <string name="credito_imagem">Crédito imagem \"Busca por localização\":</string>
 
 </resources>
 
