@@ -16,8 +16,10 @@
         android:id="@+id/imageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/nav_header_vertical_spacing"
-        android:src="@mipmap/ic_branco" />
+        android:layout_marginTop="@dimen/nav_header_vertical_spacing"
+        android:background="@drawable/border_default"
+        android:src="@mipmap/ic_branco"
+        android:padding="1dp" />
 
     <TextView
         android:layout_width="match_parent"
