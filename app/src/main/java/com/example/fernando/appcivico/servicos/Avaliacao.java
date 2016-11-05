@@ -166,7 +166,7 @@ public class Avaliacao {
                 "&codTipoObjetoDestino="+Constants.CODE_TIPO_OBJETO_DESTINO+"" +
                 "&quantidadeDeItens="+quantidadeItens+
                 "&pagina="+pagina+
-                "&codAutor"+codAutor+
+                "&codAutor="+codAutor+
                 "&codObjetoDestino="+codObjetoDestino;
 
         final StringRequest stringRequest = new StringRequest(Request.Method.GET, url, responseListener , responseErrorListener){
