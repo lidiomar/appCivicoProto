@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.example.fernando.appcivico.R;
 import com.example.fernando.appcivico.application.ApplicationAppCivico;
+import com.example.fernando.appcivico.utils.StaticFunctions;
 import com.squareup.picasso.Picasso;
 
 /**

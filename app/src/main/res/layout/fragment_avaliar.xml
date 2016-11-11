@@ -46,6 +46,7 @@
                     android:layout_height="wrap_content"
                     android:numStars="5"
                     android:rating="0"
+                    android:stepSize="0.1"
                     style="?android:attr/ratingBarStyle"
                     android:visibility="visible"
                     android:isIndicator="true"

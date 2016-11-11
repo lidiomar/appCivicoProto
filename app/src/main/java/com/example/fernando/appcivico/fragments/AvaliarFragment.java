@@ -394,7 +394,7 @@ public class AvaliarFragment extends Fragment {
         ratingBarReadonly.setRating(media);
         if(contagem > 0) {
             linearLayoutMediaContainer.setVisibility(View.VISIBLE);
-            txtMediaAvaliacoes.setText(String.format(this.getActivity().getString(R.string.media_das_avaliacoes_x),String.valueOf(Math.ceil(media))));
+            txtMediaAvaliacoes.setText(String.format(this.getActivity().getString(R.string.media_das_avaliacoes_x),String.valueOf(media)));
 
             if(contagem > 1) {
                 txtNumeroAvaliacoes.setText(String.format(this.getActivity().getString(R.string.x_pessoas_avaliaram), String.valueOf(contagem)));

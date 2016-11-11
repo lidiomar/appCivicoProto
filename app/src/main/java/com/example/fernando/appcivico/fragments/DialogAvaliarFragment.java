@@ -103,7 +103,7 @@ public class DialogAvaliarFragment extends Fragment {
 
                     Calendar c = Calendar.getInstance();
                     Date data = c.getTime();
-                    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyyy");
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
                     String dataFormatada = sdf.format(data);
                     jsonComentario.setDataComentario(dataFormatada);
 
@@ -185,7 +185,7 @@ public class DialogAvaliarFragment extends Fragment {
                     JsonComentario jsonComentario = new JsonComentario();
                     Calendar c = Calendar.getInstance();
                     Date data = c.getTime();
-                    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyyy");
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
                     String dataFormatada = sdf.format(data);
                     jsonComentario.setDataComentario(dataFormatada);
                     jsonComentario.setNomeAutorComentario(((ApplicationAppCivico) DialogAvaliarFragment.this.getActivity().getApplication()).getUsuarioAutenticado().getNomeUsuario());
